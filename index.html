@@ -11,8 +11,14 @@
   <meta name="apple-mobile-web-app-title" content="最新ニュース">
   <meta name="application-name" content="最新ニュース">
   <meta name="theme-color" content="#0f172a">
-  <link id="app-apple-icon" rel="apple-touch-icon" sizes="180x180">
-  <link id="app-favicon" rel="icon" type="image/png">
+
+  <!-- 1. 静的ベクターSVGアイコン（Safari / Chrome / モバイルのタブ・お気に入り即時表示） -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%231e1b4b'/%3E%3Cstop offset='40%25' stop-color='%230f172a'/%3E%3Cstop offset='100%25' stop-color='%23020617'/%3E%3C/linearGradient%3E%3ClinearGradient id='sun' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23fde047'/%3E%3Cstop offset='100%25' stop-color='%23f59e0b'/%3E%3C/linearGradient%3E%3ClinearGradient id='chart' x1='0%25' y1='100%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%23f59e0b'/%3E%3Cstop offset='45%25' stop-color='%2310b981'/%3E%3Cstop offset='100%25' stop-color='%2338bdf8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='115' fill='url(%23bg)'/%3E%3Ccircle cx='256' cy='256' r='180' fill='none' stroke='rgba(56,189,248,0.25)' stroke-width='4'/%3E%3Ccircle cx='256' cy='210' r='60' fill='none' stroke='url(%23sun)' stroke-width='16' stroke-dasharray='190 300' stroke-linecap='round' transform='rotate(-90 256 210)'/%3E%3Cpath d='M256 115 L256 90 M185 140 L165 120 M327 140 L347 120' stroke='%23fde047' stroke-width='8' stroke-linecap='round'/%3E%3Cpath d='M125 325 L195 275 L256 305 L325 200 L385 200 M385 200 L385 240' fill='none' stroke='url(%23chart)' stroke-width='18' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M195 275 L230 190 L256 305' fill='none' stroke='%2334d399' stroke-width='12' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='230' cy='190' r='14' fill='%23ffffff'/%3E%3C/svg%3E">
+
+  <!-- 2. iOS Safari専用 apple-touch-icon （静的宣言 & GitHub Pages完全対応） -->
+  <link id="app-apple-icon" rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="apple-touch-icon-precomposed" sizes="180x180" href="apple-touch-icon.png">
+  <link id="app-favicon" rel="icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
   <link id="app-manifest" rel="manifest">
 
   <!-- Tailwind CSS -->
@@ -78,6 +84,7 @@
         <button id="open-install-guide-btn" class="flex items-center space-x-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/90 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition" title="ホーム画面に追加">
           <span class="text-xs">📱</span>
           <span class="hidden sm:inline">ホーム画面に追加</span>
+          <span class="inline-flex w-2 h-2 rounded-full bg-amber-500 animate-ping sm:hidden"></span>
         </button>
 
         <button id="open-settings-btn" class="flex items-center space-x-1.5 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-200/80 transition flex-shrink-0" title="配信スケジュールを設定">
@@ -389,10 +396,10 @@
 
   <!-- ================= Home Screen Install Guide Modal ================= -->
   <div id="install-guide-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-xs hidden">
-    <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-slate-200 p-5 space-y-4">
+    <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-slate-200 p-5 space-y-4 max-h-[92vh] overflow-y-auto no-scrollbar">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
         <h3 class="font-bold text-sm text-slate-900 flex items-center gap-1.5">
-          <span>📱</span> ホーム画面に追加する
+          <span>📱</span> ホーム画面アプリアイコン設定
         </h3>
         <button id="close-install-modal-btn" class="p-1 rounded-lg text-slate-400 hover:text-slate-600">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -404,9 +411,9 @@
       <!-- Icon Preview -->
       <div class="text-center py-2 space-y-2 bg-slate-50/80 rounded-2xl p-4 border border-slate-100">
         <div class="inline-block relative">
-          <!-- Canvas Generated Icon Preview -->
-          <img id="modal-app-icon-preview" class="w-20 h-20 rounded-2xl shadow-xl ring-4 ring-indigo-100 border border-slate-200/60 object-cover mx-auto" alt="アプリアイコン">
-          <span class="absolute -bottom-1 -right-1 bg-emerald-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full ring-2 ring-white">HD</span>
+          <!-- Canvas Generated Icon Preview (長押し保存可能) -->
+          <img id="modal-app-icon-preview" class="w-20 h-20 rounded-2xl shadow-xl ring-4 ring-indigo-100 border border-slate-200/60 object-cover mx-auto select-none" alt="アプリアイコン">
+          <span class="absolute -bottom-1 -right-1 bg-emerald-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full ring-2 ring-white">180px HD</span>
         </div>
         <div>
           <h4 class="font-bold text-slate-900 text-sm">経済・医療・ITの最新ニュース</h4>
@@ -414,31 +421,34 @@
         </div>
       </div>
 
+      <!-- GitHub Pagesで「経」になるのを解消する手順 -->
+      <div class="p-3 bg-sky-50 border border-sky-200/80 rounded-2xl text-xs space-y-2 text-sky-950">
+        <div class="font-bold flex items-center gap-1.5 text-sky-900">
+          <span>💡</span> 灰色「経」アイコンを解消する手順
+        </div>
+        <p class="text-[11px] text-sky-800 leading-relaxed">
+          iOS Safariは、GitHubリポジトリ内に専用の画像ファイルがあるかを直接確認します。下のボタンで画像をダウンロードし、GitHubの <code class="bg-white px-1 py-0.5 rounded border border-sky-200 font-mono text-[10px]">index.html</code> と<strong>同じフォルダにアップロードするだけ</strong>で、100%確実にホーム画面に美麗アイコンが反映されます！
+        </p>
+        <button id="download-icon-btn" class="w-full py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 active:bg-sky-700 text-white font-bold text-xs shadow-sm transition flex items-center justify-center gap-1.5">
+          <span>💾</span>
+          <span>apple-touch-icon.png を保存する</span>
+        </button>
+      </div>
+
       <!-- Instructions based on device -->
       <div class="space-y-3 text-xs text-slate-700 bg-amber-50/60 p-3.5 rounded-2xl border border-amber-200/60">
         <div class="font-bold text-amber-950 flex items-center gap-1">
-          <span>🍎 iPhone / iPad (Safari) の場合</span>
+          <span>🍎 iPhone / iPad (Safari) の追加方法</span>
         </div>
         <ol class="list-decimal list-inside space-y-1.5 text-[11px] text-amber-900">
           <li>画面下の「共有ボタン」（四角から矢印 <b>⎋</b>）をタップ</li>
           <li>メニューをスクロールして「<b>ホーム画面に追加 ⊞</b>」を選択</li>
-          <li>右上の「<b>追加</b>」をタップすると、専用アイコンでホーム画面に配置されます</li>
-        </ol>
-
-        <div class="font-bold text-slate-900 flex items-center gap-1 pt-2 border-t border-amber-200/50">
-          <span>🤖 Android (Chrome) の場合</span>
-        </div>
-        <ol class="list-decimal list-inside space-y-1 text-[11px] text-slate-700">
-          <li>画面右上の「メニュー（3点リーダー <b>⋮</b>）」をタップ</li>
-          <li>「<b>ホーム画面に追加</b>」または「<b>アプリをインストール</b>」を選択</li>
+          <li>右上の「<b>追加</b>」をタップすると完了です</li>
         </ol>
       </div>
 
       <div class="flex items-center gap-2">
-        <button id="download-icon-btn" class="flex-1 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-xs transition flex items-center justify-center gap-1">
-          <span>💾 アイコン画像を保存</span>
-        </button>
-        <button id="confirm-install-btn" class="flex-1 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-medium text-xs shadow-sm transition">
+        <button id="confirm-install-btn" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-medium text-xs shadow-sm transition">
           閉じる
         </button>
       </div>
@@ -881,10 +891,12 @@
         if (dlBtn) {
           dlBtn.onclick = () => {
             const a = document.createElement('a');
-            a.download = 'morning-news-icon.png';
+            a.download = 'apple-touch-icon.png';
             a.href = iconDataUrl;
+            document.body.appendChild(a);
             a.click();
-            showToast("アプリアイコンを画像として保存しました");
+            document.body.removeChild(a);
+            showToast("apple-touch-icon.png をダウンロードしました");
           };
         }
 
