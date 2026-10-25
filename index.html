@@ -147,19 +147,20 @@
           <div class="flex items-center space-x-2">
             <span class="text-sm">🎙️</span>
             <span class="text-xs font-semibold text-slate-200">声の種類</span>
-            <span id="ai-tts-badge" class="px-2 py-0.5 rounded-full text-[10px] bg-gradient-to-r from-amber-400/20 to-sky-400/20 border border-sky-300/30 text-amber-200 font-semibold tracking-wide">
-              Gemini AI Studio音質
+            <span id="ai-tts-badge" class="px-2 py-0.5 rounded-full text-[10px] bg-sky-500/20 border border-sky-300/30 text-sky-200 font-semibold tracking-wide">
+              端末高品位音声
             </span>
           </div>
 
           <!-- 声のセレクター -->
           <div class="w-full sm:w-auto">
             <select id="voice-persona-select" class="w-full sm:w-auto bg-slate-900/90 text-sky-100 border border-white/20 rounded-lg px-2.5 py-1.5 text-xs font-medium outline-none focus:ring-1 focus:ring-sky-400 transition cursor-pointer shadow-inner">
-              <option value="Kore" class="bg-slate-900 text-white">落ち着いた報道アナ (Kore)</option>
-              <option value="Aoede" class="bg-slate-900 text-white">爽やかモーニング (Aoede)</option>
-              <option value="Puck" class="bg-slate-900 text-white">快活・明瞭ニュース (Puck)</option>
-              <option value="Charon" class="bg-slate-900 text-white">重厚・知性派 (Charon)</option>
-              <option value="Sulafat" class="bg-slate-900 text-white">温もり・安心トーン (Sulafat)</option>
+              <option value="Capella" class="bg-slate-900 text-white">🌸 カペラ (Capella / 穏やか・澄んだ知性)</option>
+              <option value="Vega" class="bg-slate-900 text-white">☀️ ベガ (Vega / 明るい・快活モーニング)</option>
+              <option value="Kore" class="bg-slate-900 text-white">🎙️ 報道アナウンサー (Kore / NHK風・標準)</option>
+              <option value="Charon" class="bg-slate-900 text-white">🏛️ 重厚・知性派 (Charon / 低音・男性解説)</option>
+              <option value="Puck" class="bg-slate-900 text-white">⚡ スピード解説 (Puck / 歯切れ良い声)</option>
+              <option value="Sulafat" class="bg-slate-900 text-white">☕ 温もり・安心トーン (Sulafat / 柔らかい声)</option>
             </select>
           </div>
         </div>
@@ -182,6 +183,12 @@
             <span>試聴する</span>
           </button>
         </div>
+
+        <!-- iPhone消音・音量ガイド -->
+        <p class="text-[10px] text-slate-400 pt-1 border-t border-white/5 flex items-center gap-1">
+          <span>🔔</span>
+          <span>iPhoneで音が鳴らない場合は、本体側面の<strong>マナーモード（消音スイッチ）をOFF</strong>にし、音量を上げてください。</span>
+        </p>
       </div>
 
       <!-- Audio Playing Player Bar (Active during TTS) -->
@@ -374,6 +381,16 @@
           <input type="checkbox" id="auto-tts-toggle" class="h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500">
         </div>
 
+        <!-- Gemini API Key (任意設定) -->
+        <div class="pt-2 border-t border-slate-100 space-y-1">
+          <div class="flex items-center justify-between">
+            <label class="block font-semibold text-slate-700">Gemini APIキー（任意・完全無料）</label>
+            <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" class="text-[10px] text-sky-600 hover:underline">キーを無料で取得 ↗</a>
+          </div>
+          <input type="password" id="gemini-api-key-input" placeholder="AI Studioのキー（空欄でも内蔵音声で再生可）" class="border border-slate-300 rounded-lg px-2.5 py-1.5 font-mono text-xs text-slate-800 w-full">
+          <p class="text-[10px] text-slate-500">※GitHub Pagesで本物のスタジオ声優（5種類のプロAI音声）に切り替えたい場合に入力。未入力でも端末音声でキャラクター別の声を楽しめます。</p>
+        </div>
+
         <div class="pt-2 border-t border-slate-100">
           <button id="request-perm-btn" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition text-center">
             ブラウザ通知を許可する
@@ -472,10 +489,13 @@
       isReading: false,
       speechRate: 1.1,
       selectedVoicePersona: "Kore",
+      geminiApiKey: "",
       currentAudioElement: null,
       audioCache: new Map(),
       savedIds: new Set(),
-      bestJapaneseVoice: null,
+      allJaVoices: [],
+      femaleVoices: [],
+      maleVoices: [],
       newsData: [
         // 1. 日本の経済 (2 items)
         {
@@ -720,6 +740,42 @@
       updateSavedBadge();
     }
 
+    // 設定・声・速度・時刻の自動復元と保存
+    function loadUserSettings() {
+      try {
+        const savedVoice = localStorage.getItem('morning_news_voice_persona');
+        if (savedVoice) APP_STATE.selectedVoicePersona = savedVoice;
+
+        const savedRate = localStorage.getItem('morning_news_speech_rate');
+        if (savedRate) APP_STATE.speechRate = parseFloat(savedRate);
+
+        const savedTime = localStorage.getItem('morning_news_scheduled_time');
+        if (savedTime) APP_STATE.scheduledTime = savedTime;
+
+        const savedAuto = localStorage.getItem('morning_news_auto_tts');
+        if (savedAuto !== null) APP_STATE.autoTTS = (savedAuto === 'true');
+
+        const savedKey = localStorage.getItem('morning_news_gemini_api_key');
+        if (savedKey) APP_STATE.geminiApiKey = savedKey;
+      } catch (e) {
+        console.warn("Settings load error:", e);
+      }
+    }
+
+    function saveUserSettings() {
+      try {
+        localStorage.setItem('morning_news_voice_persona', APP_STATE.selectedVoicePersona);
+        localStorage.setItem('morning_news_speech_rate', String(APP_STATE.speechRate));
+        localStorage.setItem('morning_news_scheduled_time', APP_STATE.scheduledTime);
+        localStorage.setItem('morning_news_auto_tts', String(APP_STATE.autoTTS));
+        if (APP_STATE.geminiApiKey) {
+          localStorage.setItem('morning_news_gemini_api_key', APP_STATE.geminiApiKey);
+        }
+      } catch (e) {
+        console.warn("Settings save error:", e);
+      }
+    }
+
     function updateSavedBadge() {
       const badge = document.getElementById('saved-counter-badge');
       if (badge) badge.textContent = APP_STATE.savedIds.size;
@@ -929,6 +985,27 @@
     }
 
     // -------------------------------------------------------------
+    // Audio Unlocker for iOS Safari (タップ時の音声ブロック解除)
+    // -------------------------------------------------------------
+    function unlockAudioContext() {
+      try {
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.resume();
+        }
+        // iOS Safari用のAudioContextアンロック
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (AudioCtx) {
+          const ctx = new AudioCtx();
+          if (ctx.state === 'suspended') {
+            ctx.resume();
+          }
+        }
+      } catch (e) {
+        console.debug("Audio unlock note:", e);
+      }
+    }
+
+    // -------------------------------------------------------------
     // Gemini 2.5 Flash TTS (高精度AI音声合成) & Audio Utilities
     // -------------------------------------------------------------
     function base64ToArrayBuffer(base64) {
@@ -981,6 +1058,10 @@
 
     function getPersonaPromptInstruction(persona) {
       switch (persona) {
+        case "Capella":
+          return "GeminiのCapella（カペラ）のように、穏やかで澄んだ知的なトーンで、上品で聞き取りやすい日本語で語りかけてください:";
+        case "Vega":
+          return "GeminiのVega（ベガ）のように、明るく快活でフレンドリーな高音トーンで、元気が湧いてくる日本語で伝えてください:";
         case "Aoede":
           return "爽やかな朝のニュースキャスターとして、明るく透明感のある滑らかな日本語で軽やかに読み上げてください:";
         case "Puck":
@@ -995,83 +1076,147 @@
       }
     }
 
-    async function generateAndPlayGeminiTTS(text, titleText, onEndedCallback) {
-      const persona = APP_STATE.selectedVoicePersona || "Kore";
-      const cacheKey = `${persona}_${text}`;
+    // ペルソナ固有のフレーズ（オープニング・試聴用・語り口）
+    function getPersonaPhrases(persona) {
+      switch (persona) {
+        case "Capella": // カペラ：穏やか・澄んだ知性
+          return {
+            opening: "おはようございます。カペラです。今朝の重要な最新ニュースを丁寧にお伝えいたします。",
+            sample: "おはようございます。カペラです。穏やかな朝に、最新の経済・医療・テクノロジー動向を分かりやすくお伝えしますね。",
+            connector: "続いての注目ニュースです。",
+            ending: "以上、カペラがお伝えいたしました。どうぞ心地よく穏やかな一日をお過ごしください。"
+          };
+        case "Vega": // ベガ：明るい・快活モーニング
+          return {
+            opening: "おはようございます！ベガです！朝の最新重要ニュースを明るく元気にダイジェストでお届けします！",
+            sample: "おはようございます！ベガです！今日も最新ニュースを元気に分かりやすくお届けします！素敵な一日にしていきましょう！",
+            connector: "次の注目ニュースも要チェックです！",
+            ending: "以上、ベガがお届けしました！今日も笑顔で元気にいってらっしゃい！"
+          };
+        case "Aoede": // 爽やかモーニング（高音・明るい女性調）
+          return {
+            opening: "皆さんおはようございます！爽やかな朝の最新ニュースをお届けします！",
+            sample: "おはようございます！爽やかな朝ですね。今日も最新のニュースを元気に明るくお届けします！素敵な一日をお過ごしくださいね。",
+            connector: "続いての注目ニュースです。",
+            ending: "以上、今朝の注目トピックスでした！今日も笑顔で、いってらっしゃい！"
+          };
+        case "Charon": // 重厚・知性派（低音・落ち着いた解説員調）
+          return {
+            opening: "深層ニュースブリーフィングです。本日の核心となる動向を順にお伝えします。",
+            sample: "深層ニュース解説です。経済、医療、そしてテクノロジーの重大な潮流を、客観的かつ論理的にお伝えいたします。",
+            connector: "次の重要項目に移ります。",
+            ending: "以上、本日の深層ニュース解説でした。今後の展開にも注視が必要です。"
+          };
+        case "Puck": // 快活・明瞭（テンポ早め・歯切れ良い）
+          return {
+            opening: "朝のスピードチェック！重要ポイントを凝縮してサクサクお伝えします！",
+            sample: "最新ニュースをスピードチェック！忙しい朝でも3分で頭に入る要約をお届けします。今日も効率よくスタートしましょう！",
+            connector: "次です！",
+            ending: "以上、最新の重要ニュースでした！気になった記事は保管庫でいつでもチェックできます！"
+          };
+        case "Sulafat": // 温もり・安心トーン（柔らかく穏やか）
+          return {
+            opening: "おはようございます。今朝の大切なニュースを、落ち着いてゆっくりとお伝えしますね。",
+            sample: "おはようございます。今日も無理せず、大切なニュースを一緒に見ていきましょうね。あたたかい一日になりますように。",
+            connector: "続いてはこちらのニュースです。",
+            ending: "以上、朝のニュースでした。深呼吸して、心地よい一日をお迎えくださいね。"
+          };
+        case "Kore": // 落ち着いた報道アナ（標準・格調高い）
+        default:
+          return {
+            opening: "おはようございます。最新の重要ニュースをお伝えいたします。",
+            sample: "おはようございます。経済・医療・ITの最新ニュースをお届けします。本日も正確で公正な情報をお伝えいたします。",
+            connector: "次のニュースです。",
+            ending: "以上、本日の最新ニュース要約でした。本日も実りある一日をお過ごしください。"
+          };
+      }
+    }
 
+    async function generateAndPlayAudio(text, titleText, onEndedCallback) {
+      unlockAudioContext();
+      const persona = APP_STATE.selectedVoicePersona || "Capella";
       const ttsEngineBadge = document.getElementById('tts-engine-badge');
       const ttsReadingTitle = document.getElementById('tts-reading-title');
-      if (ttsEngineBadge) ttsEngineBadge.textContent = `AIスタジオ音声 (${persona})`;
+
       if (ttsReadingTitle) ttsReadingTitle.textContent = titleText || "ニュースを読み上げています...";
 
-      if (APP_STATE.audioCache.has(cacheKey)) {
-        const audioUrl = APP_STATE.audioCache.get(cacheKey);
-        playAudioUrl(audioUrl, onEndedCallback);
-        return;
-      }
-
-      try {
-        if (ttsEngineBadge) ttsEngineBadge.textContent = `AI音声生成中... (${persona})`;
-
-        const promptInstruction = getPersonaPromptInstruction(persona);
-        const userPrompt = `${promptInstruction}\n\n${text}`;
-
-        const payload = {
-          contents: [{
-            parts: [{ text: userPrompt }]
-          }],
-          generationConfig: {
-            responseModalities: ["AUDIO"],
-            speechConfig: {
-              voiceConfig: {
-                prebuiltVoiceConfig: { voiceName: persona }
-              }
-            }
-          },
-          model: "gemini-2.5-flash-preview-tts"
-        };
-
-        const apiKey = "";
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
-
-        const response = await fetch(apiUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        if (!response.ok) {
-          throw new Error(`TTS API HTTP error: ${response.status}`);
-        }
-
-        const result = await response.json();
-        const part = result?.candidates?.[0]?.content?.parts?.[0];
-        const audioData = part?.inlineData?.data;
-        const mimeType = part?.inlineData?.mimeType;
-
-        if (audioData) {
-          let sampleRate = 24000;
-          if (mimeType && mimeType.includes("rate=")) {
-            const match = mimeType.match(/rate=(\d+)/);
-            if (match) sampleRate = parseInt(match[1], 10);
-          }
-
-          const arrayBuffer = base64ToArrayBuffer(audioData);
-          const pcm16 = new Int16Array(arrayBuffer);
-          const wavBlob = pcmToWav(pcm16, sampleRate);
-          const audioUrl = URL.createObjectURL(wavBlob);
-
-          APP_STATE.audioCache.set(cacheKey, audioUrl);
+      // APIキーが存在する場合のみクラウドGemini TTSを試行
+      const apiKey = APP_STATE.geminiApiKey ? APP_STATE.geminiApiKey.trim() : "";
+      if (apiKey) {
+        const cacheKey = `${persona}_${text}`;
+        if (APP_STATE.audioCache.has(cacheKey)) {
           if (ttsEngineBadge) ttsEngineBadge.textContent = `再生中 (${persona}・AI高音質)`;
-          playAudioUrl(audioUrl, onEndedCallback);
-        } else {
-          throw new Error("No audio payload returned from Gemini TTS");
+          playAudioUrl(APP_STATE.audioCache.get(cacheKey), onEndedCallback);
+          return;
         }
-      } catch (err) {
-        console.warn("Gemini TTS failed, falling back to Native SpeechSynthesis:", err);
-        if (ttsEngineBadge) ttsEngineBadge.textContent = "端末内蔵音声 (フォールバック)";
-        playNativeSpeech(text, onEndedCallback);
+
+        try {
+          if (ttsEngineBadge) ttsEngineBadge.textContent = `AI音声生成中... (${persona})`;
+          const promptInstruction = getPersonaPromptInstruction(persona);
+          const userPrompt = `${promptInstruction}\n\n${text}`;
+
+          // Gemini API voiceNameマッピング
+          const voiceMapping = {
+            "Capella": "Aoede",
+            "Vega": "Zephyr",
+            "Kore": "Kore",
+            "Charon": "Charon",
+            "Puck": "Puck",
+            "Sulafat": "Sulafat"
+          };
+          const targetVoice = voiceMapping[persona] || "Kore";
+
+          const payload = {
+            contents: [{ parts: [{ text: userPrompt }] }],
+            generationConfig: {
+              responseModalities: ["AUDIO"],
+              speechConfig: {
+                voiceConfig: { prebuiltVoiceConfig: { voiceName: targetVoice } }
+              }
+            },
+            model: "gemini-2.5-flash-preview-tts"
+          };
+
+          const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+          const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+            const audioData = result?.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+            const mimeType = result?.candidates?.[0]?.content?.parts?.[0]?.inlineData?.mimeType;
+
+            if (audioData) {
+              let sampleRate = 24000;
+              if (mimeType && mimeType.includes("rate=")) {
+                const match = mimeType.match(/rate=(\d+)/);
+                if (match) sampleRate = parseInt(match[1], 10);
+              }
+              const arrayBuffer = base64ToArrayBuffer(audioData);
+              const pcm16 = new Int16Array(arrayBuffer);
+              const wavBlob = pcmToWav(pcm16, sampleRate);
+              const audioUrl = URL.createObjectURL(wavBlob);
+
+              APP_STATE.audioCache.set(cacheKey, audioUrl);
+              if (ttsEngineBadge) ttsEngineBadge.textContent = `再生中 (${persona}・AIスタジオ)`;
+              playAudioUrl(audioUrl, onEndedCallback);
+              return;
+            }
+          }
+        } catch (err) {
+          console.warn("Gemini Cloud TTS skipped, fallback directly to Native Speech:", err);
+        }
       }
+
+      // APIキー未設定、またはGitHub Pagesで即時再生する場合:
+      const config = getPersonaVoiceConfig(persona);
+      if (ttsEngineBadge) {
+        ttsEngineBadge.textContent = `${persona} (${config.personaDescription})`;
+      }
+      playNativeSpeech(text, onEndedCallback);
     }
 
     function playAudioUrl(url, onEnded) {
@@ -1098,55 +1243,148 @@
       const playPromise = audio.play();
       if (playPromise !== undefined) {
         playPromise.catch(err => {
-          console.warn("Audio play prevented:", err);
-          if (onEnded) onEnded();
+          console.warn("Audio play blocked by browser, falling back to Native Speech:", err);
+          APP_STATE.currentAudioElement = null;
+          playNativeSpeech(text, onEnded);
         });
       }
     }
 
     // -------------------------------------------------------------
-    // Native Speech Synthesis (フォールバック用)
+    // Native Speech Synthesis (端末内蔵 音声分類 & ペルソナ別プロファイリング)
     // -------------------------------------------------------------
     function initBestJapaneseVoice() {
       if (!('speechSynthesis' in window)) return;
-      const setVoice = () => {
+      
+      const scanVoices = () => {
         const voices = window.speechSynthesis.getVoices();
         if (!voices || voices.length === 0) return;
+        
+        // 日本語音声をすべて抽出
         const jaVoices = voices.filter(v => v.lang && (v.lang.includes('ja') || v.lang.includes('JP')));
-        if (jaVoices.length > 0) {
-          const priorityNames = ['Siri', 'Kyoko', 'Otoya', 'Ouka', 'Nanami', 'Keita', 'Ayumi', 'Google 日本語', 'Natural'];
-          let matched = null;
-          for (const p of priorityNames) {
-            matched = jaVoices.find(v => v.name.includes(p));
-            if (matched) break;
-          }
-          APP_STATE.bestJapaneseVoice = matched || jaVoices[0];
-        }
+        APP_STATE.allJaVoices = jaVoices;
+
+        // 男性系・女性系を名前や特性から自動分類
+        const maleKeywords = ['otoya', 'keita', 'ichiro', 'male', 'man', 'daiki', 'takumi', 'taro'];
+        const femaleKeywords = ['kyoko', 'nanami', 'ayumi', 'female', 'woman', 'siri', 'haruka', 'sayaka'];
+
+        APP_STATE.maleVoices = jaVoices.filter(v => {
+          const name = v.name.toLowerCase();
+          return maleKeywords.some(k => name.includes(k));
+        });
+
+        APP_STATE.femaleVoices = jaVoices.filter(v => {
+          const name = v.name.toLowerCase();
+          return femaleKeywords.some(k => name.includes(k));
+        });
+
+        updateVoiceBadge();
       };
-      setVoice();
+
+      scanVoices();
       if (speechSynthesis.onvoiceschanged !== undefined) {
-        speechSynthesis.onvoiceschanged = setVoice;
+        speechSynthesis.onvoiceschanged = scanVoices;
       }
+    }
+
+    function getPersonaVoiceConfig(persona) {
+      // ペルソナごとに声質（性別）・音の高さ（ピッチ）・リズムを明確に差別化
+      let selectedVoice = null;
+      let pitch = 1.0;
+      let rateMultiplier = 1.0;
+      let personaDescription = "標準トーン";
+
+      const allJa = APP_STATE.allJaVoices || [];
+      const females = APP_STATE.femaleVoices || [];
+      const males = APP_STATE.maleVoices || [];
+
+      switch (persona) {
+        case "Capella": // カペラ：穏やかで澄んだ知性のある女性トーン
+          selectedVoice = females[0] || allJa[0] || null;
+          pitch = 1.18; // 澄んだ中高音
+          rateMultiplier = 0.98; // 落ち着いた丁寧なテンポ
+          personaDescription = "穏やか・澄んだ知性";
+          break;
+
+        case "Vega": // ベガ：明るく快活・エネルギッシュな高音トーン
+          selectedVoice = females[0] || allJa[0] || null;
+          pitch = 1.38; // 高音で明るい
+          rateMultiplier = 1.12; // 軽快でリズミカル
+          personaDescription = "明るい・快活モーニング";
+          break;
+
+        case "Charon": // 重厚・知性派：男性音声を優先選択し、低音で重厚なトーン
+          selectedVoice = males[0] || (allJa.length > 1 ? allJa[1] : allJa[0]) || null;
+          pitch = 0.68; // 低音で重厚
+          rateMultiplier = 0.90;
+          personaDescription = "低音・重厚解説";
+          break;
+
+        case "Puck": // 快活・明瞭ニュース：はきはきとした歯切れの良いトーン
+          selectedVoice = (males.length > 0) ? males[0] : (allJa[0] || null);
+          pitch = 1.18; // やや高めで通りが良い
+          rateMultiplier = 1.22; // テンポ早め
+          personaDescription = "快活・スピード";
+          break;
+
+        case "Sulafat": // 温もり・安心トーン：落ち着いた柔らかく穏やかな声
+          selectedVoice = (females.length > 1 ? females[1] : females[0]) || allJa[0] || null;
+          pitch = 0.88; // やや低めでソフト
+          rateMultiplier = 0.88; // ゆっくりめ
+          personaDescription = "温もり・穏やか";
+          break;
+
+        case "Kore": // 落ち着いた報道アナ：NHK風の端正で中立な標準トーン
+        default:
+          selectedVoice = females[0] || allJa[0] || null;
+          pitch = 1.0; // ニュートラル
+          rateMultiplier = 1.02;
+          personaDescription = "報道アナ・標準";
+          break;
+      }
+
+      return { voice: selectedVoice, pitch, rateMultiplier, personaDescription };
+    }
+
+    function updateVoiceBadge() {
+      const badge = document.getElementById('ai-tts-badge');
+      if (!badge) return;
+      const persona = APP_STATE.selectedVoicePersona || "Kore";
+      const config = getPersonaVoiceConfig(persona);
+      badge.textContent = `${persona} (${config.personaDescription})`;
     }
 
     function playNativeSpeech(text, onEndCallback) {
       if (!('speechSynthesis' in window)) {
+        showToast("お使いの端末は音声読み上げに対応していません");
         if (onEndCallback) onEndCallback();
         return;
       }
-      window.speechSynthesis.cancel();
 
-      const utterance = new SpeechSynthesisUtterance(text);
+      // iOS Safariの停止・再開バグ対策
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.resume();
+
+      const persona = APP_STATE.selectedVoicePersona || "Kore";
+      const config = getPersonaVoiceConfig(persona);
+
+      const cleanText = text.replace(/[\r\n]+/g, ' ').trim();
+      const utterance = new SpeechSynthesisUtterance(cleanText);
       utterance.lang = 'ja-JP';
-      utterance.rate = APP_STATE.speechRate || 1.1;
-      utterance.pitch = 1.0;
-      if (APP_STATE.bestJapaneseVoice) {
-        utterance.voice = APP_STATE.bestJapaneseVoice;
+
+      // ペルソナ固有のピッチ（音の高さ）と速度を適用
+      utterance.pitch = config.pitch;
+      const baseRate = APP_STATE.speechRate || 1.1;
+      utterance.rate = Math.min(2.0, Math.max(0.5, baseRate * config.rateMultiplier));
+
+      if (config.voice) {
+        utterance.voice = config.voice;
       }
 
       utterance.onend = () => {
         if (onEndCallback) onEndCallback();
       };
+
       utterance.onerror = (e) => {
         console.warn("Speech error:", e);
         if (onEndCallback) onEndCallback();
@@ -1159,6 +1397,7 @@
     // TTS Queue Player
     // -------------------------------------------------------------
     function startTTS() {
+      unlockAudioContext();
       stopTTS();
       let list = getFilteredNews();
       if (list.length === 0) {
@@ -1170,20 +1409,21 @@
       document.getElementById('audio-player-bar').classList.remove('hidden');
       document.getElementById('tts-btn-text').textContent = "読み上げ停止";
 
-      const startText = `おはようございます。ただいまより、${list.length}本の最新重要ニュースを要約してお伝えします。`;
-      
+      const persona = APP_STATE.selectedVoicePersona || "Kore";
+      const phrases = getPersonaPhrases(persona);
+
       const queue = [
-        { title: "オープニング", text: startText }
+        { title: "オープニング", text: `${phrases.opening} ただいまより、${list.length}本の最新重要ニュースをお伝えします。` }
       ];
 
       list.forEach((item, idx) => {
-        const itemSpeech = `第${idx + 1}問。${item.scopeLabel}。${item.title}。要約、${item.summary}。重要視点、${item.whyItMatters}`;
+        const itemSpeech = `${idx > 0 ? phrases.connector : ''} 第${idx + 1}問。${item.scopeLabel}。${item.title}。要約、${item.summary}。重要視点、${item.whyItMatters}`;
         queue.push({ title: `[${idx + 1}/${list.length}] ${item.title}`, text: itemSpeech });
       });
 
       queue.push({
         title: "エンディング",
-        text: "以上、本日の最新ニュース要約でした。気になった記事は保管庫でいつでもご確認いただけます。"
+        text: phrases.ending
       });
 
       let currentIdx = 0;
@@ -1198,7 +1438,7 @@
         const item = queue[currentIdx];
         currentIdx++;
 
-        generateAndPlayGeminiTTS(item.text, item.title, () => {
+        generateAndPlayAudio(item.text, item.title, () => {
           if (APP_STATE.isReading) {
             playNext();
           }
@@ -1224,13 +1464,14 @@
     }
 
     function readSingleItem(item) {
+      unlockAudioContext();
       stopTTS();
       APP_STATE.isReading = true;
       document.getElementById('audio-player-bar').classList.remove('hidden');
       document.getElementById('tts-btn-text').textContent = "読み上げ停止";
 
       const text = `${item.scopeLabel}。${item.title}。要約、${item.summary}。重要視点、${item.whyItMatters}。引用元、${item.source}。`;
-      generateAndPlayGeminiTTS(text, item.title, () => {
+      generateAndPlayAudio(text, item.title, () => {
         stopTTS();
         showToast("記事の読み上げが終了しました");
       });
@@ -1364,7 +1605,7 @@
         <!-- Detailed Citation & Copyable URL (HP直接リンクボタンは削除し、確実なURLコピーを維持) -->
         <div class="pt-2 border-t border-slate-100 space-y-2">
           <!-- 引用元詳細情報 -->
-          <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/70 space-y-1">
+          <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/70 space-y-1.5">
             <div class="flex items-center justify-between text-xs font-semibold text-slate-700">
               <span class="flex items-center space-x-1 truncate">
                 <span class="text-slate-500 text-[11px]">引用・出処:</span>
@@ -1376,17 +1617,25 @@
               📄 <span class="font-medium">${item.sourceDetail}</span>
             </p>
 
-            <!-- Safariでもエラーなく開く公式アドレス表示 ＆ コピーボタン -->
-            <div class="flex items-center justify-between pt-1 gap-1 text-[11px] font-mono">
-              <span class="text-slate-500 truncate select-all underline text-[11px]" title="${cleanOfficialUrl}">
-                ${cleanOfficialUrl}
-              </span>
-              <button class="copy-url-btn flex-shrink-0 inline-flex items-center space-x-1 px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 rounded-md font-sans text-xs font-semibold shadow-2xs transition active:scale-95">
-                <svg class="w-3.5 h-3.5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path>
-                </svg>
-                <span>アドレスをコピー</span>
-              </button>
+            <!-- URL表示とアクションボタン（Safariで開く & アドレスコピー） -->
+            <div class="pt-1 space-y-1.5">
+              <div class="text-[11px] font-mono text-slate-500 truncate bg-white px-2 py-1 rounded border border-slate-200/80" title="${cleanOfficialUrl}">
+                🔗 ${cleanOfficialUrl}
+              </div>
+              <div class="flex items-center justify-end gap-1.5 flex-wrap">
+                <button class="copy-url-btn inline-flex items-center space-x-1 px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-medium shadow-2xs transition active:scale-95 cursor-pointer">
+                  <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path>
+                  </svg>
+                  <span>アドレスをコピー</span>
+                </button>
+                <a href="${cleanOfficialUrl}" target="_blank" rel="noopener noreferrer" class="open-safari-link inline-flex items-center space-x-1 px-2.5 py-1 bg-sky-600 hover:bg-sky-500 active:bg-sky-700 text-white rounded-lg text-xs font-semibold shadow-2xs transition active:scale-95 cursor-pointer no-underline">
+                  <svg class="w-3.5 h-3.5 text-sky-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                  </svg>
+                  <span>Safariで開く ↗</span>
+                </a>
+              </div>
             </div>
           </div>
 
@@ -1428,13 +1677,35 @@
         copyToClipboard(cleanOfficialUrl, "Safari用公式アドレスをコピーしました");
       });
 
+      const openSafariLink = card.querySelector('.open-safari-link');
+      if (openSafariLink) {
+        openSafariLink.addEventListener('click', (e) => {
+          // iOS WebKitのネイティブなSafari起動動作を阻害しないよう preventDefault は行わない
+          e.stopPropagation();
+          showToast("Safariで元記事を開いています...");
+        });
+      }
+
       card.querySelector('.read-card-btn').addEventListener('click', (e) => {
         e.stopPropagation();
         readSingleItem(item);
       });
 
-      card.querySelector('.share-card-btn').addEventListener('click', (e) => {
+      card.querySelector('.share-card-btn').addEventListener('click', async (e) => {
         e.stopPropagation();
+        // iPhone標準の共有シートを呼び出し、Safariや他アプリへ送る
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: item.title,
+              text: `【${item.scopeLabel}】${item.title}\n${item.summary}`,
+              url: cleanOfficialUrl
+            });
+            return;
+          } catch (shareErr) {
+            if (shareErr.name === 'AbortError') return; // ユーザーキャンセル時
+          }
+        }
         const shareText = `【${item.scopeLabel}】${item.title}\n${item.summary}\n出処: ${item.source} (${cleanOfficialUrl})`;
         copyToClipboard(shareText, "記事サマリーをコピーしました（SNS・メモ用）");
       });
@@ -1608,6 +1879,8 @@ JSONオブジェクトのみを出力してください（Markdownのバック�
     // Initializer
     // -------------------------------------------------------------
     function initApp() {
+      // 1. 保存されたユーザー設定（声、速度、配信時刻、APIキー）を最初に復元
+      loadUserSettings();
       setupAppIcon();
       loadSavedIds();
       initBestJapaneseVoice();
@@ -1615,51 +1888,78 @@ JSONオブジェクトのみを出力してください（Markdownのバック�
       updateClockAndCountdown();
       setInterval(updateClockAndCountdown, 1000);
 
-      // 1. Voice Persona Selector
+      // UIに保存済みの設定値を同期反映
       const voiceSelect = document.getElementById('voice-persona-select');
       if (voiceSelect) {
-        voiceSelect.addEventListener('change', (e) => {
-          APP_STATE.selectedVoicePersona = e.target.value;
-          const label = e.target.options[e.target.selectedIndex].text;
-          showToast(`声の種類を「${label}」に設定しました`);
-        });
+        voiceSelect.value = APP_STATE.selectedVoicePersona;
+        updateVoiceBadge();
       }
 
-      // 2. Test Audio Button
-      const testAudioBtn = document.getElementById('test-audio-btn');
-      if (testAudioBtn) {
-        testAudioBtn.addEventListener('click', () => {
-          stopTTS();
-          const persona = APP_STATE.selectedVoicePersona || "Kore";
-          showToast(`🔊 ${persona}ボイスで試聴音声を再生中...`);
-          const testMsg = "おはようございます。経済・医療・ITの最新ニュースをお届けします。本日も実りある一日をお過ごしください。";
-          generateAndPlayGeminiTTS(testMsg, `試聴中 (${persona})`, () => {
-            showToast("試聴が終了しました");
-          });
-        });
+      const headerScheduledTime = document.getElementById('header-scheduled-time');
+      if (headerScheduledTime) {
+        headerScheduledTime.textContent = APP_STATE.scheduledTime;
       }
 
-      // 3. Speech Rate Buttons
+      // 速度ボタンの復元反映
       const btnSlow = document.getElementById('rate-slow-btn');
       const btnNormal = document.getElementById('rate-normal-btn');
       const btnFast = document.getElementById('rate-fast-btn');
-
-      const setSpeed = (rate, activeBtn) => {
-        APP_STATE.speechRate = rate;
-        if (APP_STATE.currentAudioElement) {
-          APP_STATE.currentAudioElement.playbackRate = rate;
-        }
+      const updateSpeedButtonsUI = (rate) => {
         [btnSlow, btnNormal, btnFast].forEach(b => {
           if (b) {
             b.classList.remove('bg-indigo-600', 'text-white', 'font-bold', 'shadow-xs');
             b.classList.add('text-slate-300', 'font-medium');
           }
         });
-        if (activeBtn) {
-          activeBtn.classList.add('bg-indigo-600', 'text-white', 'font-bold', 'shadow-xs');
-          activeBtn.classList.remove('text-slate-300', 'font-medium');
+        if (rate <= 0.95 && btnSlow) {
+          btnSlow.classList.add('bg-indigo-600', 'text-white', 'font-bold', 'shadow-xs');
+          btnSlow.classList.remove('text-slate-300');
+        } else if (rate >= 1.25 && btnFast) {
+          btnFast.classList.add('bg-indigo-600', 'text-white', 'font-bold', 'shadow-xs');
+          btnFast.classList.remove('text-slate-300');
+        } else if (btnNormal) {
+          btnNormal.classList.add('bg-indigo-600', 'text-white', 'font-bold', 'shadow-xs');
+          btnNormal.classList.remove('text-slate-300');
         }
-        showToast(`読み上げ速度を ${rate}x に設定しました`);
+      };
+      updateSpeedButtonsUI(APP_STATE.speechRate);
+
+      // 1. Voice Persona Selector（変更時に自動保存）
+      if (voiceSelect) {
+        voiceSelect.addEventListener('change', (e) => {
+          APP_STATE.selectedVoicePersona = e.target.value;
+          saveUserSettings();
+          updateVoiceBadge();
+          const config = getPersonaVoiceConfig(APP_STATE.selectedVoicePersona);
+          showToast(`声質を「${config.personaDescription}」に変更しました（保存済）`);
+        });
+      }
+
+      // 2. Test Audio Button（選んだ声のキャラクター専用セリフで試聴）
+      const testAudioBtn = document.getElementById('test-audio-btn');
+      if (testAudioBtn) {
+        testAudioBtn.addEventListener('click', () => {
+          unlockAudioContext();
+          stopTTS();
+          const persona = APP_STATE.selectedVoicePersona || "Kore";
+          const config = getPersonaVoiceConfig(persona);
+          const phrases = getPersonaPhrases(persona);
+          showToast(`🔊 試聴中: ${persona} (${config.personaDescription})`);
+          generateAndPlayAudio(phrases.sample, `試聴中 (${persona})`, () => {
+            showToast("試聴が終了しました");
+          });
+        });
+      }
+
+      // 3. Speech Rate Buttons（変更時に自動保存）
+      const setSpeed = (rate, activeBtn) => {
+        APP_STATE.speechRate = rate;
+        saveUserSettings();
+        if (APP_STATE.currentAudioElement) {
+          APP_STATE.currentAudioElement.playbackRate = rate;
+        }
+        updateSpeedButtonsUI(rate);
+        showToast(`読み上げ速度を ${rate}x に設定しました（保存済）`);
       };
 
       if (btnSlow) btnSlow.addEventListener('click', () => setSpeed(0.9, btnSlow));
@@ -1731,12 +2031,13 @@ JSONオブジェクトのみを出力してください（Markdownのバック�
       const closeSettingsBtn = document.getElementById('close-settings-btn');
       const saveSettingsBtn = document.getElementById('save-settings-btn');
       const scheduledTimeInput = document.getElementById('scheduled-time-input');
-      const headerScheduledTime = document.getElementById('header-scheduled-time');
       const autoTtsToggle = document.getElementById('auto-tts-toggle');
+      const apiKeyInput = document.getElementById('gemini-api-key-input');
 
       openSettingsBtn.addEventListener('click', () => {
         scheduledTimeInput.value = APP_STATE.scheduledTime;
         autoTtsToggle.checked = APP_STATE.autoTTS;
+        if (apiKeyInput) apiKeyInput.value = APP_STATE.geminiApiKey || "";
         settingsModal.classList.remove('hidden');
       });
 
@@ -1751,9 +2052,13 @@ JSONオブジェクトのみを出力してください（Markdownのバック�
           headerScheduledTime.textContent = APP_STATE.scheduledTime;
         }
         APP_STATE.autoTTS = autoTtsToggle.checked;
+        if (apiKeyInput) {
+          APP_STATE.geminiApiKey = apiKeyInput.value.trim();
+        }
+        saveUserSettings();
         settingsModal.classList.add('hidden');
         updateClockAndCountdown();
-        showToast(`配信時刻を ${APP_STATE.scheduledTime} に設定しました`);
+        showToast(`設定を保存しました`);
       });
 
       // 10. Install Guide Modal
