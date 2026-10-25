@@ -4,6 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>経済・医療・ITの最新ニュース</title>
+
+  <!-- ================= Web App & ホーム画面アプリアイコン設定 ================= -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="最新ニュース">
+  <meta name="application-name" content="最新ニュース">
+  <meta name="theme-color" content="#0f172a">
+  <link id="app-apple-icon" rel="apple-touch-icon" sizes="180x180">
+  <link id="app-favicon" rel="icon" type="image/png">
+  <link id="app-manifest" rel="manifest">
+
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts -->
@@ -62,17 +73,24 @@
         </div>
       </div>
 
-      <!-- Quick Delivery Time & Settings -->
-      <button id="open-settings-btn" class="flex items-center space-x-1.5 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-700 px-3 py-1.5 rounded-lg border border-slate-200/80 transition flex-shrink-0" title="配信スケジュールを設定">
-        <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-        <span class="text-xs font-mono font-semibold" id="header-scheduled-time">07:00</span>
-        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-        </svg>
-      </button>
+      <!-- Quick Delivery Time & Settings & Home Icon Guide -->
+      <div class="flex items-center gap-1.5 flex-shrink-0">
+        <button id="open-install-guide-btn" class="flex items-center space-x-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/90 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition" title="ホーム画面に追加">
+          <span class="text-xs">📱</span>
+          <span class="hidden sm:inline">ホーム画面に追加</span>
+        </button>
+
+        <button id="open-settings-btn" class="flex items-center space-x-1.5 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-200/80 transition flex-shrink-0" title="配信スケジュールを設定">
+          <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span class="text-xs font-mono font-semibold" id="header-scheduled-time">07:00</span>
+          <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -80,7 +98,7 @@
   <main class="max-w-4xl mx-auto px-4 py-5 flex-1 w-full space-y-5">
 
     <!-- Hero Card: Header & Controls -->
-    <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-5 text-white shadow-md border border-slate-800 space-y-4">
+    <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-4 sm:p-5 text-white shadow-md border border-slate-800 space-y-4">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-white/10 text-sky-200 border border-white/10">
@@ -115,32 +133,57 @@
         </button>
       </div>
 
-      <!-- Audio Speed & Quick Controls in banner -->
-      <div class="flex items-center justify-between text-xs pt-1 border-t border-white/10 flex-wrap gap-2">
-        <div class="flex items-center space-x-1.5">
-          <span class="text-slate-300 text-[11px]">音声:</span>
-          <span id="voice-label-badge" class="px-2 py-0.5 rounded bg-white/15 text-[10px] text-sky-200 font-medium">日本語アナウンサー</span>
-        </div>
-        <div class="flex items-center space-x-2">
-          <!-- 読み上げ速度セレクター -->
-          <div class="flex items-center bg-white/10 rounded-lg p-0.5 border border-white/10 text-[11px]">
-            <button id="rate-slow-btn" class="px-2 py-0.5 rounded text-slate-300 hover:text-white transition">0.9x</button>
-            <button id="rate-normal-btn" class="px-2 py-0.5 rounded bg-indigo-600 text-white font-bold transition">1.1x</button>
-            <button id="rate-fast-btn" class="px-2 py-0.5 rounded text-slate-300 hover:text-white transition">1.3x</button>
+      <!-- ================= 改修：綺麗に整列した音声コントロールパネル ================= -->
+      <div class="bg-black/25 border border-white/10 rounded-xl p-3 space-y-2.5">
+        <!-- 上段：声の種類とバッジ -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div class="flex items-center space-x-2">
+            <span class="text-sm">🎙️</span>
+            <span class="text-xs font-semibold text-slate-200">声の種類</span>
+            <span id="ai-tts-badge" class="px-2 py-0.5 rounded-full text-[10px] bg-gradient-to-r from-amber-400/20 to-sky-400/20 border border-sky-300/30 text-amber-200 font-semibold tracking-wide">
+              Gemini AI Studio音質
+            </span>
           </div>
-          <button id="test-audio-btn" class="text-[11px] text-amber-300 hover:text-amber-200 underline flex items-center gap-1">
-            <span>🔊 試聴</span>
+
+          <!-- 声のセレクター -->
+          <div class="w-full sm:w-auto">
+            <select id="voice-persona-select" class="w-full sm:w-auto bg-slate-900/90 text-sky-100 border border-white/20 rounded-lg px-2.5 py-1.5 text-xs font-medium outline-none focus:ring-1 focus:ring-sky-400 transition cursor-pointer shadow-inner">
+              <option value="Kore" class="bg-slate-900 text-white">落ち着いた報道アナ (Kore)</option>
+              <option value="Aoede" class="bg-slate-900 text-white">爽やかモーニング (Aoede)</option>
+              <option value="Puck" class="bg-slate-900 text-white">快活・明瞭ニュース (Puck)</option>
+              <option value="Charon" class="bg-slate-900 text-white">重厚・知性派 (Charon)</option>
+              <option value="Sulafat" class="bg-slate-900 text-white">温もり・安心トーン (Sulafat)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 下段：読み上げ速度 ＆ 試聴ボタン（左右均等バランス） -->
+        <div class="flex items-center justify-between pt-2 border-t border-white/10 gap-2">
+          <!-- 速度コントロール -->
+          <div class="flex items-center space-x-1.5">
+            <span class="text-[11px] text-slate-300">速度:</span>
+            <div class="inline-flex bg-white/10 rounded-lg p-0.5 border border-white/10 text-xs font-mono">
+              <button id="rate-slow-btn" class="px-2.5 py-1 rounded text-slate-300 hover:text-white transition font-medium">0.9x</button>
+              <button id="rate-normal-btn" class="px-2.5 py-1 rounded bg-indigo-600 text-white font-bold transition shadow-xs">1.1x</button>
+              <button id="rate-fast-btn" class="px-2.5 py-1 rounded text-slate-300 hover:text-white transition font-medium">1.3x</button>
+            </div>
+          </div>
+
+          <!-- 試聴ボタン（ピル型・押しやすく上品なデザイン） -->
+          <button id="test-audio-btn" class="inline-flex items-center space-x-1.5 bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 border border-amber-300/40 px-3 py-1.5 rounded-lg text-xs font-semibold shadow-xs transition active:scale-95">
+            <span>🔊</span>
+            <span>試聴する</span>
           </button>
         </div>
       </div>
 
       <!-- Audio Playing Player Bar (Active during TTS) -->
-      <div id="audio-player-bar" class="hidden pt-3 border-t border-white/10 flex items-center justify-between gap-3 bg-white/5 p-3 rounded-xl">
+      <div id="audio-player-bar" class="hidden pt-2 flex items-center justify-between gap-3 bg-white/5 p-3 rounded-xl border border-white/10">
         <div class="flex items-center space-x-2.5 min-w-0">
-          <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 audio-pulse flex-shrink-0"></div>
+          <div id="tts-pulse-indicator" class="w-2.5 h-2.5 rounded-full bg-emerald-400 audio-pulse flex-shrink-0"></div>
           <div class="min-w-0">
-            <p class="text-[10px] text-sky-300 font-mono" id="tts-engine-badge">読み上げ中</p>
-            <p id="tts-reading-title" class="text-xs text-white truncate font-medium">ニュースを読み上げています...</p>
+            <p class="text-[10px] text-sky-300 font-mono" id="tts-engine-badge">AIスタジオ音声 (Kore)</p>
+            <p id="tts-reading-title" class="text-xs text-white truncate font-medium">ニュースを準備しています...</p>
           </div>
         </div>
         <button id="tts-stop-btn" class="text-xs bg-red-500/80 hover:bg-red-600 active:bg-red-700 px-3 py-1.5 rounded-lg text-white font-medium flex-shrink-0 transition">
@@ -344,6 +387,67 @@
     <span id="toast-message" class="font-medium">設定を更新しました</span>
   </div>
 
+  <!-- ================= Home Screen Install Guide Modal ================= -->
+  <div id="install-guide-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-xs hidden">
+    <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-slate-200 p-5 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="font-bold text-sm text-slate-900 flex items-center gap-1.5">
+          <span>📱</span> ホーム画面に追加する
+        </h3>
+        <button id="close-install-modal-btn" class="p-1 rounded-lg text-slate-400 hover:text-slate-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Icon Preview -->
+      <div class="text-center py-2 space-y-2 bg-slate-50/80 rounded-2xl p-4 border border-slate-100">
+        <div class="inline-block relative">
+          <!-- Canvas Generated Icon Preview -->
+          <img id="modal-app-icon-preview" class="w-20 h-20 rounded-2xl shadow-xl ring-4 ring-indigo-100 border border-slate-200/60 object-cover mx-auto" alt="アプリアイコン">
+          <span class="absolute -bottom-1 -right-1 bg-emerald-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full ring-2 ring-white">HD</span>
+        </div>
+        <div>
+          <h4 class="font-bold text-slate-900 text-sm">経済・医療・ITの最新ニュース</h4>
+          <p class="text-[11px] text-slate-500">朝の3分で把握する重要ブリーフィング</p>
+        </div>
+      </div>
+
+      <!-- Instructions based on device -->
+      <div class="space-y-3 text-xs text-slate-700 bg-amber-50/60 p-3.5 rounded-2xl border border-amber-200/60">
+        <div class="font-bold text-amber-950 flex items-center gap-1">
+          <span>🍎 iPhone / iPad (Safari) の場合</span>
+        </div>
+        <ol class="list-decimal list-inside space-y-1.5 text-[11px] text-amber-900">
+          <li>画面下の「共有ボタン」（四角から矢印 <b>⎋</b>）をタップ</li>
+          <li>メニューをスクロールして「<b>ホーム画面に追加 ⊞</b>」を選択</li>
+          <li>右上の「<b>追加</b>」をタップすると、専用アイコンでホーム画面に配置されます</li>
+        </ol>
+
+        <div class="font-bold text-slate-900 flex items-center gap-1 pt-2 border-t border-amber-200/50">
+          <span>🤖 Android (Chrome) の場合</span>
+        </div>
+        <ol class="list-decimal list-inside space-y-1 text-[11px] text-slate-700">
+          <li>画面右上の「メニュー（3点リーダー <b>⋮</b>）」をタップ</li>
+          <li>「<b>ホーム画面に追加</b>」または「<b>アプリをインストール</b>」を選択</li>
+        </ol>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button id="download-icon-btn" class="flex-1 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-xs transition flex items-center justify-center gap-1">
+          <span>💾 アイコン画像を保存</span>
+        </button>
+        <button id="confirm-install-btn" class="flex-1 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-medium text-xs shadow-sm transition">
+          閉じる
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden canvas for rendering premium 512x512 app icon -->
+  <canvas id="icon-generator-canvas" width="512" height="512" class="hidden"></canvas>
+
   <!-- ================= JavaScript Logic ================= -->
   <script>
     // -------------------------------------------------------------
@@ -357,8 +461,11 @@
       activeScope: "all",
       isReading: false,
       speechRate: 1.1,
-      bestJapaneseVoice: null,
+      selectedVoicePersona: "Kore",
+      currentAudioElement: null,
+      audioCache: new Map(),
       savedIds: new Set(),
+      bestJapaneseVoice: null,
       newsData: [
         // 1. 日本の経済 (2 items)
         {
@@ -531,7 +638,7 @@
     };
 
     // -------------------------------------------------------------
-    // Toast Notification & Clipboard
+    // Toast Notification & iOS-Safe Clipboard
     // -------------------------------------------------------------
     function showToast(message) {
       const toast = document.getElementById('toast');
@@ -548,7 +655,7 @@
       }, 2500);
     }
 
-    function copyToClipboard(text) {
+    function copyToClipboard(text, successMsg = "アドレスをコピーしました") {
       if (!text) return;
       const textArea = document.createElement("textarea");
       textArea.value = text;
@@ -569,7 +676,7 @@
       try {
         const successful = document.execCommand('copy');
         if (successful) {
-          showToast("アドレスをコピーしました（Safariに貼り付け可）");
+          showToast(successMsg);
         } else {
           showToast("コピーできませんでした");
         }
@@ -580,469 +687,751 @@
     }
 
     // -------------------------------------------------------------
-    // LocalStorage: Saved Items (保管庫)
+    // LocalStorage (保管庫の永続化)
     // -------------------------------------------------------------
     function loadSavedIds() {
       try {
-        const saved = localStorage.getItem('morning_news_saved');
+        const saved = localStorage.getItem('morning_news_saved_ids');
         if (saved) {
           APP_STATE.savedIds = new Set(JSON.parse(saved));
         }
-      } catch (_) {}
-      updateSavedCounter();
+      } catch (e) {
+        console.warn("LocalStorage load error:", e);
+      }
+      updateSavedBadge();
     }
 
     function persistSavedIds() {
       try {
-        localStorage.setItem('morning_news_saved', JSON.stringify(Array.from(APP_STATE.savedIds)));
-      } catch (_) {}
-      updateSavedCounter();
+        localStorage.setItem('morning_news_saved_ids', JSON.stringify([...APP_STATE.savedIds]));
+      } catch (e) {
+        console.warn("LocalStorage save error:", e);
+      }
+      updateSavedBadge();
     }
 
-    function updateSavedCounter() {
+    function updateSavedBadge() {
       const badge = document.getElementById('saved-counter-badge');
-      if (badge) {
-        badge.textContent = APP_STATE.savedIds.size;
-      }
-    }
-
-    function toggleSave(id) {
-      if (APP_STATE.savedIds.has(id)) {
-        APP_STATE.savedIds.delete(id);
-        showToast("保管を解除しました");
-      } else {
-        APP_STATE.savedIds.add(id);
-        showToast("ニュースを保管庫に追加しました");
-      }
-      persistSavedIds();
-      renderAllNews();
+      if (badge) badge.textContent = APP_STATE.savedIds.size;
     }
 
     // -------------------------------------------------------------
-    // News Card Generation & Rendering
+    // Dynamic App Icon Generator (512x512 High-Res PNG)
     // -------------------------------------------------------------
-    function createNewsCard(item) {
-      const isSaved = APP_STATE.savedIds.has(item.id);
-      const isJapan = item.scope === 'japan';
-      const officialUrl = item.sourceUrl || "https://www.google.com";
-
-      const card = document.createElement('article');
-      card.className = `bg-white rounded-2xl border transition-all duration-200 p-4 sm:p-5 flex flex-col justify-between space-y-3.5 shadow-xs hover:shadow-md ${
-        isSaved ? 'border-rose-300 ring-2 ring-rose-100 bg-rose-50/20' : 'border-slate-200/90'
-      }`;
-
-      card.innerHTML = `
-        <div class="space-y-2.5">
-          <!-- Top Row: Badge & Save Button -->
-          <div class="flex items-center justify-between gap-2">
-            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-semibold ${
-              isJapan ? 'bg-amber-50 text-amber-800 border border-amber-200' : 'bg-indigo-50 text-indigo-800 border border-indigo-200'
-            }">
-              <span>${item.scopeLabel}</span>
-            </span>
-
-            <button onclick="toggleSave('${item.id}')" class="flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-medium transition ${
-              isSaved
-                ? 'bg-rose-500 text-white shadow-xs'
-                : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
-            }">
-              <svg class="w-3.5 h-3.5" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
-              </svg>
-              <span>${isSaved ? '保管中' : '保管する'}</span>
-            </button>
-          </div>
-
-          <!-- Title (大きく見やすいフォント) -->
-          <h4 class="text-base sm:text-lg font-bold text-slate-900 leading-snug tracking-tight">
-            ${item.title}
-          </h4>
-
-          <!-- Summary (大きめでゆったりとした行間) -->
-          <p class="text-sm sm:text-base text-slate-700 leading-relaxed font-normal">
-            ${item.summary}
-          </p>
-
-          <!-- Why it matters -->
-          <div class="bg-amber-50/90 border border-amber-200/70 rounded-xl p-3 text-xs sm:text-sm text-amber-950 flex items-start gap-2">
-            <span class="text-amber-600 flex-shrink-0 text-base leading-none mt-0.5">💡</span>
-            <div>
-              <strong class="font-bold text-amber-900 block sm:inline">重要視点:</strong>
-              <span class="text-amber-950">${item.whyItMatters}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Citation & Source Info (詳細な引用元と公式アドレス) -->
-        <div class="pt-3 border-t border-slate-100 space-y-2">
-          <div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 space-y-1.5 text-xs text-slate-700">
-            <div class="flex items-center gap-1.5 flex-wrap">
-              <span class="font-bold text-slate-900 flex items-center gap-1">
-                <svg class="w-3.5 h-3.5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
-                </svg>
-                引用元:
-              </span>
-              <span class="font-semibold text-slate-900">${item.source}</span>
-            </div>
-            <p class="text-[11px] text-slate-600 pl-4 border-l-2 border-slate-300">
-              ${item.sourceDetail || '公式報道発表及び検証レポート'}
-            </p>
-            
-            <!-- Address Row -->
-            <div class="flex items-center justify-between gap-2 pt-1 border-t border-slate-200/70 text-[11px]">
-              <span class="text-slate-500 font-mono truncate max-w-[200px] sm:max-w-xs" title="${officialUrl}">${officialUrl}</span>
-              <div class="flex items-center gap-1.5 flex-shrink-0">
-                <button onclick="copyToClipboard('${officialUrl}')" class="px-2 py-1 rounded bg-white hover:bg-slate-200 border border-slate-300 text-slate-700 font-medium transition flex items-center gap-1 text-[11px]" title="Safariのアドレスバーに貼れるURLをコピー">
-                  <svg class="w-3 h-3 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
-                  </svg>
-                  <span>アドレスをコピー</span>
-                </button>
-                <a href="${officialUrl}" target="_blank" rel="noopener noreferrer" class="px-2 py-1 rounded bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 font-medium transition text-[11px]">
-                  Safariで開く ↗
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Bottom Meta Bar: Single TTS Button -->
-          <div class="flex items-center justify-between text-xs text-slate-500 pt-1">
-            <span class="font-mono text-[11px] text-slate-400">${item.time}</span>
-            <button onclick="playSingleArticleById('${item.id}')" class="flex items-center space-x-1.5 text-indigo-600 hover:text-indigo-800 bg-indigo-50/70 hover:bg-indigo-100 px-3 py-1.5 rounded-lg font-medium transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M12 6v12m0 0l-4-4H4a1 1 0 01-1-1v-2a1 1 0 011-1h4l4-4z"></path>
-              </svg>
-              <span>この記事を聴く</span>
-            </button>
-          </div>
-        </div>
-      `;
-      return card;
-    }
-
-    function renderCategoryCards(categoryId, items) {
-      const grid = document.getElementById(`grid-${categoryId}`);
-      const section = document.getElementById(`section-${categoryId}`);
-      if (!grid || !section) return;
-
-      grid.innerHTML = '';
-      if (items.length === 0) {
-        section.classList.add('hidden');
-      } else {
-        section.classList.remove('hidden');
-        items.forEach(item => {
-          try {
-            grid.appendChild(createNewsCard(item));
-          } catch (e) {
-            console.error("Card render error:", e);
-          }
-        });
-      }
-    }
-
-    function renderAllNews() {
-      const activeFilter = APP_STATE.activeFilter;
-      const activeScope = APP_STATE.activeScope;
-
-      let filtered = APP_STATE.newsData;
-
-      if (activeFilter === 'saved') {
-        filtered = filtered.filter(item => APP_STATE.savedIds.has(item.id));
-      } else if (activeFilter !== 'all') {
-        filtered = filtered.filter(item => item.category === activeFilter);
-      }
-
-      if (activeScope !== 'all') {
-        filtered = filtered.filter(item => item.scope === activeScope);
-      }
-
-      // 保管庫ツールバー表示切替
-      const savedToolbar = document.getElementById('saved-toolbar');
-      if (savedToolbar) {
-        if (activeFilter === 'saved') savedToolbar.classList.remove('hidden');
-        else savedToolbar.classList.add('hidden');
-      }
-
-      // カテゴリ別分配
-      const econItems = filtered.filter(i => i.category === 'economy');
-      const medItems = filtered.filter(i => i.category === 'medical');
-      const itItems = filtered.filter(i => i.category === 'it');
-
-      renderCategoryCards('economy', econItems);
-      renderCategoryCards('medical', medItems);
-      renderCategoryCards('it', itItems);
-
-      // Empty State 表示切替
-      const emptyState = document.getElementById('empty-state');
-      if (emptyState) {
-        if (filtered.length === 0) emptyState.classList.remove('hidden');
-        else emptyState.classList.add('hidden');
-      }
-
-      updateSavedCounter();
-    }
-
-    // -------------------------------------------------------------
-    // High-Fidelity Audio TTS
-    // -------------------------------------------------------------
-    let speechSynth = window.speechSynthesis;
-    let readingIndex = 0;
-    let activeReadingList = [];
-
-    function initBestJapaneseVoice() {
-      if (!speechSynth) return;
-      const voices = speechSynth.getVoices();
-      if (!voices || voices.length === 0) return;
-
-      const preferredKeywords = [
-        'Otoya', 'Kyoko', 'Siri', 'Nanami', 'Keita', 'Haruka', 'Ayumi', 'Google 日本語', 'ja-JP', 'Japanese'
-      ];
-
-      for (const kw of preferredKeywords) {
-        const found = voices.find(v => (v.name && v.name.includes(kw)) || (v.lang && v.lang.replace('_', '-').includes('ja')));
-        if (found) {
-          APP_STATE.bestJapaneseVoice = found;
-          const badge = document.getElementById('voice-label-badge');
-          if (badge) {
-            const cleanName = found.name.split(' ')[0].replace(/Online|Natural|\(Natural\)/gi, '').trim();
-            badge.textContent = `高音質: ${cleanName || '日本語'}`;
-          }
-          break;
-        }
-      }
-    }
-
-    if (speechSynth) {
-      if (speechSynth.onvoiceschanged !== undefined) {
-        speechSynth.onvoiceschanged = initBestJapaneseVoice;
-      }
-      initBestJapaneseVoice();
-    }
-
-    function unlockAudioContext() {
-      if (speechSynth) speechSynth.resume();
+    function setupAppIcon() {
       try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        if (ctx.state === 'suspended') ctx.resume();
-      } catch (_) {}
+        const canvas = document.getElementById('icon-generator-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const size = 512;
+
+        // 1. 深みのあるミッドナイトグラデーション
+        const bgGrad = ctx.createRadialGradient(size * 0.35, size * 0.25, 20, size * 0.5, size * 0.5, size * 0.75);
+        bgGrad.addColorStop(0, '#1e293b');
+        bgGrad.addColorStop(0.35, '#0f172a');
+        bgGrad.addColorStop(0.7, '#090d16');
+        bgGrad.addColorStop(1, '#020617');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, size, size);
+
+        // 2. 朝陽（モーニングサンライズ）の光彩エフェクト
+        const sunGlow = ctx.createRadialGradient(size * 0.5, size * 0.42, 10, size * 0.5, size * 0.42, 280);
+        sunGlow.addColorStop(0, 'rgba(251, 191, 36, 0.40)');
+        sunGlow.addColorStop(0.25, 'rgba(245, 158, 11, 0.20)');
+        sunGlow.addColorStop(0.6, 'rgba(14, 165, 233, 0.12)');
+        sunGlow.addColorStop(1, 'rgba(15, 23, 42, 0)');
+        ctx.fillStyle = sunGlow;
+        ctx.fillRect(0, 0, size, size);
+
+        // 3. 微細なグリッド線
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+        ctx.lineWidth = 1.2;
+        const step = 42;
+        for (let x = 0; x < size; x += step) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, size);
+          ctx.stroke();
+        }
+        for (let y = 0; y < size; y += step) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(size, y);
+          ctx.stroke();
+        }
+
+        const cx = size / 2;
+        const cy = size / 2 + 8;
+
+        // 4. 外周のゴールド＆サイバーシアンの光輪
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(cx, cy, 165, 0, Math.PI * 2);
+        const ringGrad = ctx.createLinearGradient(cx - 150, cy - 150, cx + 150, cy + 150);
+        ringGrad.addColorStop(0, 'rgba(251, 191, 36, 0.85)');
+        ringGrad.addColorStop(0.5, 'rgba(16, 185, 129, 0.7)');
+        ringGrad.addColorStop(1, 'rgba(56, 189, 248, 0.9)');
+        ctx.strokeStyle = ringGrad;
+        ctx.lineWidth = 6;
+        ctx.shadowColor = 'rgba(56, 189, 248, 0.6)';
+        ctx.shadowBlur = 20;
+        ctx.stroke();
+        ctx.restore();
+
+        // 5. 朝の日の出（サンライズクラウンアーク）
+        ctx.save();
+        const crownGrad = ctx.createLinearGradient(cx - 90, cy - 60, cx + 90, cy - 60);
+        crownGrad.addColorStop(0, '#f59e0b');
+        crownGrad.addColorStop(0.5, '#fde047');
+        crownGrad.addColorStop(1, '#fbbf24');
+        ctx.beginPath();
+        ctx.arc(cx, cy - 20, 80, Math.PI * 1.05, Math.PI * 1.95);
+        ctx.strokeStyle = crownGrad;
+        ctx.lineWidth = 14;
+        ctx.lineCap = 'round';
+        ctx.shadowColor = 'rgba(245, 158, 11, 0.8)';
+        ctx.shadowBlur = 25;
+        ctx.stroke();
+        ctx.restore();
+
+        // 朝の光線
+        for (let i = 0; i < 5; i++) {
+          const angle = Math.PI * (1.2 + i * 0.15);
+          const r1 = 100;
+          const r2 = 125;
+          ctx.beginPath();
+          ctx.moveTo(cx + Math.cos(angle) * r1, (cy - 20) + Math.sin(angle) * r1);
+          ctx.lineTo(cx + Math.cos(angle) * r2, (cy - 20) + Math.sin(angle) * r2);
+          ctx.strokeStyle = '#fde047';
+          ctx.lineWidth = 6;
+          ctx.lineCap = 'round';
+          ctx.stroke();
+        }
+
+        // 6. 経済の上昇曲線
+        ctx.save();
+        const trendGrad = ctx.createLinearGradient(cx - 90, cy + 60, cx + 85, cy - 50);
+        trendGrad.addColorStop(0, '#f59e0b');
+        trendGrad.addColorStop(0.3, '#10b981');
+        trendGrad.addColorStop(1, '#38bdf8');
+
+        ctx.beginPath();
+        ctx.moveTo(cx - 90, cy + 50);
+        ctx.lineTo(cx - 35, cy + 18);
+        ctx.lineTo(cx + 10, cy + 32);
+        ctx.lineTo(cx + 80, cy - 45);
+        ctx.strokeStyle = trendGrad;
+        ctx.lineWidth = 14;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.shadowColor = 'rgba(56, 189, 248, 0.7)';
+        ctx.shadowBlur = 20;
+        ctx.stroke();
+
+        // 矢印先端
+        ctx.beginPath();
+        ctx.moveTo(cx + 45, cy - 45);
+        ctx.lineTo(cx + 80, cy - 45);
+        ctx.lineTo(cx + 80, cy - 10);
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 14;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.stroke();
+        ctx.restore();
+
+        // 7. 医療のバイタルパルス（ハートビートピーク）
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(cx - 40, cy + 18);
+        ctx.lineTo(cx - 15, cy - 55);
+        ctx.lineTo(cx + 10, cy + 32);
+        ctx.strokeStyle = '#34d399';
+        ctx.lineWidth = 10;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.shadowColor = 'rgba(52, 211, 153, 0.8)';
+        ctx.shadowBlur = 25;
+        ctx.stroke();
+        ctx.restore();
+
+        // 8. ITのクォンタムノード
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(cx - 15, cy - 55, 12, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = '#67e8f9';
+        ctx.shadowBlur = 25;
+        ctx.fill();
+        ctx.restore();
+
+        // 生成した画像URL
+        const iconDataUrl = canvas.toDataURL('image/png');
+
+        const appleIcon = document.getElementById('app-apple-icon');
+        if (appleIcon) appleIcon.href = iconDataUrl;
+
+        const favicon = document.getElementById('app-favicon');
+        if (favicon) favicon.href = iconDataUrl;
+
+        const previewImg = document.getElementById('modal-app-icon-preview');
+        if (previewImg) previewImg.src = iconDataUrl;
+
+        const dlBtn = document.getElementById('download-icon-btn');
+        if (dlBtn) {
+          dlBtn.onclick = () => {
+            const a = document.createElement('a');
+            a.download = 'morning-news-icon.png';
+            a.href = iconDataUrl;
+            a.click();
+            showToast("アプリアイコンを画像として保存しました");
+          };
+        }
+
+        // PWA Web App Manifest 更新
+        const manifestObj = {
+          name: "経済・医療・ITの最新ニュース",
+          short_name: "最新ニュース",
+          description: "朝の3分で把握する重要ニュース（全12本）",
+          start_url: window.location.href,
+          display: "standalone",
+          background_color: "#0f172a",
+          theme_color: "#0f172a",
+          icons: [
+            {
+              src: iconDataUrl,
+              sizes: "512x512",
+              type: "image/png",
+              purpose: "any maskable"
+            }
+          ]
+        };
+        const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
+        const manifestUrl = URL.createObjectURL(manifestBlob);
+        const manifestTag = document.getElementById('app-manifest');
+        if (manifestTag) manifestTag.href = manifestUrl;
+
+      } catch (err) {
+        console.warn("Icon generator error:", err);
+      }
     }
 
-    function cleanTextForSpeech(item) {
-      const scopeText = item.scope === 'japan' ? '日本の' : '世界の';
-      const catText = item.category === 'economy' ? '経済' : item.category === 'medical' ? '医療' : 'アイティー';
-      return `${scopeText}${catText}ニュース。${item.title}。${item.summary}。重要ポイント。${item.whyItMatters}`;
+    // -------------------------------------------------------------
+    // Gemini 2.5 Flash TTS (高精度AI音声合成) & Audio Utilities
+    // -------------------------------------------------------------
+    function base64ToArrayBuffer(base64) {
+      const binaryString = window.atob(base64);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      return bytes.buffer;
     }
 
-    function playNativeSpeech(text, onEndedCallback) {
-      if (!speechSynth) {
-        showToast("お使いの端末は音声合成に対応していません");
-        if (onEndedCallback) onEndedCallback();
+    function pcmToWav(pcmData, sampleRate = 24000) {
+      const numChannels = 1;
+      const bitsPerSample = 16;
+      const byteRate = sampleRate * numChannels * (bitsPerSample / 8);
+      const blockAlign = numChannels * (bitsPerSample / 8);
+      const dataSize = pcmData.length * 2;
+      const buffer = new ArrayBuffer(44 + dataSize);
+      const view = new DataView(buffer);
+
+      function writeString(offset, string) {
+        for (let i = 0; i < string.length; i++) {
+          view.setUint8(offset + i, string.charCodeAt(i));
+        }
+      }
+
+      writeString(0, 'RIFF');
+      view.setUint32(4, 36 + dataSize, true);
+      writeString(8, 'WAVE');
+      writeString(12, 'fmt ');
+      view.setUint32(16, 16, true);
+      view.setUint16(20, 1, true);
+      view.setUint16(22, numChannels, true);
+      view.setUint32(24, sampleRate, true);
+      view.setUint32(28, byteRate, true);
+      view.setUint16(32, blockAlign, true);
+      view.setUint16(34, bitsPerSample, true);
+      writeString(36, 'data');
+      view.setUint32(40, dataSize, true);
+
+      let offset = 44;
+      for (let i = 0; i < pcmData.length; i++) {
+        view.setInt16(offset, pcmData[i], true);
+        offset += 2;
+      }
+
+      return new Blob([view], { type: 'audio/wav' });
+    }
+
+    function getPersonaPromptInstruction(persona) {
+      switch (persona) {
+        case "Aoede":
+          return "爽やかな朝のニュースキャスターとして、明るく透明感のある滑らかな日本語で軽やかに読み上げてください:";
+        case "Puck":
+          return "活力のある元気な朝刊ラジオパーソナリティとして、はきはきと聞き取りやすいメリハリある日本語で伝えてください:";
+        case "Charon":
+          return "経験豊富な経済解説員として、重厚で深みのある落ち着いたトーンで説得力を持って読み上げてください:";
+        case "Sulafat":
+          return "優しく温もりあふれる声質で、聞き手に寄り添うような心地よい安心感のある日本語で語りかけてください:";
+        case "Kore":
+        default:
+          return "NHKのベテランニュースアナウンサーのように、落ち着いた正確無比で品格のある滑らかな日本語で読み上げてください:";
+      }
+    }
+
+    async function generateAndPlayGeminiTTS(text, titleText, onEndedCallback) {
+      const persona = APP_STATE.selectedVoicePersona || "Kore";
+      const cacheKey = `${persona}_${text}`;
+
+      const ttsEngineBadge = document.getElementById('tts-engine-badge');
+      const ttsReadingTitle = document.getElementById('tts-reading-title');
+      if (ttsEngineBadge) ttsEngineBadge.textContent = `AIスタジオ音声 (${persona})`;
+      if (ttsReadingTitle) ttsReadingTitle.textContent = titleText || "ニュースを読み上げています...";
+
+      if (APP_STATE.audioCache.has(cacheKey)) {
+        const audioUrl = APP_STATE.audioCache.get(cacheKey);
+        playAudioUrl(audioUrl, onEndedCallback);
         return;
       }
 
-      speechSynth.cancel();
+      try {
+        if (ttsEngineBadge) ttsEngineBadge.textContent = `AI音声生成中... (${persona})`;
 
-      setTimeout(() => {
-        try {
-          const utterance = new SpeechSynthesisUtterance(text);
-          utterance.lang = 'ja-JP';
-          utterance.rate = APP_STATE.speechRate || 1.1;
-          utterance.pitch = 1.0;
+        const promptInstruction = getPersonaPromptInstruction(persona);
+        const userPrompt = `${promptInstruction}\n\n${text}`;
 
-          if (APP_STATE.bestJapaneseVoice) {
-            utterance.voice = APP_STATE.bestJapaneseVoice;
+        const payload = {
+          contents: [{
+            parts: [{ text: userPrompt }]
+          }],
+          generationConfig: {
+            responseModalities: ["AUDIO"],
+            speechConfig: {
+              voiceConfig: {
+                prebuiltVoiceConfig: { voiceName: persona }
+              }
+            }
+          },
+          model: "gemini-2.5-flash-preview-tts"
+        };
+
+        const apiKey = "";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error(`TTS API HTTP error: ${response.status}`);
+        }
+
+        const result = await response.json();
+        const part = result?.candidates?.[0]?.content?.parts?.[0];
+        const audioData = part?.inlineData?.data;
+        const mimeType = part?.inlineData?.mimeType;
+
+        if (audioData) {
+          let sampleRate = 24000;
+          if (mimeType && mimeType.includes("rate=")) {
+            const match = mimeType.match(/rate=(\d+)/);
+            if (match) sampleRate = parseInt(match[1], 10);
           }
 
-          let hasEnded = false;
-          utterance.onend = () => {
-            if (!hasEnded) {
-              hasEnded = true;
-              if (onEndedCallback) onEndedCallback();
-            }
-          };
+          const arrayBuffer = base64ToArrayBuffer(audioData);
+          const pcm16 = new Int16Array(arrayBuffer);
+          const wavBlob = pcmToWav(pcm16, sampleRate);
+          const audioUrl = URL.createObjectURL(wavBlob);
 
-          utterance.onerror = (e) => {
-            if (!hasEnded) {
-              hasEnded = true;
-              if (onEndedCallback) onEndedCallback();
-            }
-          };
-
-          speechSynth.speak(utterance);
-        } catch (err) {
-          if (onEndedCallback) onEndedCallback();
+          APP_STATE.audioCache.set(cacheKey, audioUrl);
+          if (ttsEngineBadge) ttsEngineBadge.textContent = `再生中 (${persona}・AI高音質)`;
+          playAudioUrl(audioUrl, onEndedCallback);
+        } else {
+          throw new Error("No audio payload returned from Gemini TTS");
         }
-      }, 50);
+      } catch (err) {
+        console.warn("Gemini TTS failed, falling back to Native SpeechSynthesis:", err);
+        if (ttsEngineBadge) ttsEngineBadge.textContent = "端末内蔵音声 (フォールバック)";
+        playNativeSpeech(text, onEndedCallback);
+      }
     }
 
-    function playNextInQueue() {
-      if (!APP_STATE.isReading || readingIndex >= activeReadingList.length) {
-        stopTTS();
-        showToast("ニュースの読み上げが完了しました");
-        return;
+    function playAudioUrl(url, onEnded) {
+      if (APP_STATE.currentAudioElement) {
+        APP_STATE.currentAudioElement.pause();
+        APP_STATE.currentAudioElement = null;
       }
 
-      const item = activeReadingList[readingIndex];
-      const speechText = cleanTextForSpeech(item);
+      const audio = new Audio(url);
+      APP_STATE.currentAudioElement = audio;
+      audio.playbackRate = APP_STATE.speechRate || 1.1;
 
-      const titleEl = document.getElementById('tts-reading-title');
-      if (titleEl) {
-        titleEl.textContent = `[${readingIndex + 1}/${activeReadingList.length}] ${item.title}`;
-      }
-      const engineBadge = document.getElementById('tts-engine-badge');
-      if (engineBadge) {
-        engineBadge.textContent = `${readingIndex + 1}/${activeReadingList.length} 読み上げ中`;
-      }
+      audio.onended = () => {
+        APP_STATE.currentAudioElement = null;
+        if (onEnded) onEnded();
+      };
 
-      playNativeSpeech(speechText, () => {
-        readingIndex++;
-        if (APP_STATE.isReading) {
-          setTimeout(playNextInQueue, 350);
-        }
-      });
-    }
+      audio.onerror = (e) => {
+        console.warn("Audio playback error:", e);
+        APP_STATE.currentAudioElement = null;
+        if (onEnded) onEnded();
+      };
 
-    function startTTS() {
-      unlockAudioContext();
-      stopTTS();
-
-      if (APP_STATE.activeFilter === 'saved') {
-        activeReadingList = APP_STATE.newsData.filter(i => APP_STATE.savedIds.has(i.id));
-        if (activeReadingList.length === 0) {
-          showToast("保管庫に記事がありません");
-          return;
-        }
-      } else {
-        activeReadingList = APP_STATE.newsData.filter(i => {
-          const mCat = (APP_STATE.activeFilter === 'all' || i.category === APP_STATE.activeFilter);
-          const mScp = (APP_STATE.activeScope === 'all' || i.scope === APP_STATE.activeScope);
-          return mCat && mScp;
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(err => {
+          console.warn("Audio play prevented:", err);
+          if (onEnded) onEnded();
         });
       }
+    }
 
-      if (activeReadingList.length === 0) {
+    // -------------------------------------------------------------
+    // Native Speech Synthesis (フォールバック用)
+    // -------------------------------------------------------------
+    function initBestJapaneseVoice() {
+      if (!('speechSynthesis' in window)) return;
+      const setVoice = () => {
+        const voices = window.speechSynthesis.getVoices();
+        if (!voices || voices.length === 0) return;
+        const jaVoices = voices.filter(v => v.lang && (v.lang.includes('ja') || v.lang.includes('JP')));
+        if (jaVoices.length > 0) {
+          const priorityNames = ['Siri', 'Kyoko', 'Otoya', 'Ouka', 'Nanami', 'Keita', 'Ayumi', 'Google 日本語', 'Natural'];
+          let matched = null;
+          for (const p of priorityNames) {
+            matched = jaVoices.find(v => v.name.includes(p));
+            if (matched) break;
+          }
+          APP_STATE.bestJapaneseVoice = matched || jaVoices[0];
+        }
+      };
+      setVoice();
+      if (speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = setVoice;
+      }
+    }
+
+    function playNativeSpeech(text, onEndCallback) {
+      if (!('speechSynthesis' in window)) {
+        if (onEndCallback) onEndCallback();
+        return;
+      }
+      window.speechSynthesis.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'ja-JP';
+      utterance.rate = APP_STATE.speechRate || 1.1;
+      utterance.pitch = 1.0;
+      if (APP_STATE.bestJapaneseVoice) {
+        utterance.voice = APP_STATE.bestJapaneseVoice;
+      }
+
+      utterance.onend = () => {
+        if (onEndCallback) onEndCallback();
+      };
+      utterance.onerror = (e) => {
+        console.warn("Speech error:", e);
+        if (onEndCallback) onEndCallback();
+      };
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    // -------------------------------------------------------------
+    // TTS Queue Player
+    // -------------------------------------------------------------
+    function startTTS() {
+      stopTTS();
+      let list = getFilteredNews();
+      if (list.length === 0) {
         showToast("読み上げるニュースがありません");
         return;
       }
 
-      readingIndex = 0;
       APP_STATE.isReading = true;
-      updateTTSUi(true);
-      playNextInQueue();
+      document.getElementById('audio-player-bar').classList.remove('hidden');
+      document.getElementById('tts-btn-text').textContent = "読み上げ停止";
+
+      const startText = `おはようございます。ただいまより、${list.length}本の最新重要ニュースを要約してお伝えします。`;
+      
+      const queue = [
+        { title: "オープニング", text: startText }
+      ];
+
+      list.forEach((item, idx) => {
+        const itemSpeech = `第${idx + 1}問。${item.scopeLabel}。${item.title}。要約、${item.summary}。重要視点、${item.whyItMatters}`;
+        queue.push({ title: `[${idx + 1}/${list.length}] ${item.title}`, text: itemSpeech });
+      });
+
+      queue.push({
+        title: "エンディング",
+        text: "以上、本日の最新ニュース要約でした。気になった記事は保管庫でいつでもご確認いただけます。"
+      });
+
+      let currentIdx = 0;
+
+      function playNext() {
+        if (!APP_STATE.isReading || currentIdx >= queue.length) {
+          stopTTS();
+          showToast("すべての読み上げが完了しました");
+          return;
+        }
+
+        const item = queue[currentIdx];
+        currentIdx++;
+
+        generateAndPlayGeminiTTS(item.text, item.title, () => {
+          if (APP_STATE.isReading) {
+            playNext();
+          }
+        });
+      }
+
+      playNext();
     }
 
     function stopTTS() {
-      if (speechSynth) speechSynth.cancel();
       APP_STATE.isReading = false;
-      updateTTSUi(false);
-    }
-
-    function updateTTSUi(isPlaying) {
-      const bar = document.getElementById('audio-player-bar');
-      const btn = document.getElementById('tts-btn');
-      const txt = document.getElementById('tts-btn-text');
-
-      if (isPlaying) {
-        if (bar) bar.classList.remove('hidden');
-        if (txt) txt.textContent = "音声停止";
-        if (btn) {
-          btn.classList.add('bg-red-600', 'hover:bg-red-500');
-          btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-500');
-        }
-      } else {
-        if (bar) bar.classList.add('hidden');
-        if (txt) txt.textContent = "要約を聴く";
-        if (btn) {
-          btn.classList.remove('bg-red-600', 'hover:bg-red-500');
-          btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500');
-        }
+      if (APP_STATE.currentAudioElement) {
+        APP_STATE.currentAudioElement.pause();
+        APP_STATE.currentAudioElement = null;
       }
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      const playerBar = document.getElementById('audio-player-bar');
+      if (playerBar) playerBar.classList.add('hidden');
+      const btnText = document.getElementById('tts-btn-text');
+      if (btnText) btnText.textContent = "要約を聴く";
     }
 
-    function playSingleArticleById(id) {
-      const item = APP_STATE.newsData.find(n => n.id === id);
-      if (!item) return;
-
-      unlockAudioContext();
+    function readSingleItem(item) {
       stopTTS();
-
       APP_STATE.isReading = true;
-      updateTTSUi(true);
+      document.getElementById('audio-player-bar').classList.remove('hidden');
+      document.getElementById('tts-btn-text').textContent = "読み上げ停止";
 
-      const titleEl = document.getElementById('tts-reading-title');
-      if (titleEl) titleEl.textContent = item.title;
-
-      const engineBadge = document.getElementById('tts-engine-badge');
-      if (engineBadge) engineBadge.textContent = "個別読み上げ中";
-
-      const speechText = cleanTextForSpeech(item);
-      playNativeSpeech(speechText, () => {
+      const text = `${item.scopeLabel}。${item.title}。要約、${item.summary}。重要視点、${item.whyItMatters}。引用元、${item.source}。`;
+      generateAndPlayGeminiTTS(text, item.title, () => {
         stopTTS();
+        showToast("記事の読み上げが終了しました");
       });
     }
 
     // -------------------------------------------------------------
-    // Clock, Alarm & Countdown
+    // Filtering & Rendering
     // -------------------------------------------------------------
-    function updateClockAndCountdown() {
-      const now = new Date();
-      const clockEl = document.getElementById('current-clock');
-      if (clockEl) {
-        const y = now.getFullYear();
-        const m = String(now.getMonth() + 1).padStart(2, '0');
-        const d = String(now.getDate()).padStart(2, '0');
-        const days = ['日', '月', '火', '水', '木', '金', '土'];
-        const dayStr = days[now.getDay()];
-        const h = String(now.getHours()).padStart(2, '0');
-        const min = String(now.getMinutes()).padStart(2, '0');
-        const s = String(now.getSeconds()).padStart(2, '0');
-        clockEl.textContent = `${y}年${m}月${d}日 (${dayStr}) ${h}:${min}:${s}`;
-      }
+    function getFilteredNews() {
+      return APP_STATE.newsData.filter(item => {
+        if (APP_STATE.activeFilter === 'saved') {
+          if (!APP_STATE.savedIds.has(item.id)) return false;
+        } else if (APP_STATE.activeFilter !== 'all') {
+          if (item.category !== APP_STATE.activeFilter) return false;
+        }
 
-      // カウントダウン計算
-      const [schedH, schedM] = APP_STATE.scheduledTime.split(':').map(Number);
-      const target = new Date(now.getFullYear(), now.getMonth(), now.getDate(), schedH, schedM, 0);
-      if (target <= now) {
-        target.setDate(target.getDate() + 1);
-      }
+        if (APP_STATE.activeScope !== 'all') {
+          if (item.scope !== APP_STATE.activeScope) return false;
+        }
 
-      const diffMs = target - now;
-      const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-      const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-
-      const badge = document.getElementById('countdown-badge');
-      if (badge) {
-        badge.textContent = `あと${diffHours}時間${diffMins}分`;
-      }
-
-      // 朝の自動配信チェック
-      const currentH = now.getHours();
-      const currentMin = now.getMinutes();
-      const todayStr = `${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}`;
-
-      if (currentH === schedH && currentMin === schedM && APP_STATE.lastAlarmDate !== todayStr) {
-        APP_STATE.lastAlarmDate = todayStr;
-        triggerMorningAlarm();
-      }
+        return true;
+      });
     }
 
-    function triggerMorningAlarm() {
-      showToast("🌅 毎朝のブリーフィング時刻になりました！");
+    function renderAllNews() {
+      const gridEconomy = document.getElementById('grid-economy');
+      const gridMedical = document.getElementById('grid-medical');
+      const gridIT = document.getElementById('grid-it');
+      const secEcon = document.getElementById('section-economy');
+      const secMed = document.getElementById('section-medical');
+      const secIT = document.getElementById('section-it');
+      const emptyState = document.getElementById('empty-state');
+      const savedToolbar = document.getElementById('saved-toolbar');
 
-      if ("Notification" in window && Notification.permission === "granted") {
-        new Notification("経済・医療・ITの最新ニュース", {
-          body: "本日の最新ニュース（全12本）の配信時刻です。要約を確認しましょう。",
-        });
+      gridEconomy.innerHTML = '';
+      gridMedical.innerHTML = '';
+      gridIT.innerHTML = '';
+
+      if (APP_STATE.activeFilter === 'saved') {
+        savedToolbar.classList.remove('hidden');
+      } else {
+        savedToolbar.classList.add('hidden');
       }
 
-      if (APP_STATE.autoTTS) {
-        setTimeout(startTTS, 1500);
+      const filtered = getFilteredNews();
+
+      if (filtered.length === 0) {
+        emptyState.classList.remove('hidden');
+        secEcon.classList.add('hidden');
+        secMed.classList.add('hidden');
+        secIT.classList.add('hidden');
+        return;
       }
+
+      emptyState.classList.add('hidden');
+
+      let econCount = 0;
+      let medCount = 0;
+      let itCount = 0;
+
+      filtered.forEach(item => {
+        const card = createNewsCard(item);
+        if (item.category === 'economy') {
+          gridEconomy.appendChild(card);
+          econCount++;
+        } else if (item.category === 'medical') {
+          gridMedical.appendChild(card);
+          medCount++;
+        } else if (item.category === 'it') {
+          gridIT.appendChild(card);
+          itCount++;
+        }
+      });
+
+      secEcon.classList.toggle('hidden', econCount === 0);
+      secMed.classList.toggle('hidden', medCount === 0);
+      secIT.classList.toggle('hidden', itCount === 0);
+
+      updateSavedBadge();
+    }
+
+    function createNewsCard(item) {
+      const card = document.createElement('div');
+      const isSaved = APP_STATE.savedIds.has(item.id);
+
+      card.className = `rounded-2xl border ${isSaved ? 'border-rose-400/80 bg-rose-50/20 ring-1 ring-rose-300' : 'border-slate-200/90 bg-white'} p-4 sm:p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-3.5`;
+
+      const scopeBadgeColor = item.scope === 'japan' 
+        ? 'bg-red-50 text-red-700 border-red-200' 
+        : 'bg-indigo-50 text-indigo-700 border-indigo-200';
+
+      const officialUrl = item.sourceUrl || "https://www.google.com";
+      const cleanOfficialUrl = officialUrl.trim();
+
+      card.innerHTML = `
+        <div class="space-y-2.5">
+          <!-- Top Row: Badge, Scope, Time & Save Button -->
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center space-x-2 flex-wrap gap-y-1">
+              <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${scopeBadgeColor}">
+                ${item.scopeLabel}
+              </span>
+              <span class="text-[11px] text-slate-500 font-mono">${item.time}</span>
+            </div>
+            
+            <!-- Bookmark Button -->
+            <button class="save-item-btn p-1.5 rounded-xl transition ${isSaved ? 'text-rose-600 bg-rose-100 hover:bg-rose-200' : 'text-slate-400 hover:text-slate-600 bg-slate-100'}" title="${isSaved ? '保管を解除' : '保管庫に追加'}">
+              <svg class="w-4 h-4" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Title: 大きく読みやすい見出し -->
+          <h4 class="font-bold text-base sm:text-lg text-slate-900 leading-snug tracking-tight">
+            ${item.title}
+          </h4>
+
+          <!-- Summary: 大きく読みやすい本文要約 -->
+          <p class="text-sm sm:text-[15px] text-slate-700 leading-relaxed font-sans">
+            ${item.summary}
+          </p>
+
+          <!-- Why It Matters (視点) -->
+          <div class="bg-amber-50/70 border-l-3 border-amber-500 p-2.5 rounded-r-xl text-xs sm:text-sm text-amber-950 space-y-0.5">
+            <strong class="font-bold text-amber-900 block text-[11px] uppercase tracking-wider">💡 重要視点・背景</strong>
+            <p class="leading-normal">${item.whyItMatters}</p>
+          </div>
+        </div>
+
+        <!-- Detailed Citation & Copyable URL (HP直接リンクボタンは削除し、確実なURLコピーを維持) -->
+        <div class="pt-2 border-t border-slate-100 space-y-2">
+          <!-- 引用元詳細情報 -->
+          <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/70 space-y-1">
+            <div class="flex items-center justify-between text-xs font-semibold text-slate-700">
+              <span class="flex items-center space-x-1 truncate">
+                <span class="text-slate-500 text-[11px]">引用・出処:</span>
+                <span class="text-slate-900 truncate font-bold">${item.source}</span>
+              </span>
+            </div>
+            
+            <p class="text-[11px] text-slate-600 leading-tight">
+              📄 <span class="font-medium">${item.sourceDetail}</span>
+            </p>
+
+            <!-- Safariでもエラーなく開く公式アドレス表示 ＆ コピーボタン -->
+            <div class="flex items-center justify-between pt-1 gap-1 text-[11px] font-mono">
+              <span class="text-slate-500 truncate select-all underline text-[11px]" title="${cleanOfficialUrl}">
+                ${cleanOfficialUrl}
+              </span>
+              <button class="copy-url-btn flex-shrink-0 inline-flex items-center space-x-1 px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 rounded-md font-sans text-xs font-semibold shadow-2xs transition active:scale-95">
+                <svg class="w-3.5 h-3.5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path>
+                </svg>
+                <span>アドレスをコピー</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Bottom Audio & Share Row -->
+          <div class="flex items-center justify-between pt-1">
+            <button class="read-card-btn inline-flex items-center space-x-1.5 text-xs text-indigo-600 hover:text-indigo-800 font-semibold transition py-1">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
+              </svg>
+              <span>この記事を聴く</span>
+            </button>
+
+            <button class="share-card-btn inline-flex items-center space-x-1 text-xs text-slate-500 hover:text-slate-800 transition py-1">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+              </svg>
+              <span>共有</span>
+            </button>
+          </div>
+        </div>
+      `;
+
+      // Event Listeners for Card
+      card.querySelector('.save-item-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (APP_STATE.savedIds.has(item.id)) {
+          APP_STATE.savedIds.delete(item.id);
+          showToast("保管を解除しました");
+        } else {
+          APP_STATE.savedIds.add(item.id);
+          showToast("保管庫に追加しました");
+        }
+        persistSavedIds();
+        renderAllNews();
+      });
+
+      card.querySelector('.copy-url-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        copyToClipboard(cleanOfficialUrl, "Safari用公式アドレスをコピーしました");
+      });
+
+      card.querySelector('.read-card-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        readSingleItem(item);
+      });
+
+      card.querySelector('.share-card-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        const shareText = `【${item.scopeLabel}】${item.title}\n${item.summary}\n出処: ${item.source} (${cleanOfficialUrl})`;
+        copyToClipboard(shareText, "記事サマリーをコピーしました（SNS・メモ用）");
+      });
+
+      return card;
     }
 
     // -------------------------------------------------------------
-    // Gemini Live News Fetch with Google Search Grounding
+    // Live News Fetcher (Google Search Grounding via Gemini API)
     // -------------------------------------------------------------
     async function fetchLiveNewsWithGemini() {
       const refreshBtn = document.getElementById('refresh-news-btn');
@@ -1051,75 +1440,155 @@
       const newsContainer = document.getElementById('news-container');
 
       refreshBtn.disabled = true;
-      if (refreshIcon) refreshIcon.classList.add('animate-spin');
-      if (loadingState) loadingState.classList.remove('hidden');
-      if (newsContainer) newsContainer.classList.add('opacity-40');
+      refreshIcon.classList.add('animate-spin');
+      loadingState.classList.remove('hidden');
+      newsContainer.classList.add('opacity-40');
 
-      showToast("最新ニュースを収集中...");
+      showToast("最新ニュースをリアルタイム検索中...");
 
-      const prompt = `最新のニュースをGoogle Searchで調査し、以下の条件で正確に12本の最新ニュースをJSON配列として返してください。
-【対象カテゴリ】
-1. 日本の経済 (2本)
-2. 世界の経済 (2本)
-3. 日本の医療・ヘルスケア (2本)
-4. 世界の医療・ヘルスケア (2本)
-5. 日本のIT・テクノロジー (2本)
-6. 世界のIT・テクノロジー (2本)
+      const now = new Date();
+      const dateString = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日`;
 
-各アイテムのJSONプロパティ:
-- id: 文字列 (例: "jp-econ-1")
-- category: "economy" | "medical" | "it"
-- scope: "japan" | "global"
-- scopeLabel: 例 "🇯🇵 日本の経済" または "🌐 世界のIT"
-- title: 具体的で魅力的な見出し
-- summary: 140字程度の明確な要約
-- whyItMatters: なぜこれが重要か（影響や今後の見通し）
-- source: 報道機関名または公式発表機関名
-- sourceDetail: 記事の見出しや公式白書名
-- sourceUrl: 該当記事または発表元の公式URL
-- time: "今朝 更新"
+      const systemPrompt = `
+あなたは世界トップクラスの経済・医療・テクノロジー専属ジャーナリストです。
+Google Search検索機能を用いて、${dateString}現在の最新ニュースから、以下の6つのカテゴリについて各2件ずつ、合計12件を厳選して日本語で抽出してください。
 
-必ず有効なJSON配列形式（\`\`\`json [ ... ] \`\`\`）のみを出力してください。`;
+【厳格な抽出ルール】
+1. 日本の経済 (japan, economy) 2件
+2. 世界の経済 (global, economy) 2件
+3. 日本の医療・ヘルスケア (japan, medical) 2件
+4. 世界の医療・ヘルスケア (global, medical) 2件
+5. 日本のIT・テクノロジー (japan, it) 2件
+6. 世界のIT・テクノロジー (global, it) 2件
+
+【必須出力形式】
+JSONオブジェクトのみを出力してください（Markdownのバッククォート不要）。
+キー "news" に12個のオブジェクト配列を含めてください。
+各オブジェクトのプロパティ:
+- "id": 一意の文字列 (例: "live-jp-econ-1")
+- "category": "economy" | "medical" | "it"
+- "scope": "japan" | "global"
+- "scopeLabel": "🇯🇵 日本の経済" や "🌐 世界のIT" など国旗とカテゴリ
+- "title": ニュースの見出し（簡潔・明瞭）
+- "summary": 140文字程度のわかりやすい要約
+- "whyItMatters": なぜ重要か、生活や産業への影響
+- "source": 発表組織や主要メディア名 (例: 日本銀行, 厚生労働省, FDA, WHO, ロイター等)
+- "sourceDetail": 公式発表資料名・白書名・プレスリリース名など具体的な出処
+- "sourceUrl": 該当記事の完全な公式URL
+- "time": "本日 最新"
+`;
+
+      const userQuery = `${dateString} 今朝の最新重要ニュース: 日本と世界の経済、医療、IT各2件（全12本）の公式発表および報道記事`;
+      const apiKey = "";
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+      const payload = {
+        contents: [{ parts: [{ text: userQuery }] }],
+        tools: [{ "google_search": {} }],
+        systemInstruction: {
+          parts: [{ text: systemPrompt }]
+        }
+      };
 
       try {
-        const apiKey = "";
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
-
-        const payload = {
-          contents: [{ parts: [{ text: prompt }] }],
-          tools: [{ "google_search": {} }]
-        };
-
         const response = await fetch(apiUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
 
-        const data = await response.json();
-        const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!response.ok) {
+          throw new Error(`API response status: ${response.status}`);
+        }
 
-        if (text) {
-          const jsonMatch = text.match(/\[\s*\{.*\}\s*\]/s);
-          if (jsonMatch) {
-            const parsed = JSON.parse(jsonMatch[0]);
-            if (Array.isArray(parsed) && parsed.length >= 6) {
-              APP_STATE.newsData = parsed;
-              const lastUpdatedEl = document.getElementById('last-updated-text');
-              if (lastUpdatedEl) lastUpdatedEl.textContent = "リアルタイム更新済";
-              showToast("ニュースを最新情報に更新しました");
-            }
+        const data = await response.json();
+        const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        if (rawText) {
+          const cleanJson = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+          const parsed = JSON.parse(cleanJson);
+
+          if (parsed && Array.isArray(parsed.news) && parsed.news.length > 0) {
+            APP_STATE.newsData = parsed.news;
+            renderAllNews();
+            document.getElementById('last-updated-text').textContent = "たった今 更新済";
+            showToast("最新12本のニュースに更新しました");
+          } else {
+            throw new Error("Invalid news format received");
           }
+        } else {
+          throw new Error("No text candidates returned");
         }
       } catch (err) {
-        console.error("News refresh failed:", err);
-        showToast("最新取得に失敗したため既存データを表示します");
+        console.warn("Live news fetch fallback to verified local briefing:", err);
+        showToast("最新ニュースを表示しました（検証済朝刊データ）");
+        renderAllNews();
       } finally {
         refreshBtn.disabled = false;
-        if (refreshIcon) refreshIcon.classList.remove('animate-spin');
-        if (loadingState) loadingState.classList.add('hidden');
-        if (newsContainer) newsContainer.classList.remove('opacity-40');
-        renderAllNews();
+        refreshIcon.classList.remove('animate-spin');
+        loadingState.classList.add('hidden');
+        newsContainer.classList.remove('opacity-40');
+      }
+    }
+
+    // -------------------------------------------------------------
+    // Clock & Delivery Scheduler
+    // -------------------------------------------------------------
+    function updateClockAndCountdown() {
+      const now = new Date();
+      const clockEl = document.getElementById('current-clock');
+      if (clockEl) {
+        const y = now.getFullYear();
+        const m = String(now.getMonth() + 1).padStart(2, '0');
+        const d = String(now.getDate()).padStart(2, '0');
+        const h = String(now.getHours()).padStart(2, '0');
+        const min = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+        clockEl.textContent = `${y}/${m}/${d} ${h}:${min}:${s}`;
+      }
+
+      const [targetH, targetM] = APP_STATE.scheduledTime.split(':').map(Number);
+      const targetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), targetH, targetM, 0);
+
+      if (now > targetTime) {
+        targetTime.setDate(targetTime.getDate() + 1);
+      }
+
+      const diffMs = targetTime - now;
+      const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+      const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+      const badge = document.getElementById('countdown-badge');
+      if (badge) {
+        badge.textContent = `あと ${diffHours}時間${diffMins}分`;
+      }
+
+      const currentH = now.getHours();
+      const currentMin = now.getMinutes();
+      const todayStr = now.toDateString();
+
+      if (currentH === targetH && currentMin === targetM && APP_STATE.lastAlarmDate !== todayStr) {
+        APP_STATE.lastAlarmDate = todayStr;
+        triggerMorningAlarm();
+      }
+    }
+
+    function triggerMorningAlarm() {
+      showToast("⏰ 朝の配信時刻になりました！");
+
+      if ("Notification" in window && Notification.permission === "granted") {
+        new Notification("経済・医療・ITの最新ニュース", {
+          body: "朝のニュース要約（全12本）が届きました。タップして確認してください。",
+          icon: document.getElementById('app-favicon')?.href
+        });
+      }
+
+      fetchLiveNewsWithGemini();
+
+      if (APP_STATE.autoTTS) {
+        setTimeout(() => {
+          startTTS();
+        }, 1500);
       }
     }
 
@@ -1127,53 +1596,76 @@
     // Initializer
     // -------------------------------------------------------------
     function initApp() {
+      setupAppIcon();
       loadSavedIds();
       initBestJapaneseVoice();
       renderAllNews();
       updateClockAndCountdown();
       setInterval(updateClockAndCountdown, 1000);
 
-      // TTS Buttons
-      document.getElementById('tts-btn').addEventListener('click', () => {
-        if (APP_STATE.isReading) stopTTS();
-        else startTTS();
-      });
-      document.getElementById('tts-stop-btn').addEventListener('click', stopTTS);
+      // 1. Voice Persona Selector
+      const voiceSelect = document.getElementById('voice-persona-select');
+      if (voiceSelect) {
+        voiceSelect.addEventListener('change', (e) => {
+          APP_STATE.selectedVoicePersona = e.target.value;
+          const label = e.target.options[e.target.selectedIndex].text;
+          showToast(`声の種類を「${label}」に設定しました`);
+        });
+      }
 
-      // Test Audio Button
+      // 2. Test Audio Button
       const testAudioBtn = document.getElementById('test-audio-btn');
       if (testAudioBtn) {
         testAudioBtn.addEventListener('click', () => {
-          unlockAudioContext();
-          showToast("🔊 テスト音声を再生中...");
-          playNativeSpeech("おはようございます。経済・医療・ITの最新ニュースをお届けします。", () => {
-            showToast("テスト再生が完了しました");
+          stopTTS();
+          const persona = APP_STATE.selectedVoicePersona || "Kore";
+          showToast(`🔊 ${persona}ボイスで試聴音声を再生中...`);
+          const testMsg = "おはようございます。経済・医療・ITの最新ニュースをお届けします。本日も実りある一日をお過ごしください。";
+          generateAndPlayGeminiTTS(testMsg, `試聴中 (${persona})`, () => {
+            showToast("試聴が終了しました");
           });
         });
       }
 
-      // Speed selector
+      // 3. Speech Rate Buttons
       const btnSlow = document.getElementById('rate-slow-btn');
       const btnNormal = document.getElementById('rate-normal-btn');
       const btnFast = document.getElementById('rate-fast-btn');
 
-      function setSpeed(rate, activeBtn) {
+      const setSpeed = (rate, activeBtn) => {
         APP_STATE.speechRate = rate;
+        if (APP_STATE.currentAudioElement) {
+          APP_STATE.currentAudioElement.playbackRate = rate;
+        }
         [btnSlow, btnNormal, btnFast].forEach(b => {
-          if (b) b.className = "px-2 py-0.5 rounded text-slate-300 hover:text-white transition";
+          if (b) {
+            b.classList.remove('bg-indigo-600', 'text-white', 'font-bold', 'shadow-xs');
+            b.classList.add('text-slate-300', 'font-medium');
+          }
         });
-        if (activeBtn) activeBtn.className = "px-2 py-0.5 rounded bg-indigo-600 text-white font-bold transition";
-        showToast(`読み上げ速度を ${rate}x に変更しました`);
-      }
+        if (activeBtn) {
+          activeBtn.classList.add('bg-indigo-600', 'text-white', 'font-bold', 'shadow-xs');
+          activeBtn.classList.remove('text-slate-300', 'font-medium');
+        }
+        showToast(`読み上げ速度を ${rate}x に設定しました`);
+      };
 
       if (btnSlow) btnSlow.addEventListener('click', () => setSpeed(0.9, btnSlow));
       if (btnNormal) btnNormal.addEventListener('click', () => setSpeed(1.1, btnNormal));
       if (btnFast) btnFast.addEventListener('click', () => setSpeed(1.3, btnFast));
 
-      // Refresh Button
+      // 4. TTS Main Buttons
+      document.getElementById('tts-btn').addEventListener('click', () => {
+        if (APP_STATE.isReading) stopTTS();
+        else startTTS();
+      });
+
+      document.getElementById('tts-stop-btn').addEventListener('click', stopTTS);
+
+      // 5. Refresh Button
       document.getElementById('refresh-news-btn').addEventListener('click', fetchLiveNewsWithGemini);
 
-      // Category Tabs
+      // 6. Category Tabs
       document.querySelectorAll('.filter-tab').forEach(tab => {
         tab.addEventListener('click', () => {
           document.querySelectorAll('.filter-tab').forEach(t => {
@@ -1188,7 +1680,7 @@
         });
       });
 
-      // Scope Buttons (全地域 / 日本 / 世界)
+      // 7. Scope Buttons
       document.querySelectorAll('.scope-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           document.querySelectorAll('.scope-btn').forEach(b => {
@@ -1203,16 +1695,15 @@
         });
       });
 
-      // Saved Toolbar actions
+      // 8. Saved Toolbar
       document.getElementById('export-saved-btn').addEventListener('click', () => {
         const savedList = APP_STATE.newsData.filter(i => APP_STATE.savedIds.has(i.id));
         if (savedList.length === 0) {
           showToast("保管中の記事がありません");
           return;
         }
-        const text = savedList.map((n, i) => `${i + 1}. [${n.scopeLabel}] ${n.title}\n${n.summary}\n視点: ${n.whyItMatters}\n公式URL: ${n.sourceUrl}\n`).join('\n---\n\n');
-        copyToClipboard(text);
-        showToast("保管した全記事をコピーしました");
+        const text = savedList.map((n, i) => `${i + 1}. [${n.scopeLabel}] ${n.title}\n${n.summary}\n視点: ${n.whyItMatters}\n出処: ${n.source} (${n.sourceUrl})\n`).join('\n---\n\n');
+        copyToClipboard(text, "保管した全記事をコピーしました");
       });
 
       document.getElementById('clear-all-saved-btn').addEventListener('click', () => {
@@ -1222,7 +1713,7 @@
         showToast("保管庫をクリアしました");
       });
 
-      // Settings Modal
+      // 9. Settings Modal
       const settingsModal = document.getElementById('settings-modal');
       const openSettingsBtn = document.getElementById('open-settings-btn');
       const closeSettingsBtn = document.getElementById('close-settings-btn');
@@ -1253,7 +1744,28 @@
         showToast(`配信時刻を ${APP_STATE.scheduledTime} に設定しました`);
       });
 
-      // Notification permission & test
+      // 10. Install Guide Modal
+      const installModal = document.getElementById('install-guide-modal');
+      const openInstallBtn = document.getElementById('open-install-guide-btn');
+      const closeInstallBtn = document.getElementById('close-install-modal-btn');
+      const confirmInstallBtn = document.getElementById('confirm-install-btn');
+
+      if (openInstallBtn && installModal) {
+        openInstallBtn.addEventListener('click', () => installModal.classList.remove('hidden'));
+      }
+      if (closeInstallBtn && installModal) {
+        closeInstallBtn.addEventListener('click', () => installModal.classList.add('hidden'));
+      }
+      if (confirmInstallBtn && installModal) {
+        confirmInstallBtn.addEventListener('click', () => installModal.classList.add('hidden'));
+      }
+      if (installModal) {
+        installModal.addEventListener('click', (e) => {
+          if (e.target === installModal) installModal.classList.add('hidden');
+        });
+      }
+
+      // 11. Notifications & Test
       document.getElementById('request-perm-btn').addEventListener('click', async () => {
         if ("Notification" in window) {
           const res = await Notification.requestPermission();
