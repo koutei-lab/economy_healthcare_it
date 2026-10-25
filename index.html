@@ -181,7 +181,7 @@
         </svg>
         <div class="truncate">
           <p class="font-bold text-xs text-rose-900">保管中のニュース一覧</p>
-          <p class="text-[10px] text-rose-700">後からゆっくり精読・確認できます</p>
+          <p class="text-[10px] text-rose-700">端末に永続保存中（アプリ更新後も消えません）</p>
         </div>
       </div>
       <div class="flex items-center space-x-1.5 flex-shrink-0">
@@ -386,7 +386,7 @@
       lastAlarmDate: "",
       activeFilter: "all",
       activeScope: "all",
-      savedIds: new Set(),
+      savedArticles: new Map(), // 記事全文・出処URLを丸ごと永続保存
       newsData: [
         // 1. 日本の経済 (2 items)
         {
@@ -608,25 +608,50 @@
     }
 
     // -------------------------------------------------------------
-    // LocalStorage (設定・保管庫の永続化)
+    // LocalStorage (設定・保管庫の永続化：記事データ丸ごと保存)
     // -------------------------------------------------------------
-    function loadSavedIds() {
+    function loadSavedArticles() {
       try {
-        const saved = localStorage.getItem('morning_news_saved_ids');
-        if (saved) {
-          APP_STATE.savedIds = new Set(JSON.parse(saved));
+        APP_STATE.savedArticles.clear();
+        // 1. 記事オブジェクト全体を保存した新ストレージを読み込み
+        const savedData = localStorage.getItem('morning_news_saved_articles_v3');
+        if (savedData) {
+          const parsed = JSON.parse(savedData);
+          if (Array.isArray(parsed)) {
+            parsed.forEach(item => {
+              if (item && item.id) {
+                APP_STATE.savedArticles.set(item.id, item);
+              }
+            });
+          }
+        } else {
+          // 2. 旧仕様（IDのみ保存）が存在していた場合の自動移行
+          const legacyIds = localStorage.getItem('morning_news_saved_ids');
+          if (legacyIds) {
+            const idList = JSON.parse(legacyIds);
+            APP_STATE.newsData.forEach(item => {
+              if (idList.includes(item.id)) {
+                APP_STATE.savedArticles.set(item.id, {
+                  ...item,
+                  savedAt: "過去の保管"
+                });
+              }
+            });
+            persistSavedArticles();
+          }
         }
       } catch (e) {
-        console.warn("LocalStorage load error:", e);
+        console.warn("Saved articles load error:", e);
       }
       updateSavedBadge();
     }
 
-    function persistSavedIds() {
+    function persistSavedArticles() {
       try {
-        localStorage.setItem('morning_news_saved_ids', JSON.stringify([...APP_STATE.savedIds]));
+        const items = Array.from(APP_STATE.savedArticles.values());
+        localStorage.setItem('morning_news_saved_articles_v3', JSON.stringify(items));
       } catch (e) {
-        console.warn("LocalStorage save error:", e);
+        console.warn("Saved articles save error:", e);
       }
       updateSavedBadge();
     }
@@ -650,7 +675,7 @@
 
     function updateSavedBadge() {
       const badge = document.getElementById('saved-counter-badge');
-      if (badge) badge.textContent = APP_STATE.savedIds.size;
+      if (badge) badge.textContent = APP_STATE.savedArticles.size;
     }
 
     // -------------------------------------------------------------
@@ -860,10 +885,16 @@
     // Filtering & Rendering
     // -------------------------------------------------------------
     function getFilteredNews() {
-      return APP_STATE.newsData.filter(item => {
-        if (APP_STATE.activeFilter === 'saved') {
-          if (!APP_STATE.savedIds.has(item.id)) return false;
-        } else if (APP_STATE.activeFilter !== 'all') {
+      // 保管庫タブの場合は、アプリ更新や日替わりでも消えない「永久保管データ」を直接取得
+      let sourceList = [];
+      if (APP_STATE.activeFilter === 'saved') {
+        sourceList = Array.from(APP_STATE.savedArticles.values());
+      } else {
+        sourceList = APP_STATE.newsData;
+      }
+
+      return sourceList.filter(item => {
+        if (APP_STATE.activeFilter !== 'all' && APP_STATE.activeFilter !== 'saved') {
           if (item.category !== APP_STATE.activeFilter) return false;
         }
 
@@ -934,7 +965,7 @@
 
     function createNewsCard(item) {
       const card = document.createElement('div');
-      const isSaved = APP_STATE.savedIds.has(item.id);
+      const isSaved = APP_STATE.savedArticles.has(item.id);
 
       card.className = `rounded-2xl border ${isSaved ? 'border-rose-400/80 bg-rose-50/20 ring-1 ring-rose-300' : 'border-slate-200/90 bg-white'} p-4 sm:p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-3.5`;
 
@@ -944,6 +975,7 @@
 
       const officialUrl = item.sourceUrl || "https://www.google.com";
       const cleanOfficialUrl = officialUrl.trim();
+      const savedDateBadge = item.savedAt ? `<span class="text-[10px] bg-rose-100 text-rose-800 font-semibold px-2 py-0.5 rounded-full border border-rose-200">📌 ${item.savedAt} 保管</span>` : '';
 
       card.innerHTML = `
         <div class="space-y-2.5">
@@ -954,10 +986,11 @@
                 ${item.scopeLabel}
               </span>
               <span class="text-[11px] text-slate-500 font-mono">${item.time}</span>
+              ${savedDateBadge}
             </div>
             
             <!-- Bookmark Button -->
-            <button class="save-item-btn p-1.5 rounded-xl transition cursor-pointer ${isSaved ? 'text-rose-600 bg-rose-100 hover:bg-rose-200' : 'text-slate-400 hover:text-slate-600 bg-slate-100'}" title="${isSaved ? '保管を解除' : '保管庫に追加'}">
+            <button class="save-item-btn p-1.5 rounded-xl transition cursor-pointer ${isSaved ? 'text-rose-600 bg-rose-100 hover:bg-rose-200' : 'text-slate-400 hover:text-slate-600 bg-slate-100'}" title="${isSaved ? '保管を解除' : '保管庫に永久保存'}">
               <svg class="w-4 h-4" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
               </svg>
@@ -1033,14 +1066,20 @@
       // Event Listeners for Card
       card.querySelector('.save-item-btn').addEventListener('click', (e) => {
         e.stopPropagation();
-        if (APP_STATE.savedIds.has(item.id)) {
-          APP_STATE.savedIds.delete(item.id);
+        if (APP_STATE.savedArticles.has(item.id)) {
+          APP_STATE.savedArticles.delete(item.id);
           showToast("保管を解除しました");
         } else {
-          APP_STATE.savedIds.add(item.id);
-          showToast("保管庫に追加しました");
+          // 記事データ全体と保管日時を記録（アプリや日替わりでも消えない）
+          const now = new Date();
+          const dateStr = `${now.getMonth() + 1}/${now.getDate()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+          APP_STATE.savedArticles.set(item.id, {
+            ...item,
+            savedAt: dateStr
+          });
+          showToast("保管庫に保存しました（更新後も消えません）");
         }
-        persistSavedIds();
+        persistSavedArticles();
         renderAllNews();
       });
 
@@ -1240,7 +1279,7 @@ JSONオブジェクトのみを出力してください（Markdownのバック�
     function initApp() {
       loadUserSettings();
       setupAppIcon();
-      loadSavedIds();
+      loadSavedArticles();
       renderAllNews();
       updateClockAndCountdown();
       setInterval(updateClockAndCountdown, 1000);
@@ -1283,20 +1322,24 @@ JSONオブジェクトのみを出力してください（Markdownのバック�
         });
       });
 
-      // 4. Saved Toolbar
+      // 4. Saved Toolbar (保管庫操作)
       document.getElementById('export-saved-btn').addEventListener('click', () => {
-        const savedList = APP_STATE.newsData.filter(i => APP_STATE.savedIds.has(i.id));
+        const savedList = Array.from(APP_STATE.savedArticles.values());
         if (savedList.length === 0) {
           showToast("保管中の記事がありません");
           return;
         }
-        const text = savedList.map((n, i) => `${i + 1}. [${n.scopeLabel}] ${n.title}\n${n.summary}\n視点: ${n.whyItMatters}\n出処: ${n.source} (${n.sourceUrl})\n`).join('\n---\n\n');
+        const text = savedList.map((n, i) => `${i + 1}. [${n.scopeLabel}] ${n.title}\n${n.summary}\n視点: ${n.whyItMatters}\n出処: ${n.source} (${n.sourceUrl || ''})\n(保管日時: ${n.savedAt || '記録なし'})\n`).join('\n---\n\n');
         copyToClipboard(text, "保管した全記事をコピーしました");
       });
 
       document.getElementById('clear-all-saved-btn').addEventListener('click', () => {
-        APP_STATE.savedIds.clear();
-        persistSavedIds();
+        if (APP_STATE.savedArticles.size === 0) {
+          showToast("保管中の記事はありません");
+          return;
+        }
+        APP_STATE.savedArticles.clear();
+        persistSavedArticles();
         renderAllNews();
         showToast("保管庫をクリアしました");
       });
