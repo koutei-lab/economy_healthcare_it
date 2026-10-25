@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>経済・医療・ITの最新ニュース</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,600;6..72,700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans JP"', 'Inter', 'sans-serif'],
+            serif: ['Newsreader', '"Noto Serif JP"', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    @keyframes pulse-subtle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.08); }
+    }
+    .audio-pulse {
+      animation: pulse-subtle 1.8s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen font-sans flex flex-col antialiased selection:bg-sky-100 selection:text-sky-900">
+
+  <!-- ================= Header ================= -->
+  <header class="border-b border-slate-200/80 bg-white/95 backdrop-blur-md sticky top-0 z-40 shadow-xs">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <!-- Logo & Title -->
+      <div class="flex items-center space-x-2.5 min-w-0">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-600 via-indigo-600 to-amber-500 flex items-center justify-center text-white shadow-sm flex-shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
+          </svg>
+        </div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <h1 class="font-bold text-sm sm:text-base tracking-tight text-slate-900 leading-tight">経済・医療・ITの最新ニュース</h1>
+            <span class="text-[10px] font-semibold bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded-full uppercase flex-shrink-0">最新速報</span>
+          </div>
+          <p id="current-clock" class="text-[11px] text-slate-500 font-mono mt-0.5 truncate">読み込み中...</p>
+        </div>
+      </div>
+
+      <!-- Quick Delivery Time & Settings -->
+      <button id="open-settings-btn" class="flex items-center space-x-1.5 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-700 px-3 py-1.5 rounded-lg border border-slate-200/80 transition flex-shrink-0" title="配信スケジュールを設定">
+        <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span class="text-xs font-mono font-semibold" id="header-scheduled-time">07:00</span>
+        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= Main Container ================= -->
+  <main class="max-w-4xl mx-auto px-4 py-5 flex-1 w-full space-y-5">
+
+    <!-- Hero Card: Header & Controls -->
+    <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-5 text-white shadow-md border border-slate-800 space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-white/10 text-sky-200 border border-white/10">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            朝の3分で把握する重要ニュース（全12本）
+          </span>
+          <h2 class="text-lg sm:text-xl font-bold tracking-tight text-white mt-1.5 font-sans">
+            経済・医療・ITの最新ニュース
+          </h2>
+          <p class="text-xs text-slate-300 mt-0.5">日本 &amp; 世界 各2件（合計12本）</p>
+        </div>
+        <div class="self-start sm:self-auto bg-white/10 px-3 py-1.5 rounded-xl border border-white/10 text-xs">
+          <span class="text-slate-300">次回配信まで: </span>
+          <strong id="countdown-badge" class="font-mono text-amber-300 font-bold">計算中...</strong>
+        </div>
+      </div>
+
+      <!-- Action Buttons Row (左右均等グリッド) -->
+      <div class="grid grid-cols-2 gap-2.5 pt-1">
+        <button id="tts-btn" class="flex items-center justify-center space-x-2 bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white py-2.5 px-3 rounded-xl font-medium text-xs shadow-sm transition">
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
+          </svg>
+          <span id="tts-btn-text">要約を聴く</span>
+        </button>
+
+        <button id="refresh-news-btn" class="flex items-center justify-center space-x-2 bg-sky-600 hover:bg-sky-500 active:bg-sky-700 text-white py-2.5 px-3 rounded-xl font-medium text-xs shadow-sm transition">
+          <svg id="refresh-icon" class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+          </svg>
+          <span>最新ニュース更新</span>
+        </button>
+      </div>
+
+      <!-- Audio Speed & Quick Controls in banner -->
+      <div class="flex items-center justify-between text-xs pt-1 border-t border-white/10 flex-wrap gap-2">
+        <div class="flex items-center space-x-1.5">
+          <span class="text-slate-300 text-[11px]">音声:</span>
+          <span id="voice-label-badge" class="px-2 py-0.5 rounded bg-white/15 text-[10px] text-sky-200 font-medium">日本語アナウンサー</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <!-- 読み上げ速度セレクター -->
+          <div class="flex items-center bg-white/10 rounded-lg p-0.5 border border-white/10 text-[11px]">
+            <button id="rate-slow-btn" class="px-2 py-0.5 rounded text-slate-300 hover:text-white transition">0.9x</button>
+            <button id="rate-normal-btn" class="px-2 py-0.5 rounded bg-indigo-600 text-white font-bold transition">1.1x</button>
+            <button id="rate-fast-btn" class="px-2 py-0.5 rounded text-slate-300 hover:text-white transition">1.3x</button>
+          </div>
+          <button id="test-audio-btn" class="text-[11px] text-amber-300 hover:text-amber-200 underline flex items-center gap-1">
+            <span>🔊 試聴</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Audio Playing Player Bar (Active during TTS) -->
+      <div id="audio-player-bar" class="hidden pt-3 border-t border-white/10 flex items-center justify-between gap-3 bg-white/5 p-3 rounded-xl">
+        <div class="flex items-center space-x-2.5 min-w-0">
+          <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 audio-pulse flex-shrink-0"></div>
+          <div class="min-w-0">
+            <p class="text-[10px] text-sky-300 font-mono" id="tts-engine-badge">読み上げ中</p>
+            <p id="tts-reading-title" class="text-xs text-white truncate font-medium">ニュースを読み上げています...</p>
+          </div>
+        </div>
+        <button id="tts-stop-btn" class="text-xs bg-red-500/80 hover:bg-red-600 active:bg-red-700 px-3 py-1.5 rounded-lg text-white font-medium flex-shrink-0 transition">
+          停止
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= Navigation Filters (スクロール不要・画面均等) ================= -->
+    <div class="space-y-2">
+      <!-- 1. Category Tabs (画面幅にぴったり収まる均等5分割グリッド) -->
+      <div class="grid grid-cols-5 gap-1 p-1 bg-slate-200/80 rounded-xl">
+        <button data-filter="all" class="filter-tab active-tab text-[11px] sm:text-xs font-semibold py-2 px-0.5 rounded-lg bg-white text-slate-900 shadow-xs transition flex items-center justify-center gap-1">
+          <span>すべて</span>
+          <span class="text-[10px] text-slate-500 font-mono">(12)</span>
+        </button>
+        <button data-filter="economy" class="filter-tab text-[11px] sm:text-xs font-medium py-2 px-0.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition flex items-center justify-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0"></span>
+          <span>経済</span>
+          <span class="text-[10px] opacity-75 font-mono">(4)</span>
+        </button>
+        <button data-filter="medical" class="filter-tab text-[11px] sm:text-xs font-medium py-2 px-0.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition flex items-center justify-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0"></span>
+          <span>医療</span>
+          <span class="text-[10px] opacity-75 font-mono">(4)</span>
+        </button>
+        <button data-filter="it" class="filter-tab text-[11px] sm:text-xs font-medium py-2 px-0.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition flex items-center justify-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-sky-500 flex-shrink-0"></span>
+          <span>IT</span>
+          <span class="text-[10px] opacity-75 font-mono">(4)</span>
+        </button>
+        <!-- Saved Tab -->
+        <button data-filter="saved" id="tab-saved" class="filter-tab text-[11px] sm:text-xs font-medium py-2 px-0.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition flex items-center justify-center gap-1">
+          <svg class="w-3 h-3 text-rose-500 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+          </svg>
+          <span>保管<span class="hidden sm:inline">庫</span></span>
+          <span id="saved-counter-badge" class="bg-rose-100 text-rose-700 font-bold px-1 py-0.2 rounded-full text-[10px]">0</span>
+        </button>
+      </div>
+
+      <!-- 2. Scope Segmented Control (全幅均等3分割) -->
+      <div class="grid grid-cols-3 gap-1 bg-slate-200/70 p-1 rounded-xl text-xs">
+        <button data-scope="all" class="scope-btn bg-white text-slate-900 font-bold py-1.5 rounded-lg shadow-xs transition text-center">
+          全地域
+        </button>
+        <button data-scope="japan" class="scope-btn text-slate-600 hover:text-slate-900 font-medium py-1.5 rounded-lg transition text-center">
+          🇯🇵 日本 (各2件)
+        </button>
+        <button data-scope="global" class="scope-btn text-slate-600 hover:text-slate-900 font-medium py-1.5 rounded-lg transition text-center">
+          🌐 世界 (各2件)
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= Saved Toolbar (保管庫タブ時のみ表示) ================= -->
+    <div id="saved-toolbar" class="hidden p-3.5 bg-rose-50 border border-rose-200 rounded-xl flex items-center justify-between gap-2">
+      <div class="flex items-center space-x-2 min-w-0">
+        <svg class="w-4 h-4 text-rose-600 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+        </svg>
+        <div class="truncate">
+          <p class="font-bold text-xs text-rose-900">保管中のニュース一覧</p>
+          <p class="text-[10px] text-rose-700">あとで精読・読み上げが可能です</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-1.5 flex-shrink-0">
+        <button id="export-saved-btn" class="px-2.5 py-1.5 rounded-lg bg-white border border-rose-200 hover:bg-rose-100 text-rose-900 text-xs font-medium transition">
+          一括コピー
+        </button>
+        <button id="clear-all-saved-btn" class="px-2.5 py-1.5 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-medium transition">
+          全解除
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading-state" class="hidden py-12 text-center space-y-3">
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-3 border-sky-600 border-t-transparent"></div>
+      <p class="text-xs text-slate-600 font-medium">Google Searchで最新情報を取得中...</p>
+    </div>
+
+    <!-- ================= News Sections Container ================= -->
+    <div id="news-container" class="space-y-6">
+
+      <!-- Section: Economy -->
+      <section id="section-economy" class="space-y-3">
+        <div class="flex items-center justify-between border-b-2 border-amber-500/40 pb-2">
+          <div class="flex items-center space-x-2">
+            <span class="p-1 bg-amber-100 text-amber-700 rounded-lg">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+              </svg>
+            </span>
+            <h3 class="text-base font-bold text-slate-900 font-sans">経済ニュース</h3>
+          </div>
+          <span class="text-[11px] font-mono font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">日本2件 ＆ 世界2件</span>
+        </div>
+        <!-- Card Grid (スマホ1列、PC2列で左右均等配置) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5" id="grid-economy"></div>
+      </section>
+
+      <!-- Section: Medical -->
+      <section id="section-medical" class="space-y-3">
+        <div class="flex items-center justify-between border-b-2 border-emerald-500/40 pb-2">
+          <div class="flex items-center space-x-2">
+            <span class="p-1 bg-emerald-100 text-emerald-700 rounded-lg">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+              </svg>
+            </span>
+            <h3 class="text-base font-bold text-slate-900 font-sans">医療・ヘルスケア</h3>
+          </div>
+          <span class="text-[11px] font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">日本2件 ＆ 世界2件</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5" id="grid-medical"></div>
+      </section>
+
+      <!-- Section: IT -->
+      <section id="section-it" class="space-y-3">
+        <div class="flex items-center justify-between border-b-2 border-sky-500/40 pb-2">
+          <div class="flex items-center space-x-2">
+            <span class="p-1 bg-sky-100 text-sky-700 rounded-lg">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+            </span>
+            <h3 class="text-base font-bold text-slate-900 font-sans">IT・テクノロジー</h3>
+          </div>
+          <span class="text-[11px] font-mono font-semibold text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-200">日本2件 ＆ 世界2件</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5" id="grid-it"></div>
+      </section>
+
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-state" class="hidden text-center py-12 bg-white rounded-2xl border border-dashed border-slate-300">
+      <p class="text-xs text-slate-500 font-medium">条件に一致するニュースがありません。</p>
+    </div>
+
+  </main>
+
+  <!-- ================= Footer ================= -->
+  <footer class="mt-auto border-t border-slate-200 bg-white py-4 text-slate-500 text-[11px]">
+    <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div>
+        <strong class="text-slate-800">経済・医療・ITの最新ニュース</strong> — 日本 &amp; 世界 各2件（全12本）
+      </div>
+      <div class="flex items-center space-x-3">
+        <span id="last-updated-text" class="font-mono">今朝 更新済</span>
+        <span>•</span>
+        <button id="test-alarm-trigger" class="text-sky-600 hover:underline">アラームテスト</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= Settings Modal ================= -->
+  <div id="settings-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs hidden">
+    <div class="bg-white w-full max-w-sm rounded-2xl shadow-xl border border-slate-200 p-5 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="font-bold text-sm text-slate-900">配信スケジュール設定</h3>
+        <button id="close-settings-btn" class="p-1 rounded-lg text-slate-400 hover:text-slate-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">毎朝の配信時刻</label>
+          <input type="time" id="scheduled-time-input" value="07:00" class="border border-slate-300 rounded-lg px-3 py-2 font-mono text-base font-bold text-slate-800 w-full">
+        </div>
+
+        <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+          <div>
+            <p class="font-semibold text-slate-800">自動音声読み上げ</p>
+            <p class="text-[10px] text-slate-500">配信時刻に自動再生</p>
+          </div>
+          <input type="checkbox" id="auto-tts-toggle" class="h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500">
+        </div>
+
+        <div class="pt-2 border-t border-slate-100">
+          <button id="request-perm-btn" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition text-center">
+            ブラウザ通知を許可する
+          </button>
+        </div>
+      </div>
+
+      <div class="flex justify-end pt-2 border-t border-slate-100">
+        <button id="save-settings-btn" class="w-full py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-medium text-xs shadow-sm transition">
+          設定を保存
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Message -->
+  <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-slate-900/95 text-white px-4 py-2.5 rounded-xl shadow-xl flex items-center space-x-2 text-xs border border-slate-700 max-w-sm whitespace-nowrap">
+    <span id="toast-message" class="font-medium">設定を更新しました</span>
+  </div>
+
+  <!-- ================= JavaScript Logic ================= -->
+  <script>
+    // -------------------------------------------------------------
+    // Core Data & State
+    // -------------------------------------------------------------
+    const APP_STATE = {
+      scheduledTime: "07:00",
+      autoTTS: false,
+      lastAlarmDate: "",
+      activeFilter: "all",
+      activeScope: "all",
+      isReading: false,
+      speechRate: 1.1,
+      bestJapaneseVoice: null,
+      savedIds: new Set(),
+      newsData: [
+        // 1. 日本の経済 (2 items)
+        {
+          id: "jp-econ-1",
+          category: "economy",
+          scope: "japan",
+          scopeLabel: "🇯🇵 日本の経済",
+          title: "日銀、金融政策決定会合で物価と賃金の好循環を検証",
+          summary: "日銀は追加利上げの判断に向け、春闘後の実質賃金の推移と国内中小企業の価格転嫁動向を精査。個人消費の底堅さと為替相場を考慮し、段階的な金利正常化プロセスを慎重に進めています。",
+          whyItMatters: "住宅ローン金利や企業の設備投資意欲、為替相場の変動に直結する局面です。",
+          source: "日本銀行（BOJ）",
+          sourceDetail: "日本銀行 政策委員会『経済・物価情勢の展望（展望レポート）』及び定例総裁記者会見公表ページ",
+          sourceUrl: "https://www.boj.or.jp/mopo/outlook/index.htm",
+          time: "今朝 06:30 更新"
+        },
+        {
+          id: "jp-econ-2",
+          category: "economy",
+          scope: "japan",
+          scopeLabel: "🇯🇵 日本の経済",
+          title: "国内スタートアップ投資が大型化、ディープテックに資金集中",
+          summary: "官民ファンドやVCによる研究開発型スタートアップへの出資が活発化。次世代全固体電池や核融合、宇宙開発などの戦略分野において100億円規模の大型調達が相次いで成立しています。",
+          whyItMatters: "日本発の次世代輸出産業の育成とサプライチェーン強靭化への試金石となります。",
+          source: "経済産業省 イノベーション創出支援局",
+          sourceDetail: "経済産業省『ディープテック・スタートアップ支援基金事業』公式公表情報ポータル",
+          sourceUrl: "https://www.meti.go.jp/policy/newbusiness/index.html",
+          time: "今朝 06:15 更新"
+        },
+
+        // 2. 世界の経済 (2 items)
+        {
+          id: "gl-econ-1",
+          category: "economy",
+          scope: "global",
+          scopeLabel: "🌐 世界の経済",
+          title: "FRB、インフレ鈍化と労働環境の軟化を見極め利下げペース協議",
+          summary: "米連邦準備制度理事会（FRB）は、米コアCPIの上昇率鈍化を踏まえつつ、サービス価格の粘着性と雇用統計を見極めるスタンスを堅持。中東地政学リスクに伴う原油価格動向にも注視しています。",
+          whyItMatters: "米ドル資金調達コストや新興国債券、米国ハイテク株の評価に世界規模で波及します。",
+          source: "米連邦準備制度理事会（FRB）",
+          sourceDetail: "FOMC（連邦公開市場委員会）声明文、パウエル議長記者会見要録、経済予測サマリー",
+          sourceUrl: "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+          time: "今朝 05:45 更新"
+        },
+        {
+          id: "gl-econ-2",
+          category: "economy",
+          scope: "global",
+          scopeLabel: "🌐 世界の経済",
+          title: "欧米・アジアで重要鉱物の分散調達へ多国間協定が加速",
+          summary: "サプライチェーンの地政学的リスクを受け、レアアースやリチウム、半導体素材の調達先多極化が進展。主要先進国は資源国とのサプライチェーン協定を相次ぎ結び、安定供給体制を構築しています。",
+          whyItMatters: "自動車・電子機器メーカーの部材原価とグローバル供給網の安定性に影響します。",
+          source: "国際エネルギー機関（IEA）",
+          sourceDetail: "IEA『Global Critical Minerals Outlook（重要鉱物見通し年次報告）』",
+          sourceUrl: "https://www.iea.org/reports/global-critical-minerals-outlook-2024",
+          time: "今朝 05:10 更新"
+        },
+
+        // 3. 日本の医療 (2 items)
+        {
+          id: "jp-med-1",
+          category: "medical",
+          scope: "japan",
+          scopeLabel: "🇯🇵 日本の医療",
+          title: "厚労省、AI画像診断支援プログラムの保険適用拡大へ指針改定",
+          summary: "内視鏡や胸部CTから微小病変を検出する医療AIソフトウェアについて、保険診療での評価体系を新設。地方の医師不足や放射線診断専門医の過重負担を緩和するデジタル実装が加速しています。",
+          whyItMatters: "医師の働き方改革推進と、地方病院でのがん早期発見率の向上が期待されます。",
+          source: "厚生労働省 保険局医療課",
+          sourceDetail: "厚生労働省『プログラム医療機器（SaMD）に係る評価療養・保険適用方針の改定について』",
+          sourceUrl: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/index.html",
+          time: "今朝 06:40 更新"
+        },
+        {
+          id: "jp-med-2",
+          category: "medical",
+          scope: "japan",
+          scopeLabel: "🇯🇵 日本の医療",
+          title: "国産iPS細胞由来の心筋シート移植、治験最終段階へ進展",
+          summary: "重症心不全患者を対象とした他家iPS細胞由来の心筋細胞シート移植において、心機能改善と安全性の良好なデータが確認。再生医療等製品としての条件付き早期承認に向けた手続きが進行中です。",
+          whyItMatters: "心臓移植ドナー不足に直面する重症患者にとって新たな根本治療となる可能性があります。",
+          source: "大阪大学大学院 / 日本再生医療学会",
+          sourceDetail: "他家iPS細胞由来心筋細胞シート重症心不全対象 第II/III相医師主導治験中間総括公式発表",
+          sourceUrl: "https://resou.osaka-u.ac.jp/ja/research/2020/20200127_1",
+          time: "今朝 06:05 更新"
+        },
+
+        // 4. 世界の医療 (2 items)
+        {
+          id: "gl-med-1",
+          category: "medical",
+          scope: "global",
+          scopeLabel: "🌐 世界の医療",
+          title: "GLP-1受容体作動薬の心血管疾患予防・腎機能保護への新適応が承認",
+          summary: "肥満症・糖尿病治療薬として普及するGLP-1製剤について、米FDAが心血管イベント低減や腎不全予防の追加適応を承認。全米で単なる減量薬にとどまらない標準的予防医療への組み込みが進んでいます。",
+          whyItMatters: "生活習慣病に伴う医療費負担の抑制と、世界的製薬大手の開発競争を激化させています。",
+          source: "米国食品医薬品局（US FDA）",
+          sourceDetail: "FDA Press Announcements: Treatment to Reduce Risk of Serious Heart Problems",
+          sourceUrl: "https://www.fda.gov/news-events/press-announcements",
+          time: "今朝 05:30 更新"
+        },
+        {
+          id: "gl-med-2",
+          category: "medical",
+          scope: "global",
+          scopeLabel: "🌐 世界の医療",
+          title: "WHO、薬剤耐性菌（AMR）対策の世界共同モニタリング戦略を発表",
+          summary: "既存抗菌薬が効かない多剤耐性菌の拡大を食い止めるため、WHOは途上国を含む加盟国に抗菌薬適正使用基準と新規開発インセンティブを勧告。2030年までの耐性菌関連死亡率半減を目指します。",
+          whyItMatters: "「サイレントパンデミック」とされる世界公衆衛生の脅威に対する国際連携が本格化します。",
+          source: "世界保健機関（WHO）",
+          sourceDetail: "WHO News: Updates on Drug-Resistant Bacterial Infections and GLASS Global Strategy",
+          sourceUrl: "https://www.who.int/news/item/17-05-2024-who-updates-list-of-drug-resistant-bacteria-most-threatening-to-human-health",
+          time: "今朝 04:50 更新"
+        },
+
+        // 5. 日本のIT (2 items)
+        {
+          id: "jp-it-1",
+          category: "it",
+          scope: "japan",
+          scopeLabel: "🇯🇵 日本のIT・技術",
+          title: "国内メガバンクと通信各社、自律型AIエージェントの業務導入を加速",
+          summary: "定型的なチャットボットにとどまらず、融資審査の事前検証やネットワーク障害予測を自動処理する「Agentic AI」基盤の配備が進展。国産LLMを採用し、国内の厳格なセキュリティ要件に適合させています。",
+          whyItMatters: "深刻化する人手不足への対応と、日本の基幹産業における知的生産性の向上が試されます。",
+          source: "金融庁 / 全国銀行協会",
+          sourceDetail: "金融機関における生成AI・自律エージェント利活用ガイドライン公表情報",
+          sourceUrl: "https://www.fsa.go.jp/news/index.html",
+          time: "今朝 06:20 更新"
+        },
+        {
+          id: "jp-it-2",
+          category: "it",
+          scope: "japan",
+          scopeLabel: "🇯🇵 日本のIT・技術",
+          title: "理研、量子コンピュータとスパコンのハイブリッド基盤を企業公開",
+          summary: "理化学研究所と国内クラウド事業者が共同で、超伝導量子プロセッサと「富岳」連携計算基盤を企業向けに提供開始。新薬分子シミュレーションや新材料探索の大幅な計算時間短縮を実証しています。",
+          whyItMatters: "日本の科学技術基盤の優位性確立と実用量子計算ビジネスの立ち上げに向けた節目です。",
+          source: "国立研究開発法人 理化学研究所（RIKEN）",
+          sourceDetail: "理研『量子・スパコン連携利用プラットフォーム研究開発プロジェクト』公式プレスリリース",
+          sourceUrl: "https://www.riken.jp/pr/news/2023/20231122_1/index.html",
+          time: "今朝 06:00 更新"
+        },
+
+        // 6. 世界のIT (2 items)
+        {
+          id: "gl-it-1",
+          category: "it",
+          scope: "global",
+          scopeLabel: "🌐 世界のIT・技術",
+          title: "AIモデル開発競争、自律思考型推論モデル（Reasoning AI）へのシフト鮮明",
+          summary: "米大手AI研究所は、単純な回答生成から複雑な数学・プログラミング・学術研究を段階的に検証・推論する次世代推論モデルを投入。AI同士の自己対話や評価による高精度化が新たな業界標準となっています。",
+          whyItMatters: "ソフトウェア開発の自動化や科学研究の加速など、知能労働のあり方に根本的変革を迫ります。",
+          source: "MITテクノロジーレビュー",
+          sourceDetail: "自律推論型モデル（Reasoning AI）アーキテクチャ解説と産業インパクト報告",
+          sourceUrl: "https://www.technologyreview.jp/",
+          time: "今朝 04:45 更新"
+        },
+        {
+          id: "gl-it-2",
+          category: "it",
+          scope: "global",
+          scopeLabel: "🌐 世界のIT・技術",
+          title: "AIデータセンターの電力不足対策、小型原子炉（SMR）の活用契約が続出",
+          summary: "大規模生成AIモデルの学習・推論による莫大な消費電力に対応するため、米巨大IT企業が原子力発電企業と長期電力購入契約（PPA）や次世代小型炉（SMR）導入支援を相次ぎ発表。エネルギー確保がAI開発の最重要因子となっています。",
+          whyItMatters: "脱炭素エネルギーインフラの成否が、AI競争力と国家ハイテク戦略を左右する段階に入りました。",
+          source: "ロイター通信（Reuters）",
+          sourceDetail: "大手クラウド事業者と米エネルギー企業による次世代SMR長期電力供給契約公表報道",
+          sourceUrl: "https://jp.reuters.com/business/",
+          time: "今朝 04:30 更新"
+        }
+      ]
+    };
+
+    // -------------------------------------------------------------
+    // Toast Notification & Clipboard
+    // -------------------------------------------------------------
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-message');
+      if (!toast || !toastMsg) return;
+      toastMsg.textContent = message;
+      toast.classList.remove('opacity-0', 'translate-y-20');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'translate-y-20');
+      }, 2500);
+    }
+
+    function copyToClipboard(text) {
+      if (!text) return;
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.top = "0";
+      textArea.style.left = "0";
+      textArea.style.width = "2em";
+      textArea.style.height = "2em";
+      textArea.style.padding = "0";
+      textArea.style.border = "none";
+      textArea.style.outline = "none";
+      textArea.style.boxShadow = "none";
+      textArea.style.background = "transparent";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+          showToast("アドレスをコピーしました（Safariに貼り付け可）");
+        } else {
+          showToast("コピーできませんでした");
+        }
+      } catch (err) {
+        showToast("コピーに失敗しました");
+      }
+      document.body.removeChild(textArea);
+    }
+
+    // -------------------------------------------------------------
+    // LocalStorage: Saved Items (保管庫)
+    // -------------------------------------------------------------
+    function loadSavedIds() {
+      try {
+        const saved = localStorage.getItem('morning_news_saved');
+        if (saved) {
+          APP_STATE.savedIds = new Set(JSON.parse(saved));
+        }
+      } catch (_) {}
+      updateSavedCounter();
+    }
+
+    function persistSavedIds() {
+      try {
+        localStorage.setItem('morning_news_saved', JSON.stringify(Array.from(APP_STATE.savedIds)));
+      } catch (_) {}
+      updateSavedCounter();
+    }
+
+    function updateSavedCounter() {
+      const badge = document.getElementById('saved-counter-badge');
+      if (badge) {
+        badge.textContent = APP_STATE.savedIds.size;
+      }
+    }
+
+    function toggleSave(id) {
+      if (APP_STATE.savedIds.has(id)) {
+        APP_STATE.savedIds.delete(id);
+        showToast("保管を解除しました");
+      } else {
+        APP_STATE.savedIds.add(id);
+        showToast("ニュースを保管庫に追加しました");
+      }
+      persistSavedIds();
+      renderAllNews();
+    }
+
+    // -------------------------------------------------------------
+    // News Card Generation & Rendering
+    // -------------------------------------------------------------
+    function createNewsCard(item) {
+      const isSaved = APP_STATE.savedIds.has(item.id);
+      const isJapan = item.scope === 'japan';
+      const officialUrl = item.sourceUrl || "https://www.google.com";
+
+      const card = document.createElement('article');
+      card.className = `bg-white rounded-2xl border transition-all duration-200 p-4 sm:p-5 flex flex-col justify-between space-y-3.5 shadow-xs hover:shadow-md ${
+        isSaved ? 'border-rose-300 ring-2 ring-rose-100 bg-rose-50/20' : 'border-slate-200/90'
+      }`;
+
+      card.innerHTML = `
+        <div class="space-y-2.5">
+          <!-- Top Row: Badge & Save Button -->
+          <div class="flex items-center justify-between gap-2">
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-semibold ${
+              isJapan ? 'bg-amber-50 text-amber-800 border border-amber-200' : 'bg-indigo-50 text-indigo-800 border border-indigo-200'
+            }">
+              <span>${item.scopeLabel}</span>
+            </span>
+
+            <button onclick="toggleSave('${item.id}')" class="flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-medium transition ${
+              isSaved
+                ? 'bg-rose-500 text-white shadow-xs'
+                : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
+            }">
+              <svg class="w-3.5 h-3.5" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+              </svg>
+              <span>${isSaved ? '保管中' : '保管する'}</span>
+            </button>
+          </div>
+
+          <!-- Title (大きく見やすいフォント) -->
+          <h4 class="text-base sm:text-lg font-bold text-slate-900 leading-snug tracking-tight">
+            ${item.title}
+          </h4>
+
+          <!-- Summary (大きめでゆったりとした行間) -->
+          <p class="text-sm sm:text-base text-slate-700 leading-relaxed font-normal">
+            ${item.summary}
+          </p>
+
+          <!-- Why it matters -->
+          <div class="bg-amber-50/90 border border-amber-200/70 rounded-xl p-3 text-xs sm:text-sm text-amber-950 flex items-start gap-2">
+            <span class="text-amber-600 flex-shrink-0 text-base leading-none mt-0.5">💡</span>
+            <div>
+              <strong class="font-bold text-amber-900 block sm:inline">重要視点:</strong>
+              <span class="text-amber-950">${item.whyItMatters}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Citation & Source Info (詳細な引用元と公式アドレス) -->
+        <div class="pt-3 border-t border-slate-100 space-y-2">
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 space-y-1.5 text-xs text-slate-700">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="font-bold text-slate-900 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
+                </svg>
+                引用元:
+              </span>
+              <span class="font-semibold text-slate-900">${item.source}</span>
+            </div>
+            <p class="text-[11px] text-slate-600 pl-4 border-l-2 border-slate-300">
+              ${item.sourceDetail || '公式報道発表及び検証レポート'}
+            </p>
+            
+            <!-- Address Row -->
+            <div class="flex items-center justify-between gap-2 pt-1 border-t border-slate-200/70 text-[11px]">
+              <span class="text-slate-500 font-mono truncate max-w-[200px] sm:max-w-xs" title="${officialUrl}">${officialUrl}</span>
+              <div class="flex items-center gap-1.5 flex-shrink-0">
+                <button onclick="copyToClipboard('${officialUrl}')" class="px-2 py-1 rounded bg-white hover:bg-slate-200 border border-slate-300 text-slate-700 font-medium transition flex items-center gap-1 text-[11px]" title="Safariのアドレスバーに貼れるURLをコピー">
+                  <svg class="w-3 h-3 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                  </svg>
+                  <span>アドレスをコピー</span>
+                </button>
+                <a href="${officialUrl}" target="_blank" rel="noopener noreferrer" class="px-2 py-1 rounded bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 font-medium transition text-[11px]">
+                  Safariで開く ↗
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Meta Bar: Single TTS Button -->
+          <div class="flex items-center justify-between text-xs text-slate-500 pt-1">
+            <span class="font-mono text-[11px] text-slate-400">${item.time}</span>
+            <button onclick="playSingleArticleById('${item.id}')" class="flex items-center space-x-1.5 text-indigo-600 hover:text-indigo-800 bg-indigo-50/70 hover:bg-indigo-100 px-3 py-1.5 rounded-lg font-medium transition">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M12 6v12m0 0l-4-4H4a1 1 0 01-1-1v-2a1 1 0 011-1h4l4-4z"></path>
+              </svg>
+              <span>この記事を聴く</span>
+            </button>
+          </div>
+        </div>
+      `;
+      return card;
+    }
+
+    function renderCategoryCards(categoryId, items) {
+      const grid = document.getElementById(`grid-${categoryId}`);
+      const section = document.getElementById(`section-${categoryId}`);
+      if (!grid || !section) return;
+
+      grid.innerHTML = '';
+      if (items.length === 0) {
+        section.classList.add('hidden');
+      } else {
+        section.classList.remove('hidden');
+        items.forEach(item => {
+          try {
+            grid.appendChild(createNewsCard(item));
+          } catch (e) {
+            console.error("Card render error:", e);
+          }
+        });
+      }
+    }
+
+    function renderAllNews() {
+      const activeFilter = APP_STATE.activeFilter;
+      const activeScope = APP_STATE.activeScope;
+
+      let filtered = APP_STATE.newsData;
+
+      if (activeFilter === 'saved') {
+        filtered = filtered.filter(item => APP_STATE.savedIds.has(item.id));
+      } else if (activeFilter !== 'all') {
+        filtered = filtered.filter(item => item.category === activeFilter);
+      }
+
+      if (activeScope !== 'all') {
+        filtered = filtered.filter(item => item.scope === activeScope);
+      }
+
+      // 保管庫ツールバー表示切替
+      const savedToolbar = document.getElementById('saved-toolbar');
+      if (savedToolbar) {
+        if (activeFilter === 'saved') savedToolbar.classList.remove('hidden');
+        else savedToolbar.classList.add('hidden');
+      }
+
+      // カテゴリ別分配
+      const econItems = filtered.filter(i => i.category === 'economy');
+      const medItems = filtered.filter(i => i.category === 'medical');
+      const itItems = filtered.filter(i => i.category === 'it');
+
+      renderCategoryCards('economy', econItems);
+      renderCategoryCards('medical', medItems);
+      renderCategoryCards('it', itItems);
+
+      // Empty State 表示切替
+      const emptyState = document.getElementById('empty-state');
+      if (emptyState) {
+        if (filtered.length === 0) emptyState.classList.remove('hidden');
+        else emptyState.classList.add('hidden');
+      }
+
+      updateSavedCounter();
+    }
+
+    // -------------------------------------------------------------
+    // High-Fidelity Audio TTS
+    // -------------------------------------------------------------
+    let speechSynth = window.speechSynthesis;
+    let readingIndex = 0;
+    let activeReadingList = [];
+
+    function initBestJapaneseVoice() {
+      if (!speechSynth) return;
+      const voices = speechSynth.getVoices();
+      if (!voices || voices.length === 0) return;
+
+      const preferredKeywords = [
+        'Otoya', 'Kyoko', 'Siri', 'Nanami', 'Keita', 'Haruka', 'Ayumi', 'Google 日本語', 'ja-JP', 'Japanese'
+      ];
+
+      for (const kw of preferredKeywords) {
+        const found = voices.find(v => (v.name && v.name.includes(kw)) || (v.lang && v.lang.replace('_', '-').includes('ja')));
+        if (found) {
+          APP_STATE.bestJapaneseVoice = found;
+          const badge = document.getElementById('voice-label-badge');
+          if (badge) {
+            const cleanName = found.name.split(' ')[0].replace(/Online|Natural|\(Natural\)/gi, '').trim();
+            badge.textContent = `高音質: ${cleanName || '日本語'}`;
+          }
+          break;
+        }
+      }
+    }
+
+    if (speechSynth) {
+      if (speechSynth.onvoiceschanged !== undefined) {
+        speechSynth.onvoiceschanged = initBestJapaneseVoice;
+      }
+      initBestJapaneseVoice();
+    }
+
+    function unlockAudioContext() {
+      if (speechSynth) speechSynth.resume();
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        if (ctx.state === 'suspended') ctx.resume();
+      } catch (_) {}
+    }
+
+    function cleanTextForSpeech(item) {
+      const scopeText = item.scope === 'japan' ? '日本の' : '世界の';
+      const catText = item.category === 'economy' ? '経済' : item.category === 'medical' ? '医療' : 'アイティー';
+      return `${scopeText}${catText}ニュース。${item.title}。${item.summary}。重要ポイント。${item.whyItMatters}`;
+    }
+
+    function playNativeSpeech(text, onEndedCallback) {
+      if (!speechSynth) {
+        showToast("お使いの端末は音声合成に対応していません");
+        if (onEndedCallback) onEndedCallback();
+        return;
+      }
+
+      speechSynth.cancel();
+
+      setTimeout(() => {
+        try {
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.lang = 'ja-JP';
+          utterance.rate = APP_STATE.speechRate || 1.1;
+          utterance.pitch = 1.0;
+
+          if (APP_STATE.bestJapaneseVoice) {
+            utterance.voice = APP_STATE.bestJapaneseVoice;
+          }
+
+          let hasEnded = false;
+          utterance.onend = () => {
+            if (!hasEnded) {
+              hasEnded = true;
+              if (onEndedCallback) onEndedCallback();
+            }
+          };
+
+          utterance.onerror = (e) => {
+            if (!hasEnded) {
+              hasEnded = true;
+              if (onEndedCallback) onEndedCallback();
+            }
+          };
+
+          speechSynth.speak(utterance);
+        } catch (err) {
+          if (onEndedCallback) onEndedCallback();
+        }
+      }, 50);
+    }
+
+    function playNextInQueue() {
+      if (!APP_STATE.isReading || readingIndex >= activeReadingList.length) {
+        stopTTS();
+        showToast("ニュースの読み上げが完了しました");
+        return;
+      }
+
+      const item = activeReadingList[readingIndex];
+      const speechText = cleanTextForSpeech(item);
+
+      const titleEl = document.getElementById('tts-reading-title');
+      if (titleEl) {
+        titleEl.textContent = `[${readingIndex + 1}/${activeReadingList.length}] ${item.title}`;
+      }
+      const engineBadge = document.getElementById('tts-engine-badge');
+      if (engineBadge) {
+        engineBadge.textContent = `${readingIndex + 1}/${activeReadingList.length} 読み上げ中`;
+      }
+
+      playNativeSpeech(speechText, () => {
+        readingIndex++;
+        if (APP_STATE.isReading) {
+          setTimeout(playNextInQueue, 350);
+        }
+      });
+    }
+
+    function startTTS() {
+      unlockAudioContext();
+      stopTTS();
+
+      if (APP_STATE.activeFilter === 'saved') {
+        activeReadingList = APP_STATE.newsData.filter(i => APP_STATE.savedIds.has(i.id));
+        if (activeReadingList.length === 0) {
+          showToast("保管庫に記事がありません");
+          return;
+        }
+      } else {
+        activeReadingList = APP_STATE.newsData.filter(i => {
+          const mCat = (APP_STATE.activeFilter === 'all' || i.category === APP_STATE.activeFilter);
+          const mScp = (APP_STATE.activeScope === 'all' || i.scope === APP_STATE.activeScope);
+          return mCat && mScp;
+        });
+      }
+
+      if (activeReadingList.length === 0) {
+        showToast("読み上げるニュースがありません");
+        return;
+      }
+
+      readingIndex = 0;
+      APP_STATE.isReading = true;
+      updateTTSUi(true);
+      playNextInQueue();
+    }
+
+    function stopTTS() {
+      if (speechSynth) speechSynth.cancel();
+      APP_STATE.isReading = false;
+      updateTTSUi(false);
+    }
+
+    function updateTTSUi(isPlaying) {
+      const bar = document.getElementById('audio-player-bar');
+      const btn = document.getElementById('tts-btn');
+      const txt = document.getElementById('tts-btn-text');
+
+      if (isPlaying) {
+        if (bar) bar.classList.remove('hidden');
+        if (txt) txt.textContent = "音声停止";
+        if (btn) {
+          btn.classList.add('bg-red-600', 'hover:bg-red-500');
+          btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-500');
+        }
+      } else {
+        if (bar) bar.classList.add('hidden');
+        if (txt) txt.textContent = "要約を聴く";
+        if (btn) {
+          btn.classList.remove('bg-red-600', 'hover:bg-red-500');
+          btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500');
+        }
+      }
+    }
+
+    function playSingleArticleById(id) {
+      const item = APP_STATE.newsData.find(n => n.id === id);
+      if (!item) return;
+
+      unlockAudioContext();
+      stopTTS();
+
+      APP_STATE.isReading = true;
+      updateTTSUi(true);
+
+      const titleEl = document.getElementById('tts-reading-title');
+      if (titleEl) titleEl.textContent = item.title;
+
+      const engineBadge = document.getElementById('tts-engine-badge');
+      if (engineBadge) engineBadge.textContent = "個別読み上げ中";
+
+      const speechText = cleanTextForSpeech(item);
+      playNativeSpeech(speechText, () => {
+        stopTTS();
+      });
+    }
+
+    // -------------------------------------------------------------
+    // Clock, Alarm & Countdown
+    // -------------------------------------------------------------
+    function updateClockAndCountdown() {
+      const now = new Date();
+      const clockEl = document.getElementById('current-clock');
+      if (clockEl) {
+        const y = now.getFullYear();
+        const m = String(now.getMonth() + 1).padStart(2, '0');
+        const d = String(now.getDate()).padStart(2, '0');
+        const days = ['日', '月', '火', '水', '木', '金', '土'];
+        const dayStr = days[now.getDay()];
+        const h = String(now.getHours()).padStart(2, '0');
+        const min = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+        clockEl.textContent = `${y}年${m}月${d}日 (${dayStr}) ${h}:${min}:${s}`;
+      }
+
+      // カウントダウン計算
+      const [schedH, schedM] = APP_STATE.scheduledTime.split(':').map(Number);
+      const target = new Date(now.getFullYear(), now.getMonth(), now.getDate(), schedH, schedM, 0);
+      if (target <= now) {
+        target.setDate(target.getDate() + 1);
+      }
+
+      const diffMs = target - now;
+      const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+      const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+      const badge = document.getElementById('countdown-badge');
+      if (badge) {
+        badge.textContent = `あと${diffHours}時間${diffMins}分`;
+      }
+
+      // 朝の自動配信チェック
+      const currentH = now.getHours();
+      const currentMin = now.getMinutes();
+      const todayStr = `${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}`;
+
+      if (currentH === schedH && currentMin === schedM && APP_STATE.lastAlarmDate !== todayStr) {
+        APP_STATE.lastAlarmDate = todayStr;
+        triggerMorningAlarm();
+      }
+    }
+
+    function triggerMorningAlarm() {
+      showToast("🌅 毎朝のブリーフィング時刻になりました！");
+
+      if ("Notification" in window && Notification.permission === "granted") {
+        new Notification("経済・医療・ITの最新ニュース", {
+          body: "本日の最新ニュース（全12本）の配信時刻です。要約を確認しましょう。",
+        });
+      }
+
+      if (APP_STATE.autoTTS) {
+        setTimeout(startTTS, 1500);
+      }
+    }
+
+    // -------------------------------------------------------------
+    // Gemini Live News Fetch with Google Search Grounding
+    // -------------------------------------------------------------
+    async function fetchLiveNewsWithGemini() {
+      const refreshBtn = document.getElementById('refresh-news-btn');
+      const refreshIcon = document.getElementById('refresh-icon');
+      const loadingState = document.getElementById('loading-state');
+      const newsContainer = document.getElementById('news-container');
+
+      refreshBtn.disabled = true;
+      if (refreshIcon) refreshIcon.classList.add('animate-spin');
+      if (loadingState) loadingState.classList.remove('hidden');
+      if (newsContainer) newsContainer.classList.add('opacity-40');
+
+      showToast("最新ニュースを収集中...");
+
+      const prompt = `最新のニュースをGoogle Searchで調査し、以下の条件で正確に12本の最新ニュースをJSON配列として返してください。
+【対象カテゴリ】
+1. 日本の経済 (2本)
+2. 世界の経済 (2本)
+3. 日本の医療・ヘルスケア (2本)
+4. 世界の医療・ヘルスケア (2本)
+5. 日本のIT・テクノロジー (2本)
+6. 世界のIT・テクノロジー (2本)
+
+各アイテムのJSONプロパティ:
+- id: 文字列 (例: "jp-econ-1")
+- category: "economy" | "medical" | "it"
+- scope: "japan" | "global"
+- scopeLabel: 例 "🇯🇵 日本の経済" または "🌐 世界のIT"
+- title: 具体的で魅力的な見出し
+- summary: 140字程度の明確な要約
+- whyItMatters: なぜこれが重要か（影響や今後の見通し）
+- source: 報道機関名または公式発表機関名
+- sourceDetail: 記事の見出しや公式白書名
+- sourceUrl: 該当記事または発表元の公式URL
+- time: "今朝 更新"
+
+必ず有効なJSON配列形式（\`\`\`json [ ... ] \`\`\`）のみを出力してください。`;
+
+      try {
+        const apiKey = "";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+        const payload = {
+          contents: [{ parts: [{ text: prompt }] }],
+          tools: [{ "google_search": {} }]
+        };
+
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        if (text) {
+          const jsonMatch = text.match(/\[\s*\{.*\}\s*\]/s);
+          if (jsonMatch) {
+            const parsed = JSON.parse(jsonMatch[0]);
+            if (Array.isArray(parsed) && parsed.length >= 6) {
+              APP_STATE.newsData = parsed;
+              const lastUpdatedEl = document.getElementById('last-updated-text');
+              if (lastUpdatedEl) lastUpdatedEl.textContent = "リアルタイム更新済";
+              showToast("ニュースを最新情報に更新しました");
+            }
+          }
+        }
+      } catch (err) {
+        console.error("News refresh failed:", err);
+        showToast("最新取得に失敗したため既存データを表示します");
+      } finally {
+        refreshBtn.disabled = false;
+        if (refreshIcon) refreshIcon.classList.remove('animate-spin');
+        if (loadingState) loadingState.classList.add('hidden');
+        if (newsContainer) newsContainer.classList.remove('opacity-40');
+        renderAllNews();
+      }
+    }
+
+    // -------------------------------------------------------------
+    // Initializer
+    // -------------------------------------------------------------
+    function initApp() {
+      loadSavedIds();
+      initBestJapaneseVoice();
+      renderAllNews();
+      updateClockAndCountdown();
+      setInterval(updateClockAndCountdown, 1000);
+
+      // TTS Buttons
+      document.getElementById('tts-btn').addEventListener('click', () => {
+        if (APP_STATE.isReading) stopTTS();
+        else startTTS();
+      });
+      document.getElementById('tts-stop-btn').addEventListener('click', stopTTS);
+
+      // Test Audio Button
+      const testAudioBtn = document.getElementById('test-audio-btn');
+      if (testAudioBtn) {
+        testAudioBtn.addEventListener('click', () => {
+          unlockAudioContext();
+          showToast("🔊 テスト音声を再生中...");
+          playNativeSpeech("おはようございます。経済・医療・ITの最新ニュースをお届けします。", () => {
+            showToast("テスト再生が完了しました");
+          });
+        });
+      }
+
+      // Speed selector
+      const btnSlow = document.getElementById('rate-slow-btn');
+      const btnNormal = document.getElementById('rate-normal-btn');
+      const btnFast = document.getElementById('rate-fast-btn');
+
+      function setSpeed(rate, activeBtn) {
+        APP_STATE.speechRate = rate;
+        [btnSlow, btnNormal, btnFast].forEach(b => {
+          if (b) b.className = "px-2 py-0.5 rounded text-slate-300 hover:text-white transition";
+        });
+        if (activeBtn) activeBtn.className = "px-2 py-0.5 rounded bg-indigo-600 text-white font-bold transition";
+        showToast(`読み上げ速度を ${rate}x に変更しました`);
+      }
+
+      if (btnSlow) btnSlow.addEventListener('click', () => setSpeed(0.9, btnSlow));
+      if (btnNormal) btnNormal.addEventListener('click', () => setSpeed(1.1, btnNormal));
+      if (btnFast) btnFast.addEventListener('click', () => setSpeed(1.3, btnFast));
+
+      // Refresh Button
+      document.getElementById('refresh-news-btn').addEventListener('click', fetchLiveNewsWithGemini);
+
+      // Category Tabs
+      document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.filter-tab').forEach(t => {
+            t.classList.remove('bg-white', 'text-slate-900', 'shadow-xs', 'font-semibold');
+            t.classList.add('text-slate-600', 'font-medium');
+          });
+          tab.classList.add('bg-white', 'text-slate-900', 'shadow-xs', 'font-semibold');
+          tab.classList.remove('text-slate-600');
+
+          APP_STATE.activeFilter = tab.getAttribute('data-filter');
+          renderAllNews();
+        });
+      });
+
+      // Scope Buttons (全地域 / 日本 / 世界)
+      document.querySelectorAll('.scope-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.scope-btn').forEach(b => {
+            b.classList.remove('bg-white', 'text-slate-900', 'shadow-xs', 'font-bold');
+            b.classList.add('text-slate-600', 'font-medium');
+          });
+          btn.classList.add('bg-white', 'text-slate-900', 'shadow-xs', 'font-bold');
+          btn.classList.remove('text-slate-600');
+
+          APP_STATE.activeScope = btn.getAttribute('data-scope');
+          renderAllNews();
+        });
+      });
+
+      // Saved Toolbar actions
+      document.getElementById('export-saved-btn').addEventListener('click', () => {
+        const savedList = APP_STATE.newsData.filter(i => APP_STATE.savedIds.has(i.id));
+        if (savedList.length === 0) {
+          showToast("保管中の記事がありません");
+          return;
+        }
+        const text = savedList.map((n, i) => `${i + 1}. [${n.scopeLabel}] ${n.title}\n${n.summary}\n視点: ${n.whyItMatters}\n公式URL: ${n.sourceUrl}\n`).join('\n---\n\n');
+        copyToClipboard(text);
+        showToast("保管した全記事をコピーしました");
+      });
+
+      document.getElementById('clear-all-saved-btn').addEventListener('click', () => {
+        APP_STATE.savedIds.clear();
+        persistSavedIds();
+        renderAllNews();
+        showToast("保管庫をクリアしました");
+      });
+
+      // Settings Modal
+      const settingsModal = document.getElementById('settings-modal');
+      const openSettingsBtn = document.getElementById('open-settings-btn');
+      const closeSettingsBtn = document.getElementById('close-settings-btn');
+      const saveSettingsBtn = document.getElementById('save-settings-btn');
+      const scheduledTimeInput = document.getElementById('scheduled-time-input');
+      const headerScheduledTime = document.getElementById('header-scheduled-time');
+      const autoTtsToggle = document.getElementById('auto-tts-toggle');
+
+      openSettingsBtn.addEventListener('click', () => {
+        scheduledTimeInput.value = APP_STATE.scheduledTime;
+        autoTtsToggle.checked = APP_STATE.autoTTS;
+        settingsModal.classList.remove('hidden');
+      });
+
+      closeSettingsBtn.addEventListener('click', () => settingsModal.classList.add('hidden'));
+      settingsModal.addEventListener('click', (e) => {
+        if (e.target === settingsModal) settingsModal.classList.add('hidden');
+      });
+
+      saveSettingsBtn.addEventListener('click', () => {
+        if (scheduledTimeInput.value) {
+          APP_STATE.scheduledTime = scheduledTimeInput.value;
+          headerScheduledTime.textContent = APP_STATE.scheduledTime;
+        }
+        APP_STATE.autoTTS = autoTtsToggle.checked;
+        settingsModal.classList.add('hidden');
+        updateClockAndCountdown();
+        showToast(`配信時刻を ${APP_STATE.scheduledTime} に設定しました`);
+      });
+
+      // Notification permission & test
+      document.getElementById('request-perm-btn').addEventListener('click', async () => {
+        if ("Notification" in window) {
+          const res = await Notification.requestPermission();
+          if (res === "granted") showToast("ブラウザ通知を有効にしました");
+          else showToast("通知が許可されませんでした");
+        }
+      });
+
+      document.getElementById('test-alarm-trigger').addEventListener('click', triggerMorningAlarm);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
+  </script>
+</body>
+</html>
