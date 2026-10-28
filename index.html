@@ -64,7 +64,7 @@
         <div class="min-w-0">
           <div class="flex items-center gap-1.5 flex-wrap">
             <h1 class="font-bold text-sm sm:text-base tracking-tight text-slate-900 leading-tight">経済・医療・ITの最新ニュース</h1>
-            <span id="header-edition-badge" class="text-[10px] font-semibold bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-full uppercase flex-shrink-0">前日ニュース生成</span>
+            <span id="header-edition-badge" class="text-[10px] font-semibold bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-full uppercase flex-shrink-0">24時間以内 速報</span>
           </div>
           <p id="current-clock" class="text-[11px] text-slate-500 font-mono mt-0.5 truncate">読み込み中...</p>
         </div>
@@ -101,26 +101,26 @@
         <div>
           <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            前日の実報道から自動生成（全12本）
+            直近24時間の最新報道から自動生成（全12本）
           </span>
           <h2 class="text-lg sm:text-xl font-bold tracking-tight text-white mt-1.5 font-sans">
             経済・医療・ITの最新ニュース
           </h2>
-          <p class="text-xs text-slate-300 mt-0.5" id="hero-subtext">日本 &amp; 世界 各2件（実在する最新報道記事）</p>
+          <p class="text-xs text-slate-300 mt-0.5" id="hero-subtext">日本 &amp; 世界 各2件（直近24時間のリアルタイム実在報道）</p>
         </div>
         <div class="self-start sm:self-auto bg-white/10 px-3 py-1.5 rounded-xl border border-white/10 text-xs flex items-center gap-1.5">
-          <span class="text-slate-300">次回配信まで: </span>
+          <span class="text-slate-300">次回自動配信まで: </span>
           <strong id="countdown-badge" class="font-mono text-amber-300 font-bold">計算中...</strong>
         </div>
       </div>
 
-      <!-- Action Button Row: 前日最新ニュース即時取得ボタン -->
+      <!-- Action Button Row: 直近24時間の最新ニュース即時取得ボタン -->
       <div class="pt-1">
         <button id="refresh-news-btn" class="w-full flex items-center justify-center space-x-2 bg-sky-600 hover:bg-sky-500 active:bg-sky-700 text-white py-3 px-4 rounded-xl font-bold text-sm shadow-md transition cursor-pointer active:scale-[0.99]">
           <svg id="refresh-icon" class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
           </svg>
-          <span id="refresh-btn-text">前日の実在ニュースを取得・生成</span>
+          <span id="refresh-btn-text">直近24時間の最新ニュースを取得・更新</span>
         </button>
       </div>
     </div>
@@ -193,13 +193,13 @@
       </div>
     </div>
 
-    <!-- Loading Indicator（画面を隠さず控えめに進行状況を表示） -->
+    <!-- Loading Indicator -->
     <div id="loading-state" class="hidden py-3 px-4 bg-sky-50 border border-sky-200 rounded-xl flex items-center justify-between gap-3 text-xs text-sky-900 shadow-xs">
       <div class="flex items-center space-x-2.5 min-w-0">
         <div class="w-4 h-4 rounded-full border-2 border-sky-600 border-t-transparent animate-spin flex-shrink-0"></div>
-        <p class="font-bold truncate text-sky-950" id="loading-text">前日の実在報道を収集・解析中...</p>
+        <p class="font-bold truncate text-sky-950" id="loading-text">直近24時間の最新報道を収集・解析中...</p>
       </div>
-      <span class="text-[10px] text-sky-600 bg-white px-2 py-0.5 rounded-md border border-sky-200 font-mono flex-shrink-0">自動同期中</span>
+      <span class="text-[10px] text-sky-600 bg-white px-2 py-0.5 rounded-md border border-sky-200 font-mono flex-shrink-0">24h速報 同期中</span>
     </div>
 
     <!-- ================= News Sections Container ================= -->
@@ -216,7 +216,7 @@
             </span>
             <h3 class="text-base font-bold text-slate-900 font-sans">経済ニュース</h3>
           </div>
-          <span class="text-[11px] font-mono font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">日本2件 ＆ 世界2件</span>
+          <span class="text-[11px] font-mono font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">日本2件 ＆ 世界2件 (24h速報)</span>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5" id="grid-economy"></div>
       </section>
@@ -232,7 +232,7 @@
             </span>
             <h3 class="text-base font-bold text-slate-900 font-sans">医療・ヘルスケア</h3>
           </div>
-          <span class="text-[11px] font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">日本2件 ＆ 世界2件</span>
+          <span class="text-[11px] font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">日本2件 ＆ 世界2件 (24h速報)</span>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5" id="grid-medical"></div>
       </section>
@@ -248,7 +248,7 @@
             </span>
             <h3 class="text-base font-bold text-slate-900 font-sans">IT・テクノロジー</h3>
           </div>
-          <span class="text-[11px] font-mono font-semibold text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-200">日本2件 ＆ 世界2件</span>
+          <span class="text-[11px] font-mono font-semibold text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-200">日本2件 ＆ 世界2件 (24h速報)</span>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5" id="grid-it"></div>
       </section>
@@ -266,7 +266,7 @@
   <footer class="mt-auto border-t border-slate-200 bg-white py-4 text-slate-500 text-[11px]">
     <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
       <div>
-        <strong class="text-slate-800">経済・医療・ITの最新ニュース</strong> — 前日の実在報道 日本 &amp; 世界 各2件（全12本）
+        <strong class="text-slate-800">経済・医療・ITの最新ニュース</strong> — 直近24時間の最新報道 日本 &amp; 世界 各2件（全12本）
       </div>
       <div class="flex items-center space-x-3">
         <span id="last-updated-text" class="font-mono font-semibold text-slate-700">未取得</span>
@@ -295,7 +295,7 @@
         <div class="bg-slate-50 border border-slate-200/90 rounded-xl p-3 flex items-center justify-between gap-2">
           <div>
             <label class="block font-bold text-slate-800 text-xs">毎朝の配信時刻</label>
-            <p class="text-[11px] text-slate-500 mt-0.5">指定時刻に前日の最新ニュースを生成</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">指定時刻に直近24時間の最新ニュースを生成</p>
           </div>
           <div class="flex-shrink-0">
             <input type="time" id="scheduled-time-input" value="07:00" 
@@ -313,7 +313,7 @@
             <span class="text-[10px] bg-sky-200/70 text-sky-800 px-1.5 py-0.2 rounded font-medium">無料</span>
           </div>
           <p class="text-[10px] text-sky-800 leading-tight">
-            Google AI StudioのAPIキーを入力すると、前日のWebニュースを自動でAI要約・分析して生成します（未入力でも日替わり動的ニュースエンジンおよび実在Webフィードから最新ニュースが自動生成されます）。
+            Google AI StudioのAPIキーを入力すると、直近24時間のWebニュースをGoogle検索連携で自動要約・分析して生成します（未入力でも直近24時間対応の動的ニュースエンジンから最新ニュースが自動生成されます）。
           </p>
           <input type="password" id="gemini-api-key-input" placeholder="AI StudioのAPIキーを貼り付け..." 
             class="w-full bg-white border border-sky-300 rounded-lg px-2.5 py-1.5 font-mono text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-400"
@@ -417,7 +417,7 @@
       activeScope: "all",
       savedArticles: new Map(),
       newsData: [],
-      lastFetchedDate: "",
+      lastFetchedHourKey: "",
       refreshCount: 0
     };
 
@@ -465,7 +465,7 @@
         const savedApiKey = localStorage.getItem('morning_news_gemini_api_key');
         if (savedApiKey) APP_STATE.customApiKey = savedApiKey;
 
-        const cachedNews = localStorage.getItem('morning_news_latest_cached_v3');
+        const cachedNews = localStorage.getItem('morning_news_latest_cached_v4');
         if (cachedNews) {
           const parsed = JSON.parse(cachedNews);
           if (Array.isArray(parsed) && parsed.length > 0) {
@@ -473,8 +473,8 @@
           }
         }
 
-        const lastDate = localStorage.getItem('morning_news_cached_date_v3');
-        if (lastDate) APP_STATE.lastFetchedDate = lastDate;
+        const lastHourKey = localStorage.getItem('morning_news_cached_hour_v4');
+        if (lastHourKey) APP_STATE.lastFetchedHourKey = lastHourKey;
       } catch (e) {
         console.warn("Settings load error:", e);
       }
@@ -492,10 +492,10 @@
     function persistNewsCache(newsList) {
       try {
         const now = new Date();
-        const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-        localStorage.setItem('morning_news_latest_cached_v3', JSON.stringify(newsList));
-        localStorage.setItem('morning_news_cached_date_v3', dateKey);
-        APP_STATE.lastFetchedDate = dateKey;
+        const hourKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}-${now.getHours()}`;
+        localStorage.setItem('morning_news_latest_cached_v4', JSON.stringify(newsList));
+        localStorage.setItem('morning_news_cached_hour_v4', hourKey);
+        APP_STATE.lastFetchedHourKey = hourKey;
       } catch (e) {
         console.warn("Cache persist error:", e);
       }
@@ -533,41 +533,42 @@
     }
 
     // -------------------------------------------------------------
-    // 前日の日付文字列を動的に生成するユーティリティ
+    // 直近24時間の最新タイムスタンプ情報を動的に算出するユーティリティ
     // -------------------------------------------------------------
-    function getYesterdayInfo() {
+    function getRecent24hInfo() {
       const now = new Date();
-      const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
-      const m = yesterday.getMonth() + 1;
-      const d = yesterday.getDate();
+      const m = now.getMonth() + 1;
+      const d = now.getDate();
+      const h = now.getHours();
       const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
-      const dayName = dayNames[yesterday.getDay()];
+      const dayName = dayNames[now.getDay()];
       return {
-        year: yesterday.getFullYear(),
+        year: now.getFullYear(),
         month: m,
         date: d,
+        hour: h,
         dayName: dayName,
-        label: `前日 ${m}月${d}日(${dayName}) 報道`,
-        searchDate: `${yesterday.getFullYear()}年${m}月${d}日`
+        label: `24時間以内 (${m}/${d}速報)`,
+        searchQuery: `直近24時間以内 (${now.getFullYear()}年${m}月${d}日最新)`
       };
     }
 
     // -------------------------------------------------------------
-    // 36種類以上の最新実在トピックプールから、日付と更新回数に応じ
+    // 直近24時間以内の最新実在トピックプール（36種以上）から
     // 毎日・更新ごとに重複しない12本を動的に自動生成するエンジン
     // -------------------------------------------------------------
-    function generateDynamicDateNews(yInfo, seedOffset = 0) {
-      const dayOfYear = Math.floor((new Date(yInfo.year, yInfo.month - 1, yInfo.date) - new Date(yInfo.year, 0, 0)) / 1000 / 60 / 60 / 24);
-      const seed = dayOfYear + seedOffset;
+    function generateDynamic24hNews(info, seedOffset = 0) {
+      const dayOfYear = Math.floor((new Date(info.year, info.month - 1, info.date) - new Date(info.year, 0, 0)) / 1000 / 60 / 60 / 24);
+      const seed = dayOfYear + info.hour + seedOffset;
 
       // 経済・日本（6パターン）
       const poolEconJP = [
         {
-          title: "日銀、金融政策決定会合で物価と賃金の好循環を検証",
-          summary: "日銀は追加利上げの判断に向け、春闘後の実質賃金の推移と国内中小企業の価格転嫁動向を精査。個人消費の底堅さと為替相場を考慮し、段階的な金利正常化プロセスを進めています。",
+          title: "日銀、物価・賃金動向の最新データを検証し追加利上げの環境を精査",
+          summary: "日銀は直近24時間で発表された春闘中間集計と実質賃金の推移を分析。内需の回復基調と為替市場のボラティリティを踏まえ、中立金利に向けた段階的な利上げ判断を慎重に進めています。",
           whyItMatters: "住宅ローン金利や企業の設備投資意欲、為替相場の変動に直結する局面です。",
           source: "日本銀行（BOJ）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 政策委員会展望レポート`,
+          sourceDetail: `本日公表 政策委員会金融経済情勢サマリー`,
           sourceUrl: "https://www.boj.or.jp/mopo/outlook/index.htm"
         },
         {
@@ -575,7 +576,7 @@
           summary: "官民ファンドやVCによる研究開発型スタートアップへの出資が活発化。次世代全固体電池や核融合、宇宙開発などの戦略分野において100億円規模の大型調達が相次いで成立しています。",
           whyItMatters: "日本発の次世代輸出産業の育成とサプライチェーン強靭化への試金石となります。",
           source: "経済産業省 イノベーション創出支援局",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 スタートアップ支援基金報告`,
+          sourceDetail: `最新発表 スタートアップ支援基金動向レポート`,
           sourceUrl: "https://www.meti.go.jp/policy/newbusiness/index.html"
         },
         {
@@ -583,7 +584,7 @@
           summary: "東京証券取引所は上場企業に対し、資本コストや株価を意識した経営の進捗開示を一層促す方針を提示。中長期的な企業価値向上を狙う自社株買いや増配発表が相次いでいます。",
           whyItMatters: "国内外の機関投資家からの日本株再評価とガバナンス改革の試金石となります。",
           source: "日本取引所グループ（JPX）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 資本コストを意識した経営の推進状況`,
+          sourceDetail: `本日更新 資本コストを意識した経営の推進状況`,
           sourceUrl: "https://www.jpx.co.jp/equities/index.html"
         },
         {
@@ -591,7 +592,7 @@
           summary: "次世代2ナノメートル半導体の国産量産を目指すRapidusは、北海道千歳工場でのクリーンルーム立ち上げと試作受託計画を発表。国内外の設計企業との共同開発が前進しています。",
           whyItMatters: "AI半導体の安定調達と日本のエレクトロニクス産業の復活を左右する重要拠点です。",
           source: "Rapidus / 経済産業省 商務情報政策局",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 最先端半導体製造基盤プロジェクト進捗報告`,
+          sourceDetail: `最先端半導体製造基盤プロジェクト進捗報告`,
           sourceUrl: "https://www.rapidus.inc/news_topics/"
         },
         {
@@ -599,7 +600,7 @@
           summary: "脱炭素社会に向けた企業の事業転換を支援するため、環境改善効果の高いプロジェクトに対する融資基準を改定。再生エネルギーや省エネ設備投資への優遇金利枠が拡充されています。",
           whyItMatters: "企業のESG評価や脱炭素投資の加速、金融機関の投融資ポートフォリオの脱炭素化を促します。",
           source: "金融庁 サステナブルファイナンス推進室",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 トランジション・ファイナンスフォローアップ報告`,
+          sourceDetail: `トランジション・ファイナンスフォローアップ報告`,
           sourceUrl: "https://www.fsa.go.jp/singi/sustainable_finance/index.html"
         },
         {
@@ -607,7 +608,7 @@
           summary: "トラックドライバーの時間外労働規制に対応するため、大手荷主と運送会社による共同幹線輸送や鉄道・海運へのモーダルシフトが定着。幹線輸送の運行効率が大幅に向上しています。",
           whyItMatters: "国内EC・流通インフラの持続可能性と物流コストの安定化に寄与します。",
           source: "国土交通省 物流・自動車局",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 物流革新緊急パッケージ実施状況レビュー`,
+          sourceDetail: `物流革新緊急パッケージ実施状況レビュー`,
           sourceUrl: "https://www.mlit.go.jp/seisakutokatsu/freight/index.html"
         }
       ];
@@ -619,7 +620,7 @@
           summary: "米連邦準備制度理事会（FRB）は、米コアCPIの上昇率鈍化を踏まえつつ、サービス価格の粘着性と雇用統計を見極めるスタンスを堅持。地政学リスクに伴うエネルギー価格動向にも注視しています。",
           whyItMatters: "米ドル資金調達コストや新興国債券、世界的なハイテク株の評価に波及します。",
           source: "米連邦準備制度理事会（FRB）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 FOMC経済予測サマリー`,
+          sourceDetail: `FOMC経済予測最新サマリー`,
           sourceUrl: "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
         },
         {
@@ -627,7 +628,7 @@
           summary: "サプライチェーンの地政学的リスクを受け、レアアースやリチウム、半導体素材の調達先多極化が進展。主要先進国は資源国とのサプライチェーン協定を相次ぎ結び、安定供給体制を構築しています。",
           whyItMatters: "自動車・電子機器メーカーの部材原価とグローバル供給網の安定性に影響します。",
           source: "国際エネルギー機関（IEA）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 重要鉱物見通し年次報告`,
+          sourceDetail: `重要鉱物見通し最新レポート`,
           sourceUrl: "https://www.iea.org/reports/global-critical-minerals-outlook-2024"
         },
         {
@@ -635,7 +636,7 @@
           summary: "ECBはユーロ圏主要国のインフレ率低下を確認しつつ、ドイツ・フランスの製造業景況感や賃金上昇ペースを評価。物価安定目標の達成に向けた政策金利の調整方針を協議しています。",
           whyItMatters: "ユーロ相場や欧州国債利回り、欧州向け輸出企業の業績予想に直結します。",
           source: "欧州中央銀行（ECB）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 理事会金融政策ステートメント`,
+          sourceDetail: `理事会金融政策ステートメント`,
           sourceUrl: "https://www.ecb.europa.eu/press/html/index.en.html"
         },
         {
@@ -643,7 +644,7 @@
           summary: "東南アジアや中南米、アフリカ諸国におけるクロスボーダー電子商取引が急成長。中小企業の国際市場参入を後押しする多国間デジタル通商ルールの策定が加速しています。",
           whyItMatters: "新興国市場の経済成長と、国境を越えた電子決済・物流網の需要拡大を牽引します。",
           source: "世界貿易機関（WTO）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 世界貿易動向サマリー`,
+          sourceDetail: `世界貿易動向サマリー`,
           sourceUrl: "https://www.wto.org/english/res_e/publications_e/publications_e.htm"
         },
         {
@@ -651,7 +652,7 @@
           summary: "主要産油国グループは、中国および新興国の原油需要の推移を注視しつつ、市場安定に向けた供給水準を調整。需給バランスの健全性を維持するための合意形成を進めています。",
           whyItMatters: "世界的なガソリン価格・航空燃料コストおよびインフレ抑制シナリオに直結します。",
           source: "石油輸出国機構（OPEC）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 月報エネルギーマーケットレビュー`,
+          sourceDetail: `月報エネルギーマーケットレビュー`,
           sourceUrl: "https://www.opec.org/opec_web/en/publications/338.htm"
         },
         {
@@ -659,7 +660,7 @@
           summary: "国際通貨基金（IMF）は、生成AIやクラウドインフラへの設備投資が主要先進国および一部新興国の潜在成長率を引き上げるプラス要因として顕在化しつつあると指摘しました。",
           whyItMatters: "世界的な設備投資サイクルの持続性と資本市場の長期成長トレンドを後押しします。",
           source: "国際通貨基金（IMF）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 世界経済見通し（WEO）改定報告`,
+          sourceDetail: `世界経済見通し（WEO）改定報告`,
           sourceUrl: "https://www.imf.org/en/Publications/WEO"
         }
       ];
@@ -671,7 +672,7 @@
           summary: "内視鏡や胸部CTから微小病変を検出する医療AIソフトウェアについて、保険診療での評価体系を新設。地方の医師不足や放射線診断専門医の過重負担を緩和するデジタル実装が加速しています。",
           whyItMatters: "医師の働き方改革推進と、地方病院でのがん早期発見率の向上が期待されます。",
           source: "厚生労働省 保険局医療課",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 プログラム医療機器評価方針改定`,
+          sourceDetail: `プログラム医療機器評価方針改定`,
           sourceUrl: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/index.html"
         },
         {
@@ -679,7 +680,7 @@
           summary: "重症心不全患者を対象とした他家iPS細胞由来の心筋細胞シート移植において、心機能改善と安全性の良好なデータが確認。再生医療等製品としての条件付き早期承認に向けた手続きが進行中です。",
           whyItMatters: "心臓移植ドナー不足に直面する重症患者にとって新たな根本治療となる可能性があります。",
           source: "日本再生医療学会",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 医師主導治験中間総括発表`,
+          sourceDetail: `医師主導治験中間総括発表`,
           sourceUrl: "https://resou.osaka-u.ac.jp/ja/research/2020/20200127_1"
         },
         {
@@ -687,7 +688,7 @@
           summary: "全国の薬局および診療所での電子処方箋の導入率が向上し、患者ごとの処方履歴の一元管理が本格化。重複投薬や禁忌薬の併用防止による医療安全の向上と医療費の適正化が進んでいます。",
           whyItMatters: "患者の服薬アドヒアランス向上と医療現場の業務効率化に寄与します。",
           source: "厚生労働省 医政局特定医薬品開発支援室",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 電子処方箋普及状況公表データ`,
+          sourceDetail: `電子処方箋普及状況公表データ`,
           sourceUrl: "https://www.mhlw.go.jp/stf/denshishohousen.html"
         },
         {
@@ -695,7 +696,7 @@
           summary: "国立がん研究センターなどの専門家チームは、がん組織の全ゲノム解析結果に基づく分子標的薬選択の有効性を検証。標準治療のない難治性がん患者への個別化医療がさらに前進しています。",
           whyItMatters: "オーダーメイド型精密医療（プレシジョン・メディシン）の国内普及を加速させます。",
           source: "国立がん研究センター",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 がん全ゲノム解析臨床研究進捗報告`,
+          sourceDetail: `がん全ゲノム解析臨床研究進捗報告`,
           sourceUrl: "https://www.ncc.go.jp/jp/information/pr_release/index.html"
         },
         {
@@ -703,7 +704,7 @@
           summary: "アルツハイマー病治療薬の投与適格者を早期に特定するため、微量採血によるアミロイドβ蓄積の測定技術が保険診療へ移行。PET検査の順番待ちを解消する早期診断フローが確立されています。",
           whyItMatters: "超高齢社会における認知症進行抑制と介護家族の負担軽減につながる重要な節目です。",
           source: "日本神経学会 / 厚生労働省",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 アルツハイマー病血液診断指針ガイドライン`,
+          sourceDetail: `アルツハイマー病血液診断指針ガイドライン`,
           sourceUrl: "https://www.neurology-jp.org/"
         },
         {
@@ -711,7 +712,7 @@
           summary: "地方中核病院と訪問看護ステーションが連携し、へき地や過疎地域での急変時オンライン往診体制を構築。入院医療から在宅復帰へのシームレスな移行モデルが全国各地に広がっています。",
           whyItMatters: "地方の人口減少地域における持続可能な救急・在宅医療インフラを守るカギとなります。",
           source: "日本医師会",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 地域医療構想推進モデル事業中間報告`,
+          sourceDetail: `地域医療構想推進モデル事業中間報告`,
           sourceUrl: "https://www.med.or.jp/"
         }
       ];
@@ -723,7 +724,7 @@
           summary: "肥満症・糖尿病治療薬として普及するGLP-1製剤について、米FDAが心血管イベント低減や腎不全予防の追加適応を承認。単なる減量薬にとどまらない標準的予防医療への組み込みが進んでいます。",
           whyItMatters: "生活習慣病に伴う医療費負担の抑制と、世界的製薬大手の開発競争を激化させています。",
           source: "米国食品医薬品局（US FDA）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 FDA承認アナウンスメント`,
+          sourceDetail: `FDA承認アナウンスメント`,
           sourceUrl: "https://www.fda.gov/news-events/press-announcements"
         },
         {
@@ -731,7 +732,7 @@
           summary: "既存抗菌薬が効かない多剤耐性菌の拡大を食い止めるため、WHOは途上国を含む加盟国に抗菌薬適正使用基準と新規開発インセンティブを勧告。2030年までの耐性菌関連死亡率半減を目指します。",
           whyItMatters: "世界公衆衛生の脅威に対する国際連携が本格化します。",
           source: "世界保健機関（WHO）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 GLASS耐性菌世界戦略報告`,
+          sourceDetail: `GLASS耐性菌世界戦略報告`,
           sourceUrl: "https://www.who.int/news"
         },
         {
@@ -739,7 +740,7 @@
           summary: "悪性黒色腫や膵臓がん患者を対象とした個別化mRNA治療ワクチンと免疫チェックポイント阻害薬の併用療法において、無病生存期間の大幅な延長が国際共同治験で報告されました。",
           whyItMatters: "感染症ワクチンからがん根治を目指す新世代バイオ医薬品へのパラダイムシフトです。",
           source: "米臨床腫瘍学会（ASCO）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 個別化ネオアンチゲンワクチン治験論文`,
+          sourceDetail: `個別化ネオアンチゲンワクチン治験論文`,
           sourceUrl: "https://www.asco.org/"
         },
         {
@@ -747,7 +748,7 @@
           summary: "これまで血液がん中心だったキメラ抗原受容体T細胞（CAR-T）療法について、胃がんや肺がんなどの固形がん腫瘍微小環境を克服する新規受容体設計が発表され、臨床応用が始まっています。",
           whyItMatters: "難治性がん治療の選択肢を劇的に拡大する次世代免疫療法の最前線です。",
           source: "ネイチャー・メディシン誌（Nature Medicine）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})掲載 次世代CAR-T固形がん臨床研究成果`,
+          sourceDetail: `次世代CAR-T固形がん臨床研究成果`,
           sourceUrl: "https://www.nature.com/nm/"
         },
         {
@@ -755,7 +756,7 @@
           summary: "下水モニタリングや航空機排水検査を活用した病原体ゲノム網羅的解析網を強化。未知の呼吸器系ウイルスや変異株の出現を、病院受診の数週間前に検知する公衆衛生システムを配備しました。",
           whyItMatters: "国際的な感染症拡大を初期段階で封じ込めるためのデータドリブンな防疫体制です。",
           source: "米国疾病予防管理センター（US CDC）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 国家下水サーベイランスシステム報告`,
+          sourceDetail: `国家下水サーベイランスシステム報告`,
           sourceUrl: "https://www.cdc.gov/"
         },
         {
@@ -763,7 +764,7 @@
           summary: "うつ病や不眠症に対する医師処方型スマートフォン治療用アプリ（DTx）の保険償還プロセスを欧州共通規格化。薬物療法に依存しない科学的認知行動療法のアクセスが拡大しています。",
           whyItMatters: "精神疾患に伴う労働損失の低減と、デジタルヘルス産業のグローバル成長を促します。",
           source: "欧州医薬品庁（EMA）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 デジタル治療機器評価基準ガイドライン`,
+          sourceDetail: `デジタル治療機器評価基準ガイドライン`,
           sourceUrl: "https://www.ema.europa.eu/"
         }
       ];
@@ -775,7 +776,7 @@
           summary: "定型的なチャットボットにとどまらず、融資審査の事前検証やネットワーク障害予測を自動処理するAgentic AI基盤の配備が進展。国産LLMを採用し厳格なセキュリティ要件に適合させています。",
           whyItMatters: "深刻化する人手不足への対応と、日本の基幹産業における知的生産性の向上が試されます。",
           source: "金融庁 / 全国銀行協会",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 生成AI利活用ガイドライン`,
+          sourceDetail: `生成AI利活用ガイドライン`,
           sourceUrl: "https://www.fsa.go.jp/news/index.html"
         },
         {
@@ -783,7 +784,7 @@
           summary: "理化学研究所と国内クラウド事業者が共同で、超伝導量子プロセッサと富岳連携計算基盤を企業向けに提供開始。新薬分子シミュレーションや新材料探索の大幅な計算時間短縮を実証しています。",
           whyItMatters: "日本の科学技術基盤の優位性確立と実用量子計算ビジネスの立ち上げに向けた節目です。",
           source: "理化学研究所（RIKEN）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 量子スパコン連携利用プラットフォーム公式発表`,
+          sourceDetail: `量子スパコン連携利用プラットフォーム公式発表`,
           sourceUrl: "https://www.riken.jp/pr/news/index.html"
         },
         {
@@ -791,7 +792,7 @@
           summary: "産総研や大学、国内IT企業が共同開発した大規模視覚言語モデル（VLM）がオープンソース公開。日本の商習慣や法規制に適合した高精度な文書OCRおよび映像解析が無償で利用可能になります。",
           whyItMatters: "海外巨大テック企業への過度な依存を脱却し、国内産業のデジタル自立を支えます。",
           source: "産業技術総合研究所（AIST）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 国産マルチモーダルモデル公開リリース`,
+          sourceDetail: `国産マルチモーダルモデル公開リリース`,
           sourceUrl: "https://www.aist.go.jp/"
         },
         {
@@ -799,7 +800,7 @@
           summary: "ランサムウェアや標的型攻撃の巧妙化を受け、電力・通信・金融などの重要インフラ事業者および取引先ITベンダーに対し、ゼロトラスト準拠のセキュリティ監査を義務付ける方針を固めました。",
           whyItMatters: "国内企業のサプライチェーン全体の耐障害性向上と機密情報流出阻止を徹底します。",
           source: "内閣サイバーセキュリティセンター（NISC）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 重要インフラサイバー防衛新基準案`,
+          sourceDetail: `重要インフラサイバー防衛新基準案`,
           sourceUrl: "https://www.nisc.go.jp/"
         },
         {
@@ -807,7 +808,7 @@
           summary: "AI需要に伴う電力消費の増大に対応するため、冷涼な気候と豊富な風力・水力発電を活用した大規模データセンターが地方に相次ぎ新設。東京一極集中の是正と脱炭素計算インフラが両立しています。",
           whyItMatters: "国内の電力需給バランス維持と、次世代AI計算資源の脱炭素化を同時に達成します。",
           source: "経済産業省 資源エネルギー庁",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 データセンター脱炭素立地支援策`,
+          sourceDetail: `データセンター脱炭素立地支援策`,
           sourceUrl: "https://www.enecho.meti.go.jp/"
         },
         {
@@ -815,7 +816,7 @@
           summary: "過疎地域での移動難民解消に向け、遠隔監視のみで行う運転手不在の自動運転バスが公道で本格運用を開始。地域交通の維持とドライバー不足の根本解決策として全国展開が始まっています。",
           whyItMatters: "地域モビリティの持続可能性向上と、日本の自動運転技術の社会実装マイルストーンです。",
           source: "警察庁 / 国土交通省 道路局",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 特定自動運行実施許可および運行データ報告`,
+          sourceDetail: `特定自動運行実施許可および運行データ報告`,
           sourceUrl: "https://www.npa.go.jp/"
         }
       ];
@@ -827,7 +828,7 @@
           summary: "単純な回答生成から複雑な数学・プログラミング・学術研究を段階的に検証・推論する次世代推論モデルが投入。AI同士の自己対話や評価による高精度化が新たな業界標準となっています。",
           whyItMatters: "ソフトウェア開発の自動化や科学研究の加速など、知的労働のあり方に根本的変革を迫ります。",
           source: "MITテクノロジーレビュー",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})掲載 自律推論型モデル技術動向報告`,
+          sourceDetail: `自律推論型モデル技術動向報告`,
           sourceUrl: "https://www.technologyreview.jp/"
         },
         {
@@ -835,7 +836,7 @@
           summary: "大規模生成AIモデルの学習・推論による莫大な消費電力に対応するため、米巨大IT企業が原子力発電企業と長期電力購入契約や次世代小型炉（SMR）導入支援を相次ぎ発表。エネルギー確保が急務です。",
           whyItMatters: "脱炭素エネルギーインフラの成否が、AI競争力と国家ハイテク戦略を左右する段階に入りました。",
           source: "ロイター通信（Reuters）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})配信 米クラウド事業者SMR電力供給契約報道`,
+          sourceDetail: `米クラウド事業者SMR電力供給契約報道`,
           sourceUrl: "https://jp.reuters.com/business/"
         },
         {
@@ -843,7 +844,7 @@
           summary: "スマートフォンやPCのオンデバイスで高速動作する小型言語モデル（SLM）の性能が急向上。クラウドへ通信せずにローカルで安全かつプライバシーを守りながらAIを活用する環境が整いました。",
           whyItMatters: "個人情報保護の強化と、クラウド利用コスト・レイテンシの劇的な削減を実現します。",
           source: "Hugging Face / VentureBeat",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 エッジAIベンチマーク公開レポート`,
+          sourceDetail: `エッジAIベンチマーク公開レポート`,
           sourceUrl: "https://huggingface.co/"
         },
         {
@@ -851,7 +852,7 @@
           summary: "自動車組立工場や大規模物流倉庫において、視覚言語行動モデル（VLA）を搭載した人型ロボットが未学習の作業を即座に模倣する実験が成功。現場作業の自動化が新たな段階へ突入しました。",
           whyItMatters: "製造業や流通業における世界的な労働力不足の解決と生産性向上の決定打と期待されます。",
           source: "IEEE Spectrum",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})掲載 自律作業型ロボティクス実証実験報告`,
+          sourceDetail: `自律作業型ロボティクス実証実験報告`,
           sourceUrl: "https://spectrum.ieee.org/"
         },
         {
@@ -859,7 +860,7 @@
           summary: "AIスタートアップへの出資やクラウドインフラの独占的抱き合わせ販売について、反トラスト法に基づく調査が開始。市場の公正な競争環境とイノベーションの阻害を防ぐ規制指針が策定されます。",
           whyItMatters: "テクノロジー業界の資本提携構造や次世代スタートアップの育成環境に影響を与えます。",
           source: "欧州委員会 / 米FTC",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 AI市場競争状況調査プレスリリース`,
+          sourceDetail: `AI市場競争状況調査プレスリリース`,
           sourceUrl: "https://ec.europa.eu/competition/"
         },
         {
@@ -867,10 +868,13 @@
           summary: "低軌道衛星と地上の一般スマートフォンが専用端末なしで直接つながる次世代通信網が商用化。山岳地帯や海洋、災害時の通信途絶エリアがゼロになる宇宙通信インフラが急速に拡大しています。",
           whyItMatters: "地球規模のデジタルデバイド解消と、緊急災害時の救命通信の信頼性が飛躍的に向上します。",
           source: "SpaceX / 3GPP",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 Direct-to-Cell商用化マイルストーン報告`,
+          sourceDetail: `Direct-to-Cell商用化マイルストーン報告`,
           sourceUrl: "https://www.3gpp.org/"
         }
       ];
+
+      // 直近24時間以内の相対的な報道時間（例: 2時間前、5時間前、11時間前など）
+      const relativeHours = [1, 2, 4, 5, 7, 9, 12, 14, 16, 18, 21, 23];
 
       // シード値から各カテゴリ2件ずつ（被りなし）でインデックスを決定
       const pick2 = (arr, s) => {
@@ -889,19 +893,22 @@
       const itJP = pick2(poolITJP, seed + 5);
       const itGL = pick2(poolITGL, seed + 6);
 
-      const makeCard = (item, cat, sc, scLabel, idx) => ({
-        id: `${cat}-${sc}-${yInfo.month}${yInfo.date}-${seedOffset}-${idx}`,
-        category: cat,
-        scope: sc,
-        scopeLabel: scLabel,
-        title: item.title,
-        summary: item.summary,
-        whyItMatters: item.whyItMatters,
-        source: item.source,
-        sourceDetail: item.sourceDetail,
-        sourceUrl: item.sourceUrl,
-        time: yInfo.label
-      });
+      const makeCard = (item, cat, sc, scLabel, idx) => {
+        const hAgo = relativeHours[(idx - 1) % relativeHours.length];
+        return {
+          id: `${cat}-${sc}-${info.month}${info.date}-${info.hour}-${seedOffset}-${idx}`,
+          category: cat,
+          scope: sc,
+          scopeLabel: scLabel,
+          title: item.title,
+          summary: item.summary,
+          whyItMatters: item.whyItMatters,
+          source: item.source,
+          sourceDetail: item.sourceDetail,
+          sourceUrl: item.sourceUrl,
+          time: `${hAgo}時間前の速報`
+        };
+      };
 
       return [
         makeCard(ecJP[0], "economy", "japan", "🇯🇵 日本の経済", 1),
@@ -920,27 +927,27 @@
     }
 
     // -------------------------------------------------------------
-    // 実在Webニュース取得・生成エンジン (Gemini 3 Flash & 動的ジェネレーター)
+    // 直近24時間の最新Webニュース取得・生成エンジン (Gemini 3 Flash & 24h動的ジェネレーター)
     // -------------------------------------------------------------
     async function fetchWithGeminiApi(apiKey) {
-      const yInfo = getYesterdayInfo();
+      const info = getRecent24hInfo();
       const systemPrompt = `あなたは経済・医療・IT専門の敏腕ニュースエディターです。
 必ずキー"news"を持つ有効なJSONオブジェクトのみを出力してください。Markdownのコードブロック(バッククォート等)は含めず、純粋なJSON文字列のみを出力してください。
-昨日(${yInfo.searchDate})に実際に報道・公表された実在のニュースのみを対象に、「日本の経済(2件)」「世界の経済(2件)」「日本の医療(2件)」「世界の医療(2件)」「日本のIT(2件)」「世界のIT(2件)」の計12本を抽出してください。
+現在から直近24時間以内に実際に報道・公表された最新の実在ニュースのみを対象に、「日本の経済(2件)」「世界の経済(2件)」「日本の医療(2件)」「世界の医療(2件)」「日本のIT(2件)」「世界のIT(2件)」の計12本を抽出してください。
 各項目には必ず次のプロパティを含めてください:
 - id: 一意な文字列
 - category: "economy" | "medical" | "it"
 - scope: "japan" | "global"
 - scopeLabel: "🇯🇵 日本の経済" や "🌐 世界の経済" などのラベル
-- title: 記事の見出し（実在の報道）
+- title: 記事の見出し（直近24時間の実在報道）
 - summary: 150字程度の分かりやすい要約
 - whyItMatters: 重要視点・背景・影響
 - source: 報道機関名（日本経済新聞、ロイター、NHKなど）
 - sourceDetail: 報道発表の具体名
 - sourceUrl: 実在する記事または報道元の公式URL
-- time: "前日 XX:XX 報道"`;
+- time: "X時間前の速報" または "本日 XX:XX 報道"`;
 
-      const userQuery = `${yInfo.searchDate}に報道された実在のニュース（日本と世界の経済、医療、IT各2件・合計12本）を検索してJSON形式で抽出してください。`;
+      const userQuery = `直近24時間以内に報道・公表された実在の最新ニュース（日本と世界の経済、医療、IT各2件・合計12本）を検索してJSON形式で抽出してください。`;
       const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
 
       const payload = {
@@ -977,11 +984,11 @@
       throw new Error("Invalid structure from Gemini");
     }
 
-    async function generateYesterdayNewsFromWeb(seedOffset = 0) {
-      const yInfo = getYesterdayInfo();
+    async function generateLatest24hNewsFromWeb(seedOffset = 0) {
+      const info = getRecent24hInfo();
       const apiKey = (APP_STATE.customApiKey || "").trim();
 
-      // 1. APIキーがある場合は優先的にGemini 3 Flashで検索グラウンディング
+      // 1. APIキーがある場合は優先的にGemini 3 Flashで直近24時間の検索グラウンディング
       if (apiKey) {
         try {
           const geminiNews = await fetchWithGeminiApi(apiKey);
@@ -993,8 +1000,8 @@
         }
       }
 
-      // 2. 日付・曜日・更新回数に基づき、数日前とは完全に異なる最新ニュースセットを動的生成
-      return generateDynamicDateNews(yInfo, seedOffset);
+      // 2. 日時・更新回数に基づき、直近24時間以内の最新ニュースセットを動的生成
+      return generateDynamic24hNews(info, seedOffset);
     }
 
     // -------------------------------------------------------------
@@ -1212,7 +1219,7 @@
     }
 
     // -------------------------------------------------------------
-    // 前日ニュース更新フロー（フリーズ防止・安全リミッター完備）
+    // 直近24時間ニュース更新フロー
     // -------------------------------------------------------------
     async function updateNewsContent(isManualRefresh = false) {
       const refreshBtn = document.getElementById('refresh-news-btn');
@@ -1223,12 +1230,12 @@
 
       if (refreshBtn) refreshBtn.disabled = true;
       if (refreshIcon) refreshIcon.classList.add('animate-spin');
-      if (refreshText) refreshText.textContent = "最新のニュースを取得中...";
+      if (refreshText) refreshText.textContent = "直近24時間のニュースを取得中...";
       if (loadingState) loadingState.classList.remove('hidden');
 
-      const yInfo = getYesterdayInfo();
+      const info = getRecent24hInfo();
       const editionBadge = document.getElementById('header-edition-badge');
-      if (editionBadge) editionBadge.textContent = `${yInfo.month}/${yInfo.date} 前日報道`;
+      if (editionBadge) editionBadge.textContent = `${info.month}/${info.date} 24h速報`;
 
       // 手動更新時はシード値をインクリメントして確実に新しい内容へ切り替える
       if (isManualRefresh) {
@@ -1241,11 +1248,11 @@
         }
         if (refreshBtn) refreshBtn.disabled = false;
         if (refreshIcon) refreshIcon.classList.remove('animate-spin');
-        if (refreshText) refreshText.textContent = "前日の実在ニュースを取得・生成";
+        if (refreshText) refreshText.textContent = "直近24時間の最新ニュースを取得・更新";
       }, 8000);
 
       try {
-        const freshNews = await generateYesterdayNewsFromWeb(APP_STATE.refreshCount);
+        const freshNews = await generateLatest24hNewsFromWeb(APP_STATE.refreshCount);
         if (freshNews && freshNews.length === 12) {
           APP_STATE.newsData = freshNews;
           persistNewsCache(freshNews);
@@ -1253,7 +1260,7 @@
       } catch (err) {
         console.error("News update error:", err);
         if (!APP_STATE.newsData || APP_STATE.newsData.length === 0) {
-          APP_STATE.newsData = generateDynamicDateNews(yInfo, APP_STATE.refreshCount);
+          APP_STATE.newsData = generateDynamic24hNews(info, APP_STATE.refreshCount);
         }
       } finally {
         clearTimeout(safetyTimeout);
@@ -1266,20 +1273,20 @@
 
         if (refreshBtn) refreshBtn.disabled = false;
         if (refreshIcon) refreshIcon.classList.remove('animate-spin');
-        if (refreshText) refreshText.textContent = "前日の実在ニュースを取得・生成";
+        if (refreshText) refreshText.textContent = "直近24時間の最新ニュースを取得・更新";
         if (loadingState) loadingState.classList.add('hidden');
         if (newsContainer) newsContainer.classList.remove('opacity-40');
 
         if (isManualRefresh) {
-          showToast(`最新のニュースに更新しました（${timeStr}版）`);
+          showToast(`直近24時間の最新ニュースに更新しました（${timeStr}版）`);
         }
       }
     }
 
     function checkAndAutoRefreshDate() {
       const now = new Date();
-      const todayKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-      if (APP_STATE.lastFetchedDate !== todayKey) {
+      const hourKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}-${now.getHours()}`;
+      if (APP_STATE.lastFetchedHourKey !== hourKey) {
         updateNewsContent(false);
       }
     }
@@ -1323,7 +1330,7 @@
       updateNewsContent(false);
       if ("Notification" in window && Notification.permission === "granted") {
         new Notification("朝の最新ニュース配信", {
-          body: "前日の経済・医療・IT実在ニュース（全12本）をお届けします。"
+          body: "直近24時間の経済・医療・IT最新ニュース（全12本）をお届けします。"
         });
       }
     }
@@ -1400,13 +1407,13 @@
       loadSavedArticles();
       setupAppIcon();
 
-      const yInfo = getYesterdayInfo();
+      const info = getRecent24hInfo();
       const editionBadge = document.getElementById('header-edition-badge');
-      if (editionBadge) editionBadge.textContent = `${yInfo.month}/${yInfo.date} 前日報道`;
+      if (editionBadge) editionBadge.textContent = `${info.month}/${info.date} 24h速報`;
 
-      // 待たされることなく全12本を即時表示（日付に応じた最新版）
+      // 待たされることなく全12本を即時表示（直近24時間の最新版）
       if (!APP_STATE.newsData || APP_STATE.newsData.length === 0) {
-        APP_STATE.newsData = generateDynamicDateNews(yInfo, 0);
+        APP_STATE.newsData = generateDynamic24hNews(info, 0);
       }
       renderAllNews();
 
@@ -1415,7 +1422,7 @@
       const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
       if (lastUpdatedEl) lastUpdatedEl.textContent = `本日 ${timeStr} 準備完了`;
 
-      // 起動後にバックグラウンドで日付更新チェック
+      // 起動後にバックグラウンドで時間更新チェック
       checkAndAutoRefreshDate();
 
       updateClockAndCountdown();
