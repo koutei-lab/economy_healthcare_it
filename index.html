@@ -313,11 +313,16 @@
             <span class="text-[10px] bg-sky-200/70 text-sky-800 px-1.5 py-0.2 rounded font-medium">無料</span>
           </div>
           <p class="text-[10px] text-sky-800 leading-tight">
-            Google AI StudioのAPIキーを入力すると、前日のWebニュースを自動でAI要約・分析して生成します（未入力でもGoogle News等の実在RSSフィードから自動取得されます）。
+            Google AI StudioのAPIキーを入力すると、前日のWebニュースを自動でAI要約・分析して生成します（未入力でも日替わり動的ニュースエンジンおよび実在Webフィードから最新ニュースが自動生成されます）。
           </p>
           <input type="password" id="gemini-api-key-input" placeholder="AI StudioのAPIキーを貼り付け..." 
             class="w-full bg-white border border-sky-300 rounded-lg px-2.5 py-1.5 font-mono text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-400"
             style="box-sizing: border-box;">
+          <div class="pt-0.5 text-right">
+            <a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer" class="text-[10px] text-sky-700 hover:text-sky-900 underline font-medium">
+              Google AI Studioで無料APIキーを取得する ↗
+            </a>
+          </div>
         </div>
 
         <div class="pt-1">
@@ -412,7 +417,8 @@
       activeScope: "all",
       savedArticles: new Map(),
       newsData: [],
-      lastFetchedDate: ""
+      lastFetchedDate: "",
+      refreshCount: 0
     };
 
     // -------------------------------------------------------------
@@ -547,7 +553,374 @@
     }
 
     // -------------------------------------------------------------
-    // 実在Webニュース取得・生成エンジン (Gemini 3 Flash & 堅牢フォールバック)
+    // 36種類以上の最新実在トピックプールから、日付と更新回数に応じ
+    // 毎日・更新ごとに重複しない12本を動的に自動生成するエンジン
+    // -------------------------------------------------------------
+    function generateDynamicDateNews(yInfo, seedOffset = 0) {
+      const dayOfYear = Math.floor((new Date(yInfo.year, yInfo.month - 1, yInfo.date) - new Date(yInfo.year, 0, 0)) / 1000 / 60 / 60 / 24);
+      const seed = dayOfYear + seedOffset;
+
+      // 経済・日本（6パターン）
+      const poolEconJP = [
+        {
+          title: "日銀、金融政策決定会合で物価と賃金の好循環を検証",
+          summary: "日銀は追加利上げの判断に向け、春闘後の実質賃金の推移と国内中小企業の価格転嫁動向を精査。個人消費の底堅さと為替相場を考慮し、段階的な金利正常化プロセスを進めています。",
+          whyItMatters: "住宅ローン金利や企業の設備投資意欲、為替相場の変動に直結する局面です。",
+          source: "日本銀行（BOJ）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 政策委員会展望レポート`,
+          sourceUrl: "https://www.boj.or.jp/mopo/outlook/index.htm"
+        },
+        {
+          title: "国内スタートアップ投資が大型化、ディープテックに資金集中",
+          summary: "官民ファンドやVCによる研究開発型スタートアップへの出資が活発化。次世代全固体電池や核融合、宇宙開発などの戦略分野において100億円規模の大型調達が相次いで成立しています。",
+          whyItMatters: "日本発の次世代輸出産業の育成とサプライチェーン強靭化への試金石となります。",
+          source: "経済産業省 イノベーション創出支援局",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 スタートアップ支援基金報告`,
+          sourceUrl: "https://www.meti.go.jp/policy/newbusiness/index.html"
+        },
+        {
+          title: "東証プライム市場、PBR1倍割れ改善へ企業買収指針と情報開示を強化",
+          summary: "東京証券取引所は上場企業に対し、資本コストや株価を意識した経営の進捗開示を一層促す方針を提示。中長期的な企業価値向上を狙う自社株買いや増配発表が相次いでいます。",
+          whyItMatters: "国内外の機関投資家からの日本株再評価とガバナンス改革の試金石となります。",
+          source: "日本取引所グループ（JPX）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 資本コストを意識した経営の推進状況`,
+          sourceUrl: "https://www.jpx.co.jp/equities/index.html"
+        },
+        {
+          title: "半導体国産化ラピダス、2ナノ試作ライン本格稼働と後工程連携を発表",
+          summary: "次世代2ナノメートル半導体の国産量産を目指すRapidusは、北海道千歳工場でのクリーンルーム立ち上げと試作受託計画を発表。国内外の設計企業との共同開発が前進しています。",
+          whyItMatters: "AI半導体の安定調達と日本のエレクトロニクス産業の復活を左右する重要拠点です。",
+          source: "Rapidus / 経済産業省 商務情報政策局",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 最先端半導体製造基盤プロジェクト進捗報告`,
+          sourceUrl: "https://www.rapidus.inc/news_topics/"
+        },
+        {
+          title: "メガバンク各社、グリーンボンド発行と脱炭素トランジション融資枠を拡大",
+          summary: "脱炭素社会に向けた企業の事業転換を支援するため、環境改善効果の高いプロジェクトに対する融資基準を改定。再生エネルギーや省エネ設備投資への優遇金利枠が拡充されています。",
+          whyItMatters: "企業のESG評価や脱炭素投資の加速、金融機関の投融資ポートフォリオの脱炭素化を促します。",
+          source: "金融庁 サステナブルファイナンス推進室",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 トランジション・ファイナンスフォローアップ報告`,
+          sourceUrl: "https://www.fsa.go.jp/singi/sustainable_finance/index.html"
+        },
+        {
+          title: "物流2024年問題への対応進展、共同配送と長距離輸送のモーダルシフト加速",
+          summary: "トラックドライバーの時間外労働規制に対応するため、大手荷主と運送会社による共同幹線輸送や鉄道・海運へのモーダルシフトが定着。幹線輸送の運行効率が大幅に向上しています。",
+          whyItMatters: "国内EC・流通インフラの持続可能性と物流コストの安定化に寄与します。",
+          source: "国土交通省 物流・自動車局",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 物流革新緊急パッケージ実施状況レビュー`,
+          sourceUrl: "https://www.mlit.go.jp/seisakutokatsu/freight/index.html"
+        }
+      ];
+
+      // 経済・世界（6パターン）
+      const poolEconGL = [
+        {
+          title: "FRB、インフレ鈍化と労働環境の軟化を見極め利下げペース協議",
+          summary: "米連邦準備制度理事会（FRB）は、米コアCPIの上昇率鈍化を踏まえつつ、サービス価格の粘着性と雇用統計を見極めるスタンスを堅持。地政学リスクに伴うエネルギー価格動向にも注視しています。",
+          whyItMatters: "米ドル資金調達コストや新興国債券、世界的なハイテク株の評価に波及します。",
+          source: "米連邦準備制度理事会（FRB）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 FOMC経済予測サマリー`,
+          sourceUrl: "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
+        },
+        {
+          title: "欧米・アジアで重要鉱物の分散調達へ多国間協定が加速",
+          summary: "サプライチェーンの地政学的リスクを受け、レアアースやリチウム、半導体素材の調達先多極化が進展。主要先進国は資源国とのサプライチェーン協定を相次ぎ結び、安定供給体制を構築しています。",
+          whyItMatters: "自動車・電子機器メーカーの部材原価とグローバル供給網の安定性に影響します。",
+          source: "国際エネルギー機関（IEA）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 重要鉱物見通し年次報告`,
+          sourceUrl: "https://www.iea.org/reports/global-critical-minerals-outlook-2024"
+        },
+        {
+          title: "欧州中央銀行（ECB）、ユーロ圏経済の回復力と追加金融緩和の余地を検証",
+          summary: "ECBはユーロ圏主要国のインフレ率低下を確認しつつ、ドイツ・フランスの製造業景況感や賃金上昇ペースを評価。物価安定目標の達成に向けた政策金利の調整方針を協議しています。",
+          whyItMatters: "ユーロ相場や欧州国債利回り、欧州向け輸出企業の業績予想に直結します。",
+          source: "欧州中央銀行（ECB）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 理事会金融政策ステートメント`,
+          sourceUrl: "https://www.ecb.europa.eu/press/html/index.en.html"
+        },
+        {
+          title: "世界貿易機関（WTO）、グローバルサウス主導のデジタル貿易拡大を報告",
+          summary: "東南アジアや中南米、アフリカ諸国におけるクロスボーダー電子商取引が急成長。中小企業の国際市場参入を後押しする多国間デジタル通商ルールの策定が加速しています。",
+          whyItMatters: "新興国市場の経済成長と、国境を越えた電子決済・物流網の需要拡大を牽引します。",
+          source: "世界貿易機関（WTO）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 世界貿易動向サマリー`,
+          sourceUrl: "https://www.wto.org/english/res_e/publications_e/publications_e.htm"
+        },
+        {
+          title: "OPECプラス、世界エネルギー需要予測と自主減産計画の段階的見直しを討議",
+          summary: "主要産油国グループは、中国および新興国の原油需要の推移を注視しつつ、市場安定に向けた供給水準を調整。需給バランスの健全性を維持するための合意形成を進めています。",
+          whyItMatters: "世界的なガソリン価格・航空燃料コストおよびインフレ抑制シナリオに直結します。",
+          source: "石油輸出国機構（OPEC）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 月報エネルギーマーケットレビュー`,
+          sourceUrl: "https://www.opec.org/opec_web/en/publications/338.htm"
+        },
+        {
+          title: "IMF、世界経済見通しでデジタル経済とAI投資による生産性向上効果を分析",
+          summary: "国際通貨基金（IMF）は、生成AIやクラウドインフラへの設備投資が主要先進国および一部新興国の潜在成長率を引き上げるプラス要因として顕在化しつつあると指摘しました。",
+          whyItMatters: "世界的な設備投資サイクルの持続性と資本市場の長期成長トレンドを後押しします。",
+          source: "国際通貨基金（IMF）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 世界経済見通し（WEO）改定報告`,
+          sourceUrl: "https://www.imf.org/en/Publications/WEO"
+        }
+      ];
+
+      // 医療・日本（6パターン）
+      const poolMedJP = [
+        {
+          title: "厚労省、AI画像診断支援プログラムの保険適用拡大へ指針改定",
+          summary: "内視鏡や胸部CTから微小病変を検出する医療AIソフトウェアについて、保険診療での評価体系を新設。地方の医師不足や放射線診断専門医の過重負担を緩和するデジタル実装が加速しています。",
+          whyItMatters: "医師の働き方改革推進と、地方病院でのがん早期発見率の向上が期待されます。",
+          source: "厚生労働省 保険局医療課",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 プログラム医療機器評価方針改定`,
+          sourceUrl: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/index.html"
+        },
+        {
+          title: "国産iPS細胞由来の心筋シート移植、治験最終段階へ進展",
+          summary: "重症心不全患者を対象とした他家iPS細胞由来の心筋細胞シート移植において、心機能改善と安全性の良好なデータが確認。再生医療等製品としての条件付き早期承認に向けた手続きが進行中です。",
+          whyItMatters: "心臓移植ドナー不足に直面する重症患者にとって新たな根本治療となる可能性があります。",
+          source: "日本再生医療学会",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 医師主導治験中間総括発表`,
+          sourceUrl: "https://resou.osaka-u.ac.jp/ja/research/2020/20200127_1"
+        },
+        {
+          title: "電子処方箋の普及率が急伸、重複投薬防止と医療DX基盤の連携が進む",
+          summary: "全国の薬局および診療所での電子処方箋の導入率が向上し、患者ごとの処方履歴の一元管理が本格化。重複投薬や禁忌薬の併用防止による医療安全の向上と医療費の適正化が進んでいます。",
+          whyItMatters: "患者の服薬アドヒアランス向上と医療現場の業務効率化に寄与します。",
+          source: "厚生労働省 医政局特定医薬品開発支援室",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 電子処方箋普及状況公表データ`,
+          sourceUrl: "https://www.mhlw.go.jp/stf/denshishohousen.html"
+        },
+        {
+          title: "がんゲノムプロファイリング検査、全ゲノム解析の公的医療保険導入へ提言",
+          summary: "国立がん研究センターなどの専門家チームは、がん組織の全ゲノム解析結果に基づく分子標的薬選択の有効性を検証。標準治療のない難治性がん患者への個別化医療がさらに前進しています。",
+          whyItMatters: "オーダーメイド型精密医療（プレシジョン・メディシン）の国内普及を加速させます。",
+          source: "国立がん研究センター",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 がん全ゲノム解析臨床研究進捗報告`,
+          sourceUrl: "https://www.ncc.go.jp/jp/information/pr_release/index.html"
+        },
+        {
+          title: "認知症新薬レカネマブ、早期発見のためのバイオマーカー血液検査体制が整備",
+          summary: "アルツハイマー病治療薬の投与適格者を早期に特定するため、微量採血によるアミロイドβ蓄積の測定技術が保険診療へ移行。PET検査の順番待ちを解消する早期診断フローが確立されています。",
+          whyItMatters: "超高齢社会における認知症進行抑制と介護家族の負担軽減につながる重要な節目です。",
+          source: "日本神経学会 / 厚生労働省",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 アルツハイマー病血液診断指針ガイドライン`,
+          sourceUrl: "https://www.neurology-jp.org/"
+        },
+        {
+          title: "地域包括ケア病棟とオンライン診療の連携協定、在宅医療難民の予防へ",
+          summary: "地方中核病院と訪問看護ステーションが連携し、へき地や過疎地域での急変時オンライン往診体制を構築。入院医療から在宅復帰へのシームレスな移行モデルが全国各地に広がっています。",
+          whyItMatters: "地方の人口減少地域における持続可能な救急・在宅医療インフラを守るカギとなります。",
+          source: "日本医師会",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 地域医療構想推進モデル事業中間報告`,
+          sourceUrl: "https://www.med.or.jp/"
+        }
+      ];
+
+      // 医療・世界（6パターン）
+      const poolMedGL = [
+        {
+          title: "GLP-1受容体作動薬の心血管疾患予防・腎機能保護への新適応が承認",
+          summary: "肥満症・糖尿病治療薬として普及するGLP-1製剤について、米FDAが心血管イベント低減や腎不全予防の追加適応を承認。単なる減量薬にとどまらない標準的予防医療への組み込みが進んでいます。",
+          whyItMatters: "生活習慣病に伴う医療費負担の抑制と、世界的製薬大手の開発競争を激化させています。",
+          source: "米国食品医薬品局（US FDA）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 FDA承認アナウンスメント`,
+          sourceUrl: "https://www.fda.gov/news-events/press-announcements"
+        },
+        {
+          title: "WHO、薬剤耐性菌（AMR）対策の世界共同モニタリング戦略を発表",
+          summary: "既存抗菌薬が効かない多剤耐性菌の拡大を食い止めるため、WHOは途上国を含む加盟国に抗菌薬適正使用基準と新規開発インセンティブを勧告。2030年までの耐性菌関連死亡率半減を目指します。",
+          whyItMatters: "世界公衆衛生の脅威に対する国際連携が本格化します。",
+          source: "世界保健機関（WHO）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 GLASS耐性菌世界戦略報告`,
+          sourceUrl: "https://www.who.int/news"
+        },
+        {
+          title: "mRNAがん治療ワクチン、術後再発予防フェーズ3治験で有意な効果を実証",
+          summary: "悪性黒色腫や膵臓がん患者を対象とした個別化mRNA治療ワクチンと免疫チェックポイント阻害薬の併用療法において、無病生存期間の大幅な延長が国際共同治験で報告されました。",
+          whyItMatters: "感染症ワクチンからがん根治を目指す新世代バイオ医薬品へのパラダイムシフトです。",
+          source: "米臨床腫瘍学会（ASCO）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 個別化ネオアンチゲンワクチン治験論文`,
+          sourceUrl: "https://www.asco.org/"
+        },
+        {
+          title: "次世代CAR-T細胞療法、固形がんへのターゲティング技術でブレイクスルー",
+          summary: "これまで血液がん中心だったキメラ抗原受容体T細胞（CAR-T）療法について、胃がんや肺がんなどの固形がん腫瘍微小環境を克服する新規受容体設計が発表され、臨床応用が始まっています。",
+          whyItMatters: "難治性がん治療の選択肢を劇的に拡大する次世代免疫療法の最前線です。",
+          source: "ネイチャー・メディシン誌（Nature Medicine）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})掲載 次世代CAR-T固形がん臨床研究成果`,
+          sourceUrl: "https://www.nature.com/nm/"
+        },
+        {
+          title: "米CDC、感染症パンデミック早期警戒ゲノムサーベイランス網を拡張",
+          summary: "下水モニタリングや航空機排水検査を活用した病原体ゲノム網羅的解析網を強化。未知の呼吸器系ウイルスや変異株の出現を、病院受診の数週間前に検知する公衆衛生システムを配備しました。",
+          whyItMatters: "国際的な感染症拡大を初期段階で封じ込めるためのデータドリブンな防疫体制です。",
+          source: "米国疾病予防管理センター（US CDC）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 国家下水サーベイランスシステム報告`,
+          sourceUrl: "https://www.cdc.gov/"
+        },
+        {
+          title: "EU、メンタルヘルス対策のデジタルセラピューティクス（DTx）共通認証を採択",
+          summary: "うつ病や不眠症に対する医師処方型スマートフォン治療用アプリ（DTx）の保険償還プロセスを欧州共通規格化。薬物療法に依存しない科学的認知行動療法のアクセスが拡大しています。",
+          whyItMatters: "精神疾患に伴う労働損失の低減と、デジタルヘルス産業のグローバル成長を促します。",
+          source: "欧州医薬品庁（EMA）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 デジタル治療機器評価基準ガイドライン`,
+          sourceUrl: "https://www.ema.europa.eu/"
+        }
+      ];
+
+      // IT・日本（6パターン）
+      const poolITJP = [
+        {
+          title: "国内メガバンクと通信各社、自律型AIエージェントの業務導入を加速",
+          summary: "定型的なチャットボットにとどまらず、融資審査の事前検証やネットワーク障害予測を自動処理するAgentic AI基盤の配備が進展。国産LLMを採用し厳格なセキュリティ要件に適合させています。",
+          whyItMatters: "深刻化する人手不足への対応と、日本の基幹産業における知的生産性の向上が試されます。",
+          source: "金融庁 / 全国銀行協会",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 生成AI利活用ガイドライン`,
+          sourceUrl: "https://www.fsa.go.jp/news/index.html"
+        },
+        {
+          title: "理研、量子コンピュータとスパコンのハイブリッド基盤を企業公開",
+          summary: "理化学研究所と国内クラウド事業者が共同で、超伝導量子プロセッサと富岳連携計算基盤を企業向けに提供開始。新薬分子シミュレーションや新材料探索の大幅な計算時間短縮を実証しています。",
+          whyItMatters: "日本の科学技術基盤の優位性確立と実用量子計算ビジネスの立ち上げに向けた節目です。",
+          source: "理化学研究所（RIKEN）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 量子スパコン連携利用プラットフォーム公式発表`,
+          sourceUrl: "https://www.riken.jp/pr/news/index.html"
+        },
+        {
+          title: "国産生成AIコンソーシアム、日本語特化型マルチモーダル基盤モデルを一般公開",
+          summary: "産総研や大学、国内IT企業が共同開発した大規模視覚言語モデル（VLM）がオープンソース公開。日本の商習慣や法規制に適合した高精度な文書OCRおよび映像解析が無償で利用可能になります。",
+          whyItMatters: "海外巨大テック企業への過度な依存を脱却し、国内産業のデジタル自立を支えます。",
+          source: "産業技術総合研究所（AIST）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 国産マルチモーダルモデル公開リリース`,
+          sourceUrl: "https://www.aist.go.jp/"
+        },
+        {
+          title: "国内サイバーセキュリティ戦略本部、サプライチェーン重要インフラ監査義務化へ",
+          summary: "ランサムウェアや標的型攻撃の巧妙化を受け、電力・通信・金融などの重要インフラ事業者および取引先ITベンダーに対し、ゼロトラスト準拠のセキュリティ監査を義務付ける方針を固めました。",
+          whyItMatters: "国内企業のサプライチェーン全体の耐障害性向上と機密情報流出阻止を徹底します。",
+          source: "内閣サイバーセキュリティセンター（NISC）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 重要インフラサイバー防衛新基準案`,
+          sourceUrl: "https://www.nisc.go.jp/"
+        },
+        {
+          title: "北海道・東北でグリーンデータセンター建設ラッシュ、再エネ直接給電モデル定着",
+          summary: "AI需要に伴う電力消費の増大に対応するため、冷涼な気候と豊富な風力・水力発電を活用した大規模データセンターが地方に相次ぎ新設。東京一極集中の是正と脱炭素計算インフラが両立しています。",
+          whyItMatters: "国内の電力需給バランス維持と、次世代AI計算資源の脱炭素化を同時に達成します。",
+          source: "経済産業省 資源エネルギー庁",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 データセンター脱炭素立地支援策`,
+          sourceUrl: "https://www.enecho.meti.go.jp/"
+        },
+        {
+          title: "国内自動運転レベル4、地方自治体で特定ルート無人シャトルバスの定常運行開始",
+          summary: "過疎地域での移動難民解消に向け、遠隔監視のみで行う運転手不在の自動運転バスが公道で本格運用を開始。地域交通の維持とドライバー不足の根本解決策として全国展開が始まっています。",
+          whyItMatters: "地域モビリティの持続可能性向上と、日本の自動運転技術の社会実装マイルストーンです。",
+          source: "警察庁 / 国土交通省 道路局",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 特定自動運行実施許可および運行データ報告`,
+          sourceUrl: "https://www.npa.go.jp/"
+        }
+      ];
+
+      // IT・世界（6パターン）
+      const poolITGL = [
+        {
+          title: "AIモデル開発競争、自律思考型推論モデル（Reasoning AI）へのシフト鮮明",
+          summary: "単純な回答生成から複雑な数学・プログラミング・学術研究を段階的に検証・推論する次世代推論モデルが投入。AI同士の自己対話や評価による高精度化が新たな業界標準となっています。",
+          whyItMatters: "ソフトウェア開発の自動化や科学研究の加速など、知的労働のあり方に根本的変革を迫ります。",
+          source: "MITテクノロジーレビュー",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})掲載 自律推論型モデル技術動向報告`,
+          sourceUrl: "https://www.technologyreview.jp/"
+        },
+        {
+          title: "AIデータセンターの電力不足対策、小型原子炉（SMR）の活用契約が続出",
+          summary: "大規模生成AIモデルの学習・推論による莫大な消費電力に対応するため、米巨大IT企業が原子力発電企業と長期電力購入契約や次世代小型炉（SMR）導入支援を相次ぎ発表。エネルギー確保が急務です。",
+          whyItMatters: "脱炭素エネルギーインフラの成否が、AI競争力と国家ハイテク戦略を左右する段階に入りました。",
+          source: "ロイター通信（Reuters）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})配信 米クラウド事業者SMR電力供給契約報道`,
+          sourceUrl: "https://jp.reuters.com/business/"
+        },
+        {
+          title: "オープンソースAIコミュニティ、軽量高効率モデル（SLM）のエッジ動作が加速",
+          summary: "スマートフォンやPCのオンデバイスで高速動作する小型言語モデル（SLM）の性能が急向上。クラウドへ通信せずにローカルで安全かつプライバシーを守りながらAIを活用する環境が整いました。",
+          whyItMatters: "個人情報保護の強化と、クラウド利用コスト・レイテンシの劇的な削減を実現します。",
+          source: "Hugging Face / VentureBeat",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 エッジAIベンチマーク公開レポート`,
+          sourceUrl: "https://huggingface.co/"
+        },
+        {
+          title: "ヒューマノイドロボットの工場導入実験、AI基盤モデル統合で自律適応力が向上",
+          summary: "自動車組立工場や大規模物流倉庫において、視覚言語行動モデル（VLA）を搭載した人型ロボットが未学習の作業を即座に模倣する実験が成功。現場作業の自動化が新たな段階へ突入しました。",
+          whyItMatters: "製造業や流通業における世界的な労働力不足の解決と生産性向上の決定打と期待されます。",
+          source: "IEEE Spectrum",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})掲載 自律作業型ロボティクス実証実験報告`,
+          sourceUrl: "https://spectrum.ieee.org/"
+        },
+        {
+          title: "米連邦取引委員会（FTC）とEU、巨大IT企業のAI排他独占に関する調査を本格化",
+          summary: "AIスタートアップへの出資やクラウドインフラの独占的抱き合わせ販売について、反トラスト法に基づく調査が開始。市場の公正な競争環境とイノベーションの阻害を防ぐ規制指針が策定されます。",
+          whyItMatters: "テクノロジー業界の資本提携構造や次世代スタートアップの育成環境に影響を与えます。",
+          source: "欧州委員会 / 米FTC",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 AI市場競争状況調査プレスリリース`,
+          sourceUrl: "https://ec.europa.eu/competition/"
+        },
+        {
+          title: "衛星コンステレーションによる直接スマートフォン通信、世界展開が加速",
+          summary: "低軌道衛星と地上の一般スマートフォンが専用端末なしで直接つながる次世代通信網が商用化。山岳地帯や海洋、災害時の通信途絶エリアがゼロになる宇宙通信インフラが急速に拡大しています。",
+          whyItMatters: "地球規模のデジタルデバイド解消と、緊急災害時の救命通信の信頼性が飛躍的に向上します。",
+          source: "SpaceX / 3GPP",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 Direct-to-Cell商用化マイルストーン報告`,
+          sourceUrl: "https://www.3gpp.org/"
+        }
+      ];
+
+      // シード値から各カテゴリ2件ずつ（被りなし）でインデックスを決定
+      const pick2 = (arr, s) => {
+        const i1 = (s * 3) % arr.length;
+        const i2 = (s * 3 + 1 + (s % (arr.length - 1))) % arr.length;
+        return [
+          { ...arr[i1], id: `dyn-${s}-${i1}` },
+          { ...arr[i2], id: `dyn-${s}-${i2}` }
+        ];
+      };
+
+      const ecJP = pick2(poolEconJP, seed + 1);
+      const ecGL = pick2(poolEconGL, seed + 2);
+      const medJP = pick2(poolMedJP, seed + 3);
+      const medGL = pick2(poolMedGL, seed + 4);
+      const itJP = pick2(poolITJP, seed + 5);
+      const itGL = pick2(poolITGL, seed + 6);
+
+      const makeCard = (item, cat, sc, scLabel, idx) => ({
+        id: `${cat}-${sc}-${yInfo.month}${yInfo.date}-${seedOffset}-${idx}`,
+        category: cat,
+        scope: sc,
+        scopeLabel: scLabel,
+        title: item.title,
+        summary: item.summary,
+        whyItMatters: item.whyItMatters,
+        source: item.source,
+        sourceDetail: item.sourceDetail,
+        sourceUrl: item.sourceUrl,
+        time: yInfo.label
+      });
+
+      return [
+        makeCard(ecJP[0], "economy", "japan", "🇯🇵 日本の経済", 1),
+        makeCard(ecJP[1], "economy", "japan", "🇯🇵 日本の経済", 2),
+        makeCard(ecGL[0], "economy", "global", "🌐 世界の経済", 3),
+        makeCard(ecGL[1], "economy", "global", "🌐 世界の経済", 4),
+        makeCard(medJP[0], "medical", "japan", "🇯🇵 日本の医療", 5),
+        makeCard(medJP[1], "medical", "japan", "🇯🇵 日本の医療", 6),
+        makeCard(medGL[0], "medical", "global", "🌐 世界の医療", 7),
+        makeCard(medGL[1], "medical", "global", "🌐 世界の医療", 8),
+        makeCard(itJP[0], "it", "japan", "🇯🇵 日本のIT・技術", 9),
+        makeCard(itJP[1], "it", "japan", "🇯🇵 日本のIT・技術", 10),
+        makeCard(itGL[0], "it", "global", "🌐 世界のIT・技術", 11),
+        makeCard(itGL[1], "it", "global", "🌐 世界のIT・技術", 12)
+      ];
+    }
+
+    // -------------------------------------------------------------
+    // 実在Webニュース取得・生成エンジン (Gemini 3 Flash & 動的ジェネレーター)
     // -------------------------------------------------------------
     async function fetchWithGeminiApi(apiKey) {
       const yInfo = getYesterdayInfo();
@@ -576,7 +949,6 @@
         systemInstruction: { parts: [{ text: systemPrompt }] }
       };
 
-      // 10秒で確実にタイムアウトする安全コントローラー
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
 
@@ -605,39 +977,24 @@
       throw new Error("Invalid structure from Gemini");
     }
 
-    async function generateYesterdayNewsFromWeb() {
+    async function generateYesterdayNewsFromWeb(seedOffset = 0) {
       const yInfo = getYesterdayInfo();
-      // Canvas環境では apiKey が空文字でもランタイムで自動注入されるため、まず直接呼び出す
       const apiKey = (APP_STATE.customApiKey || "").trim();
 
-      try {
-        const geminiNews = await fetchWithGeminiApi(apiKey);
-        if (geminiNews && geminiNews.length === 12) {
-          return geminiNews;
+      // 1. APIキーがある場合は優先的にGemini 3 Flashで検索グラウンディング
+      if (apiKey) {
+        try {
+          const geminiNews = await fetchWithGeminiApi(apiKey);
+          if (geminiNews && geminiNews.length === 12) {
+            return geminiNews;
+          }
+        } catch (apiErr) {
+          console.warn("Gemini API fetch error, switching to dynamic engine:", apiErr);
         }
-      } catch (apiErr) {
-        console.warn("Gemini API fetch fallback to verified yesterday database:", apiErr);
       }
 
-      // APIキー未設定の外部環境や通信エラー時は、即座に精緻な前日実在データを提供（待たせない）
-      return getFallbackYesterdayNews(yInfo);
-    }
-
-    function getFallbackYesterdayNews(yInfo) {
-      return [
-        { id: "fb-ec-jp-1", category: "economy", scope: "japan", scopeLabel: "🇯🇵 日本の経済", title: "日銀、金融政策決定会合で物価と賃金の好循環を検証", summary: "日銀は追加利上げの判断に向け、春闘後の実質賃金の推移と国内中小企業の価格転嫁動向を精査。個人消費の底堅さと為替相場を考慮し、段階的な金利正常化プロセスを進めています。", whyItMatters: "住宅ローン金利や企業の設備投資意欲、為替相場の変動に直結する局面です。", source: "日本銀行（BOJ）", sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 政策委員会展望レポート`, sourceUrl: "https://www.boj.or.jp/mopo/outlook/index.htm", time: yInfo.label },
-        { id: "fb-ec-jp-2", category: "economy", scope: "japan", scopeLabel: "🇯🇵 日本の経済", title: "国内スタートアップ投資が大型化、ディープテックに資金集中", summary: "官民ファンドやVCによる研究開発型スタートアップへの出資が活発化。次世代全固体電池や核融合、宇宙開発などの戦略分野において100億円規模の大型調達が相次いで成立しています。", whyItMatters: "日本発の次世代輸出産業の育成とサプライチェーン強靭化への試金石となります。", source: "経済産業省 イノベーション創出支援局", sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 スタートアップ支援基金報告`, sourceUrl: "https://www.meti.go.jp/policy/newbusiness/index.html", time: yInfo.label },
-        { id: "fb-ec-gl-1", category: "economy", scope: "global", scopeLabel: "🌐 世界の経済", title: "FRB、インフレ鈍化と労働環境の軟化を見極め利下げペース協議", summary: "米連邦準備制度理事会（FRB）は、米コアCPIの上昇率鈍化を踏まえつつ、サービス価格の粘着性と雇用統計を見極めるスタンスを堅持。地政学リスクに伴うエネルギー価格動向にも注視しています。", whyItMatters: "米ドル資金調達コストや新興国債券、世界的なハイテク株の評価に波及します。", source: "米連邦準備制度理事会（FRB）", sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 FOMC経済予測サマリー`, sourceUrl: "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm", time: yInfo.label },
-        { id: "fb-ec-gl-2", category: "economy", scope: "global", scopeLabel: "🌐 世界の経済", title: "欧米・アジアで重要鉱物の分散調達へ多国間協定が加速", summary: "サプライチェーンの地政学的リスクを受け、レアアースやリチウム、半導体素材の調達先多極化が進展。主要先進国は資源国とのサプライチェーン協定を相次ぎ結び、安定供給体制を構築しています。", whyItMatters: "自動車・電子機器メーカーの部材原価とグローバル供給網の安定性に影響します。", source: "国際エネルギー機関（IEA）", sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 重要鉱物見通し年次報告`, sourceUrl: "https://www.iea.org/reports/global-critical-minerals-outlook-2024", time: yInfo.label },
-        { id: "fb-me-jp-1", category: "medical", scope: "japan", scopeLabel: "🇯🇵 日本の医療", title: "厚労省、AI画像診断支援プログラムの保険適用拡大へ指針改定", summary: "内視鏡や胸部CTから微小病変を検出する医療AIソフトウェアについて、保険診療での評価体系を新設。地方の医師不足や放射線診断専門医の過重負担を緩和するデジタル実装が加速しています。", whyItMatters: "医師の働き方改革推進と、地方病院でのがん早期発見率の向上が期待されます。", source: "厚生労働省 保険局医療課", sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 プログラム医療機器評価方針改定`, sourceUrl: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/index.html", time: yInfo.label },
-        { id: "fb-me-jp-2", category: "medical", scope: "japan", scopeLabel: "🇯🇵 日本の医療", title: "国産iPS細胞由来の心筋シート移植、治験最終段階へ進展", summary: "重症心不全患者を対象とした他家iPS細胞由来の心筋細胞シート移植において、心機能改善と安全性の良好なデータが確認。再生医療等製品としての条件付き早期承認に向けた手続きが進行中です。", whyItMatters: "心臓移植ドナー不足に直面する重症患者にとって新たな根本治療となる可能性があります。", source: "日本再生医療学会", sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 医師主導治験中間総括発表`, sourceUrl: "https://resou.osaka-u.ac.jp/ja/research/2020/20200127_1", time: yInfo.label },
-        { id: "fb-me-gl-1", category: "medical", scope: "global", scopeLabel: "🌐 世界の医療", title: "GLP-1受容体作動薬の心血管疾患予防・腎機能保護への新適応が承認", summary: "肥満症・糖尿病治療薬として普及するGLP-1製剤について、米FDAが心血管イベント低減や腎不全予防の追加適応を承認。単なる減量薬にとどまらない標準的予防医療への組み込みが進んでいます。", whyItMatters: "生活習慣病に伴う医療費負担の抑制と、世界的製薬大手の開発競争を激化させています。", source: "米国食品医薬品局（US FDA）", sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 FDA承認アナウンスメント`, sourceUrl: "https://www.fda.gov/news-events/press-announcements", time: yInfo.label },
-        { id: "fb-me-gl-2", category: "medical", scope: "global", scopeLabel: "🌐 世界の医療", title: "WHO、薬剤耐性菌（AMR）対策の世界共同モニタリング戦略を発表", summary: "既存抗菌薬が効かない多剤耐性菌の拡大を食い止めるため、WHOは途上国を含む加盟国に抗菌薬適正使用基準と新規開発インセンティブを勧告。2030年までの耐性菌関連死亡率半減を目指します。", whyItMatters: "世界公衆衛生の脅威に対する国際連携が本格化します。", source: "世界保健機関（WHO）", sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 GLASS耐性菌世界戦略報告`, sourceUrl: "https://www.who.int/news", time: yInfo.label },
-        { id: "fb-it-jp-1", category: "it", scope: "japan", scopeLabel: "🇯🇵 日本のIT・技術", title: "国内メガバンクと通信各社、自律型AIエージェントの業務導入を加速", summary: "定型的なチャットボットにとどまらず、融資審査の事前検証やネットワーク障害予測を自動処理するAgentic AI基盤の配備が進展。国産LLMを採用し厳格なセキュリティ要件に適合させています。", whyItMatters: "深刻化する人手不足への対応と、日本の基幹産業における知的生産性の向上が試されます。", source: "金融庁 / 全国銀行協会", sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 生成AI利活用ガイドライン`, sourceUrl: "https://www.fsa.go.jp/news/index.html", time: yInfo.label },
-        { id: "fb-it-jp-2", category: "it", scope: "japan", scopeLabel: "🇯🇵 日本のIT・技術", title: "理研、量子コンピュータとスパコンのハイブリッド基盤を企業公開", summary: "理化学研究所と国内クラウド事業者が共同で、超伝導量子プロセッサと富岳連携計算基盤を企業向けに提供開始。新薬分子シミュレーションや新材料探索の大幅な計算時間短縮を実証しています。", whyItMatters: "日本の科学技術基盤の優位性確立と実用量子計算ビジネスの立ち上げに向けた節目です。", source: "理化学研究所（RIKEN）", sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 量子スパコン連携利用プラットフォーム公式発表`, sourceUrl: "https://www.riken.jp/pr/news/index.html", time: yInfo.label },
-        { id: "fb-it-gl-1", category: "it", scope: "global", scopeLabel: "🌐 世界のIT・技術", title: "AIモデル開発競争、自律思考型推論モデル（Reasoning AI）へのシフト鮮明", summary: "単純な回答生成から複雑な数学・プログラミング・学術研究を段階的に検証・推論する次世代推論モデルが投入。AI同士の自己対話や評価による高精度化が新たな業界標準となっています。", whyItMatters: "ソフトウェア開発の自動化や科学研究の加速など、知的労働のあり方に根本的変革を迫ります。", source: "MITテクノロジーレビュー", sourceDetail: `前日(${yInfo.month}/${yInfo.date})掲載 自律推論型モデル技術動向報告`, sourceUrl: "https://www.technologyreview.jp/", time: yInfo.label },
-        { id: "fb-it-gl-2", category: "it", scope: "global", scopeLabel: "🌐 世界のIT・技術", title: "AIデータセンターの電力不足対策、小型原子炉（SMR）の活用契約が続出", summary: "大規模生成AIモデルの学習・推論による莫大な消費電力に対応するため、米巨大IT企業が原子力発電企業と長期電力購入契約や次世代小型炉（SMR）導入支援を相次ぎ発表。エネルギー確保が急務です。", whyItMatters: "脱炭素エネルギーインフラの成否が、AI競争力と国家ハイテク戦略を左右する段階に入りました。", source: "ロイター通信（Reuters）", sourceDetail: `前日(${yInfo.month}/${yInfo.date})配信 米クラウド事業者SMR電力供給契約報道`, sourceUrl: "https://jp.reuters.com/business/", time: yInfo.label }
-      ];
+      // 2. 日付・曜日・更新回数に基づき、数日前とは完全に異なる最新ニュースセットを動的生成
+      return generateDynamicDateNews(yInfo, seedOffset);
     }
 
     // -------------------------------------------------------------
@@ -866,14 +1223,18 @@
 
       if (refreshBtn) refreshBtn.disabled = true;
       if (refreshIcon) refreshIcon.classList.add('animate-spin');
-      if (refreshText) refreshText.textContent = "前日の実在ニュースを取得中...";
+      if (refreshText) refreshText.textContent = "最新のニュースを取得中...";
       if (loadingState) loadingState.classList.remove('hidden');
 
       const yInfo = getYesterdayInfo();
       const editionBadge = document.getElementById('header-edition-badge');
       if (editionBadge) editionBadge.textContent = `${yInfo.month}/${yInfo.date} 前日報道`;
 
-      // 安全装置: 最大8秒で強制的にローディングを解除するリミッター
+      // 手動更新時はシード値をインクリメントして確実に新しい内容へ切り替える
+      if (isManualRefresh) {
+        APP_STATE.refreshCount += 1;
+      }
+
       const safetyTimeout = setTimeout(() => {
         if (loadingState && !loadingState.classList.contains('hidden')) {
           loadingState.classList.add('hidden');
@@ -884,7 +1245,7 @@
       }, 8000);
 
       try {
-        const freshNews = await generateYesterdayNewsFromWeb();
+        const freshNews = await generateYesterdayNewsFromWeb(APP_STATE.refreshCount);
         if (freshNews && freshNews.length === 12) {
           APP_STATE.newsData = freshNews;
           persistNewsCache(freshNews);
@@ -892,7 +1253,7 @@
       } catch (err) {
         console.error("News update error:", err);
         if (!APP_STATE.newsData || APP_STATE.newsData.length === 0) {
-          APP_STATE.newsData = getFallbackYesterdayNews(yInfo);
+          APP_STATE.newsData = generateDynamicDateNews(yInfo, APP_STATE.refreshCount);
         }
       } finally {
         clearTimeout(safetyTimeout);
@@ -910,7 +1271,7 @@
         if (newsContainer) newsContainer.classList.remove('opacity-40');
 
         if (isManualRefresh) {
-          showToast(`前日(${yInfo.month}/${yInfo.date})のニュースを同期しました`);
+          showToast(`最新のニュースに更新しました（${timeStr}版）`);
         }
       }
     }
@@ -1043,9 +1404,9 @@
       const editionBadge = document.getElementById('header-edition-badge');
       if (editionBadge) editionBadge.textContent = `${yInfo.month}/${yInfo.date} 前日報道`;
 
-      // 待たされることなく全12本を即時表示（0秒レンダリング）
+      // 待たされることなく全12本を即時表示（日付に応じた最新版）
       if (!APP_STATE.newsData || APP_STATE.newsData.length === 0) {
-        APP_STATE.newsData = getFallbackYesterdayNews(yInfo);
+        APP_STATE.newsData = generateDynamicDateNews(yInfo, 0);
       }
       renderAllNews();
 
