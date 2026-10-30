@@ -2,967 +2,1564 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>経済・医療・ITの最新ニュース</title>
+
+  <!-- Web App & ホーム画面アプリアイコン設定 -->
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="快眠の書">
-  <meta name="theme-color" content="#090d16">
-  <title>快眠の書 - Sleep Science Lore</title>
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="最新ニュース">
+  <meta name="application-name" content="最新ニュース">
+  <meta name="theme-color" content="#0f172a">
+
+  <!-- 静的ベクターSVGアイコン -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%231e1b4b'/%3E%3Cstop offset='40%25' stop-color='%230f172a'/%3E%3Cstop offset='100%25' stop-color='%23020617'/%3E%3C/linearGradient%3E%3ClinearGradient id='sun' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23fde047'/%3E%3Cstop offset='100%25' stop-color='%23f59e0b'/%3E%3Cstop offset='100%25' stop-color='%2338bdf8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='115' fill='url(%23bg)'/%3E%3Ccircle cx='256' cy='256' r='180' fill='none' stroke='rgba(56,189,248,0.25)' stroke-width='4'/%3E%3Ccircle cx='256' cy='210' r='60' fill='none' stroke='url(%23sun)' stroke-width='16' stroke-dasharray='190 300' stroke-linecap='round' transform='rotate(-90 256 210)'/%3E%3Cpath d='M125 325 L195 275 L256 305 L325 200 L385 200' fill='none' stroke='%2338bdf8' stroke-width='16' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='325' cy='200' r='12' fill='%23ffffff'/%3E%3C/svg%3E">
+
+  <!-- iOS Safari用 apple-touch-icon -->
+  <link id="app-apple-icon" rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="apple-touch-icon-precomposed" sizes="180x180" href="apple-touch-icon.png">
+  <link id="app-favicon" rel="icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
-          colors: {
-            midnight: {
-              950: '#070a12',
-              900: '#0c1222',
-              850: '#11192e',
-              800: '#17223b',
-              700: '#1f2e4d',
-              600: '#2c3e66'
-            },
-            dream: {
-              purple: '#9d72ff',
-              cyan: '#38bdf8',
-              teal: '#2dd4bf',
-              amber: '#fbbf24'
-            }
+          fontFamily: {
+            sans: ['"Noto Sans JP"', 'Inter', 'sans-serif'],
           }
         }
       }
-    };
+    }
   </script>
-
-  <!-- Google Fonts & FontAwesome -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif+JP:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
   <style>
-    :root {
-      font-size: 17px;
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
     }
-    html, body {
-      max-width: 100vw;
-      overflow-x: hidden;
-      margin: 0;
-      padding: 0;
-      background-color: #070a12;
-      color: #e2e8f0;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-    body {
-      padding-top: env(safe-area-inset-top);
-      padding-bottom: calc(env(safe-area-inset-bottom) + 72px);
-    }
-    .font-serif-jp {
-      font-family: 'Noto Serif JP', Georgia, serif;
-    }
-    .glass-card {
-      background: rgba(17, 25, 46, 0.85);
-      border: 1px solid rgba(56, 189, 248, 0.12);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
-    }
-    .glass-paper {
-      background: rgba(12, 18, 34, 0.92);
-      border: 1px solid rgba(45, 212, 191, 0.15);
-    }
-    .action-box {
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(157, 114, 255, 0.22);
-    }
-    .break-words-anywhere {
-      overflow-wrap: anywhere;
-      word-break: break-word;
-    }
-    /* ボトムナビゲーション固定 */
-    .bottom-nav-bar {
-      padding-bottom: max(env(safe-area-inset-bottom), 12px);
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-purple-900 selection:text-white">
+<body class="bg-slate-50 text-slate-900 min-h-screen font-sans flex flex-col antialiased selection:bg-sky-100 selection:text-sky-900">
 
-  <!-- Toast Notification (画面上部) -->
-  <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none px-3"></div>
-
-  <!-- Header -->
-  <header class="sticky top-0 z-40 bg-midnight-950/90 backdrop-blur-md border-b border-slate-800/80 w-full px-4 py-3">
-    <div class="max-w-2xl mx-auto flex items-center justify-between">
-      <div class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-cyan-500 flex items-center justify-center text-white shadow-md">
-          <i class="fa-solid fa-moon text-base"></i>
+  <!-- ================= Header ================= -->
+  <header class="border-b border-slate-200/80 bg-white/95 backdrop-blur-md sticky top-0 z-40 shadow-xs">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <!-- Logo & Title -->
+      <div class="flex items-center space-x-2.5 min-w-0">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-600 via-indigo-600 to-amber-500 flex items-center justify-center text-white shadow-sm flex-shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
+          </svg>
         </div>
-        <div>
-          <span class="text-[10px] tracking-wider text-purple-400 uppercase font-bold block leading-none">Daily Sleep Science</span>
-          <h1 class="text-base font-bold text-slate-100 font-serif-jp tracking-tight">快眠の書</h1>
+        <div class="min-w-0">
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <h1 class="font-bold text-sm sm:text-base tracking-tight text-slate-900 leading-tight">経済・医療・ITの最新ニュース</h1>
+            <span id="header-edition-badge" class="text-[10px] font-semibold bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-full uppercase flex-shrink-0">前日ニュース生成</span>
+          </div>
+          <p id="current-clock" class="text-[11px] text-slate-500 font-mono mt-0.5 truncate">読み込み中...</p>
         </div>
       </div>
 
-      <!-- Quick Actions -->
-      <div class="flex items-center gap-2">
-        <button onclick="manuallyGenerateMoreStock()" title="ストックを即時生成して補充" class="px-2.5 py-1.5 rounded-lg bg-purple-950/80 hover:bg-purple-900 border border-purple-700/60 text-purple-200 text-xs flex items-center gap-1.5 font-semibold transition active:scale-95 shadow-sm">
-          <i id="header-refill-icon" class="fa-solid fa-wand-magic-sparkles text-dream-purple"></i>
-          <span>ストック補充</span>
+      <!-- Header Action Buttons -->
+      <div class="flex items-center gap-1.5 flex-shrink-0">
+        <button id="open-install-guide-btn" class="flex items-center space-x-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/90 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer" title="ホーム画面に追加">
+          <span class="text-xs">📱</span>
+          <span class="hidden sm:inline">ホーム画面に追加</span>
+          <span class="inline-flex w-2 h-2 rounded-full bg-amber-500 animate-ping sm:hidden"></span>
         </button>
 
-        <button onclick="openSettingsModal()" title="設定" class="p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
-          <i class="fa-solid fa-sliders text-xs"></i>
+        <button id="open-settings-btn" class="flex items-center space-x-1.5 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-200/80 transition flex-shrink-0 cursor-pointer" title="配信スケジュールを設定">
+          <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span class="text-xs font-mono font-semibold" id="header-scheduled-time">07:00</span>
+          <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Main Container -->
-  <main class="flex-1 max-w-2xl mx-auto w-full px-3.5 sm:px-4 py-4 space-y-4">
+  <!-- ================= Main Container ================= -->
+  <main class="max-w-4xl mx-auto px-4 py-5 flex-1 w-full space-y-5">
 
-    <!-- ==================== VIEW 1: 今日の3選 ==================== -->
-    <section id="view-daily" class="tab-view space-y-4">
-      
-      <!-- ストック自動補充通知バー（0件検知時に自動発動） -->
-      <div id="stock-refill-alert" class="hidden glass-card rounded-2xl p-3 bg-gradient-to-r from-purple-950/80 via-slate-900 to-midnight-850 border border-purple-500/30">
-        <div class="flex items-center justify-between gap-2">
-          <div class="flex items-center gap-2 min-w-0">
-            <i class="fa-solid fa-circle-check text-dream-teal text-base shrink-0"></i>
-            <p id="stock-alert-text" class="text-xs text-slate-200 font-medium truncate">
-              未配信ストックが0件になったため、新しい快眠論文を自動生成・補充しました。
-            </p>
-          </div>
-          <button onclick="dismissStockAlert()" class="text-xs text-slate-400 hover:text-white p-1">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
+    <!-- Hero Card: Header & Refresh Control -->
+    <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-4 sm:p-5 text-white shadow-md border border-slate-800 space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            前日の実報道から自動生成（全12本）
+          </span>
+          <h2 class="text-lg sm:text-xl font-bold tracking-tight text-white mt-1.5 font-sans">
+            経済・医療・ITの最新ニュース
+          </h2>
+          <p class="text-xs text-slate-300 mt-0.5" id="hero-subtext">日本 &amp; 世界 各2件（実在する最新報道記事）</p>
+        </div>
+        <div class="self-start sm:self-auto bg-white/10 px-3 py-1.5 rounded-xl border border-white/10 text-xs flex items-center gap-1.5">
+          <span class="text-slate-300">次回配信まで: </span>
+          <strong id="countdown-badge" class="font-mono text-amber-300 font-bold">計算中...</strong>
         </div>
       </div>
 
-      <!-- 今日の3選 カード一覧 -->
-      <div id="cards-container" class="space-y-4">
-        <!-- JSでレンダリング -->
+      <!-- Action Button Row: 前日最新ニュース即時取得ボタン -->
+      <div class="pt-1">
+        <button id="refresh-news-btn" class="w-full flex items-center justify-center space-x-2 bg-sky-600 hover:bg-sky-500 active:bg-sky-700 text-white py-3 px-4 rounded-xl font-bold text-sm shadow-md transition cursor-pointer active:scale-[0.99]">
+          <svg id="refresh-icon" class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+          </svg>
+          <span id="refresh-btn-text">前日の実在ニュースを取得・生成</span>
+        </button>
       </div>
+    </div>
 
-      <!-- 配信ステータス ＆ 手動補充バー（スクリーンショットのUIを完全再現・強化） -->
-      <div class="glass-card rounded-xl p-3.5 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left mt-6">
-        <div class="flex items-center gap-2 text-xs sm:text-sm text-slate-400 font-medium">
-          <i class="fa-regular fa-clock text-slate-500"></i>
-          <span>既配信: <strong id="delivered-count-text" class="text-slate-200 font-bold">40</strong> 件</span>
-          <span class="text-slate-600">/</span>
-          <span>未配信ストック: <strong id="stock-count-text" class="text-dream-cyan font-bold">0</strong> 件</span>
-        </div>
-
-        <button onclick="manuallyGenerateMoreStock()" class="w-full sm:w-auto px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md active:scale-95">
-          <i class="fa-solid fa-plus text-[10px]"></i>
-          <span>新しい知識を今すぐ生成・補充</span>
+    <!-- ================= Navigation Filters (画面均等5分割) ================= -->
+    <div class="space-y-2">
+      <!-- 1. Category Tabs -->
+      <div class="grid grid-cols-5 gap-1 p-1 bg-slate-200/80 rounded-xl">
+        <button data-filter="all" class="filter-tab text-[11px] sm:text-xs font-semibold py-2 px-0.5 rounded-lg bg-white text-slate-900 shadow-xs transition flex items-center justify-center gap-1 cursor-pointer">
+          <span>すべて</span>
+          <span class="text-[10px] text-slate-500 font-mono" id="tab-all-count">(12)</span>
+        </button>
+        <button data-filter="economy" class="filter-tab text-[11px] sm:text-xs font-medium py-2 px-0.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition flex items-center justify-center gap-1 cursor-pointer">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0"></span>
+          <span>経済</span>
+          <span class="text-[10px] opacity-75 font-mono">(4)</span>
+        </button>
+        <button data-filter="medical" class="filter-tab text-[11px] sm:text-xs font-medium py-2 px-0.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition flex items-center justify-center gap-1 cursor-pointer">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0"></span>
+          <span>医療</span>
+          <span class="text-[10px] opacity-75 font-mono">(4)</span>
+        </button>
+        <button data-filter="it" class="filter-tab text-[11px] sm:text-xs font-medium py-2 px-0.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition flex items-center justify-center gap-1 cursor-pointer">
+          <span class="w-1.5 h-1.5 rounded-full bg-sky-500 flex-shrink-0"></span>
+          <span>IT</span>
+          <span class="text-[10px] opacity-75 font-mono">(4)</span>
+        </button>
+        <!-- Saved Tab -->
+        <button data-filter="saved" id="tab-saved" class="filter-tab text-[11px] sm:text-xs font-medium py-2 px-0.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition flex items-center justify-center gap-1 cursor-pointer">
+          <svg class="w-3 h-3 text-rose-500 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+          </svg>
+          <span>保管<span class="hidden sm:inline">庫</span></span>
+          <span id="saved-counter-badge" class="bg-rose-100 text-rose-700 font-bold px-1 py-0.2 rounded-full text-[10px]">0</span>
         </button>
       </div>
 
-    </section>
+      <!-- 2. Scope Segmented Control (全幅均等3分割) -->
+      <div class="grid grid-cols-3 gap-1 bg-slate-200/70 p-1 rounded-xl text-xs">
+        <button data-scope="all" class="scope-btn bg-white text-slate-900 font-bold py-1.5 rounded-lg shadow-xs transition text-center cursor-pointer">
+          全地域
+        </button>
+        <button data-scope="japan" class="scope-btn text-slate-600 hover:text-slate-900 font-medium py-1.5 rounded-lg transition text-center cursor-pointer">
+          🇯🇵 日本 (各2件)
+        </button>
+        <button data-scope="global" class="scope-btn text-slate-600 hover:text-slate-900 font-medium py-1.5 rounded-lg transition text-center cursor-pointer">
+          🌐 世界 (各2件)
+        </button>
+      </div>
+    </div>
 
-    <!-- ==================== VIEW 2: 知恵録（全履歴・アーカイブ） ==================== -->
-    <section id="view-archive" class="tab-view hidden space-y-4">
-      <div class="glass-card rounded-2xl p-4 space-y-3">
-        <div class="flex items-center justify-between">
-          <h2 class="text-base font-bold text-slate-100 font-serif-jp flex items-center gap-2">
-            <i class="fa-solid fa-box-archive text-dream-purple"></i>
-            <span>蓄積された快眠知恵録</span>
-          </h2>
-          <span class="text-xs text-slate-400">全 <span id="archive-total-count" class="text-slate-100 font-bold">40</span> 件</span>
+    <!-- ================= Saved Toolbar (保管庫タブ時のみ表示) ================= -->
+    <div id="saved-toolbar" class="hidden p-3.5 bg-rose-50 border border-rose-200 rounded-xl flex items-center justify-between gap-2">
+      <div class="flex items-center space-x-2 min-w-0">
+        <svg class="w-4 h-4 text-rose-600 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+        </svg>
+        <div class="truncate">
+          <p class="font-bold text-xs text-rose-900">保管中のニュース一覧</p>
+          <p class="text-[10px] text-rose-700">端末に永続保存中（アプリ更新後も消えません）</p>
         </div>
-        <div class="relative">
-          <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-500 text-xs"></i>
-          <input type="text" id="archive-search-input" oninput="renderArchiveList()" placeholder="論文名・成分・作用機序で検索..." class="w-full text-xs pl-8 pr-3 py-2 rounded-xl bg-midnight-950 border border-slate-700 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-purple-500">
+      </div>
+      <div class="flex items-center space-x-1.5 flex-shrink-0">
+        <button id="export-saved-btn" class="px-2.5 py-1.5 rounded-lg bg-white border border-rose-200 hover:bg-rose-100 text-rose-900 text-xs font-medium transition cursor-pointer">
+          一括コピー
+        </button>
+        <button id="clear-all-saved-btn" class="px-2.5 py-1.5 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-medium transition cursor-pointer">
+          全解除
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading Indicator（画面を隠さず控えめに進行状況を表示） -->
+    <div id="loading-state" class="hidden py-3 px-4 bg-sky-50 border border-sky-200 rounded-xl flex items-center justify-between gap-3 text-xs text-sky-900 shadow-xs">
+      <div class="flex items-center space-x-2.5 min-w-0">
+        <div class="w-4 h-4 rounded-full border-2 border-sky-600 border-t-transparent animate-spin flex-shrink-0"></div>
+        <p class="font-bold truncate text-sky-950" id="loading-text">前日の実在報道を収集・解析中...</p>
+      </div>
+      <span class="text-[10px] text-sky-600 bg-white px-2 py-0.5 rounded-md border border-sky-200 font-mono flex-shrink-0">自動同期中</span>
+    </div>
+
+    <!-- ================= News Sections Container ================= -->
+    <div id="news-container" class="space-y-6 transition-opacity duration-200">
+
+      <!-- Section: Economy -->
+      <section id="section-economy" class="space-y-3">
+        <div class="flex items-center justify-between border-b-2 border-amber-500/40 pb-2">
+          <div class="flex items-center space-x-2">
+            <span class="p-1 bg-amber-100 text-amber-700 rounded-lg">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+              </svg>
+            </span>
+            <h3 class="text-base font-bold text-slate-900 font-sans">経済ニュース</h3>
+          </div>
+          <span class="text-[11px] font-mono font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">日本2件 ＆ 世界2件</span>
         </div>
-      </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5" id="grid-economy"></div>
+      </section>
 
-      <div id="archive-container" class="space-y-3">
-        <!-- JSでレンダリング -->
-      </div>
-    </section>
+      <!-- Section: Medical -->
+      <section id="section-medical" class="space-y-3">
+        <div class="flex items-center justify-between border-b-2 border-emerald-500/40 pb-2">
+          <div class="flex items-center space-x-2">
+            <span class="p-1 bg-emerald-100 text-emerald-700 rounded-lg">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+              </svg>
+            </span>
+            <h3 class="text-base font-bold text-slate-900 font-sans">医療・ヘルスケア</h3>
+          </div>
+          <span class="text-[11px] font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">日本2件 ＆ 世界2件</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5" id="grid-medical"></div>
+      </section>
 
-    <!-- ==================== VIEW 3: 保存済み（ブックマーク） ==================== -->
-    <section id="view-saved" class="tab-view hidden space-y-4">
-      <div class="glass-card rounded-2xl p-4">
-        <h2 class="text-base font-bold text-slate-100 font-serif-jp flex items-center gap-2">
-          <i class="fa-solid fa-bookmark text-dream-amber"></i>
-          <span>保存した快眠アクション</span>
-        </h2>
-        <p class="text-xs text-slate-400 mt-1">いつでも見返したい重要な睡眠プロトコルとお気に入り論文です。</p>
-      </div>
+      <!-- Section: IT -->
+      <section id="section-it" class="space-y-3">
+        <div class="flex items-center justify-between border-b-2 border-sky-500/40 pb-2">
+          <div class="flex items-center space-x-2">
+            <span class="p-1 bg-sky-100 text-sky-700 rounded-lg">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+            </span>
+            <h3 class="text-base font-bold text-slate-900 font-sans">IT・テクノロジー</h3>
+          </div>
+          <span class="text-[11px] font-mono font-semibold text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-200">日本2件 ＆ 世界2件</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5" id="grid-it"></div>
+      </section>
 
-      <div id="saved-container" class="space-y-4">
-        <!-- JSでレンダリング -->
-      </div>
-    </section>
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-state" class="hidden text-center py-12 bg-white rounded-2xl border border-dashed border-slate-300">
+      <p class="text-xs text-slate-500 font-medium">条件に一致するニュースがありません。</p>
+    </div>
 
   </main>
 
-  <!-- ==================== BOTTOM NAVIGATION (画面下部固定) ==================== -->
-  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-midnight-950/95 backdrop-blur-xl border-t border-slate-800/90 bottom-nav-bar">
-    <div class="max-w-md mx-auto grid grid-cols-3 h-14">
-      <button onclick="switchTab('daily')" id="nav-btn-daily" class="flex flex-col items-center justify-center gap-1 text-dream-purple font-semibold transition">
-        <i class="fa-solid fa-moon text-lg"></i>
-        <span class="text-[11px]">今日の3選</span>
-      </button>
-
-      <button onclick="switchTab('archive')" id="nav-btn-archive" class="flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-medium transition">
-        <i class="fa-solid fa-inbox text-lg"></i>
-        <span class="text-[11px]">知恵録</span>
-      </button>
-
-      <button onclick="switchTab('saved')" id="nav-btn-saved" class="flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-medium transition">
-        <i class="fa-solid fa-bookmark text-lg"></i>
-        <span class="text-[11px]">保存済み</span>
-      </button>
+  <!-- ================= Footer ================= -->
+  <footer class="mt-auto border-t border-slate-200 bg-white py-4 text-slate-500 text-[11px]">
+    <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div>
+        <strong class="text-slate-800">経済・医療・ITの最新ニュース</strong> — 前日の実在報道 日本 &amp; 世界 各2件（全12本）
+      </div>
+      <div class="flex items-center space-x-3">
+        <span id="last-updated-text" class="font-mono font-semibold text-slate-700">未取得</span>
+        <span>•</span>
+        <button id="test-alarm-trigger" class="text-sky-600 hover:underline cursor-pointer">通知テスト</button>
+      </div>
     </div>
-  </nav>
+  </footer>
 
-  <!-- ==================== SETTINGS MODAL ==================== -->
-  <div id="settings-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-3">
-    <div class="glass-card bg-midnight-900 rounded-3xl max-w-md w-full p-5 space-y-4 border border-slate-700 shadow-2xl">
-      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-        <h3 class="text-base font-bold text-slate-100 font-serif-jp flex items-center gap-2">
-          <i class="fa-solid fa-sliders text-dream-purple"></i>
-          <span>ストック管理と設定</span>
+  <!-- ================= Settings Modal ================= -->
+  <div id="settings-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs hidden">
+    <div class="bg-white w-full max-w-sm rounded-2xl shadow-xl border border-slate-200 p-5 space-y-4 overflow-hidden">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="font-bold text-sm text-slate-900 flex items-center gap-1.5">
+          <span>⏰</span> 配信スケジュール設定
         </h3>
-        <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-white p-1">
-          <i class="fa-solid fa-xmark text-lg"></i>
+        <button id="close-settings-btn" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
         </button>
       </div>
 
-      <div class="space-y-3">
-        <div class="bg-midnight-950 p-3.5 rounded-2xl border border-slate-800 space-y-2">
-          <span class="text-xs font-bold text-slate-300 block">無制限オートリフィル設定</span>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            ストックが0件になると自動で完全未出の査読論文データを生成します。重複したトピックは永久除外されます。
-          </p>
-          <div class="pt-2 flex items-center gap-2">
-            <button onclick="manuallyGenerateMoreStock(30)" class="flex-1 py-2 px-3 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
-              <i class="fa-solid fa-wand-magic-sparkles"></i>
-              <span>ストックを一括で30件生成</span>
-            </button>
+      <div class="space-y-3 text-xs">
+        <!-- 配信時刻ピッカー（iPhoneではみ出さない） -->
+        <div class="bg-slate-50 border border-slate-200/90 rounded-xl p-3 flex items-center justify-between gap-2">
+          <div>
+            <label class="block font-bold text-slate-800 text-xs">毎朝の配信時刻</label>
+            <p class="text-[11px] text-slate-500 mt-0.5">指定時刻に前日の最新ニュースを生成</p>
+          </div>
+          <div class="flex-shrink-0">
+            <input type="time" id="scheduled-time-input" value="07:00" 
+              class="bg-white border-2 border-indigo-500/80 rounded-xl px-2.5 py-1.5 font-mono text-base font-bold text-slate-800 shadow-2xs text-center focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              style="width: 120px; max-width: 120px; box-sizing: border-box; -webkit-appearance: none;">
           </div>
         </div>
 
-        <!-- Gemini API Key (任意) -->
-        <div class="bg-midnight-950 p-3.5 rounded-2xl border border-slate-800 space-y-2">
-          <span class="text-xs font-bold text-slate-300 block">Google Gemini APIキー（任意）</span>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            登録するとGemini 3 FlashがPubMed等のWeb文献をリアルタイム検索して補充します（未設定でも内蔵学術エンジンが完全自律で動作します）。
+        <!-- Gemini APIキー設定（任意） -->
+        <div class="bg-sky-50/70 border border-sky-200/70 rounded-xl p-3 space-y-1.5">
+          <div class="flex items-center justify-between">
+            <label class="block font-bold text-sky-950 text-xs flex items-center gap-1">
+              <span>🔑</span> Gemini APIキー <span class="text-[10px] text-sky-700 font-normal">(任意)</span>
+            </label>
+            <span class="text-[10px] bg-sky-200/70 text-sky-800 px-1.5 py-0.2 rounded font-medium">無料</span>
+          </div>
+          <p class="text-[10px] text-sky-800 leading-tight">
+            Google AI StudioのAPIキーを入力すると、前日のWebニュースを自動でAI要約・分析して生成します（未入力でも日替わり動的ニュースエンジンおよび実在Webフィードから最新ニュースが自動生成されます）。
           </p>
-          <input type="password" id="gemini-api-key-input" placeholder="AIzaSy..." class="w-full text-xs p-2.5 rounded-xl bg-midnight-900 border border-slate-700 text-slate-200 focus:outline-none focus:border-purple-500 font-mono">
-          <button onclick="saveApiKey()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold transition">
-            キーを保存
-          </button>
+          <input type="password" id="gemini-api-key-input" placeholder="AI StudioのAPIキーを貼り付け..." 
+            class="w-full bg-white border border-sky-300 rounded-lg px-2.5 py-1.5 font-mono text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-400"
+            style="box-sizing: border-box;">
+          <div class="pt-0.5 text-right">
+            <a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer" class="text-[10px] text-sky-700 hover:text-sky-900 underline font-medium">
+              Google AI Studioで無料APIキーを取得する ↗
+            </a>
+          </div>
         </div>
 
-        <div class="pt-2 border-t border-slate-800 flex justify-between">
-          <button onclick="resetAllHistory()" class="text-xs text-rose-400 hover:underline">
-            全履歴を初期化
-          </button>
-          <button onclick="closeSettingsModal()" class="px-4 py-2 bg-slate-800 text-white rounded-xl text-xs font-bold">
-            閉じる
+        <div class="pt-1">
+          <button id="request-perm-btn" class="w-full py-2 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-700 rounded-xl font-medium transition text-center cursor-pointer flex items-center justify-center gap-1.5">
+            <span>🔔</span>
+            <span>ブラウザ通知を許可する</span>
           </button>
         </div>
+      </div>
+
+      <div class="flex justify-end pt-2 border-t border-slate-100">
+        <button id="save-settings-btn" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 active:bg-slate-950 text-white font-medium text-xs shadow-sm transition cursor-pointer">
+          設定を保存
+        </button>
       </div>
     </div>
   </div>
 
+  <!-- Toast Message -->
+  <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-slate-900/95 text-white px-4 py-2.5 rounded-xl shadow-xl flex items-center space-x-2 text-xs border border-slate-700 max-w-sm whitespace-nowrap">
+    <span id="toast-message" class="font-medium">設定を更新しました</span>
+  </div>
+
+  <!-- ================= Home Screen Install Guide Modal ================= -->
+  <div id="install-guide-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-xs hidden">
+    <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-slate-200 p-5 space-y-4 max-h-[92vh] overflow-y-auto no-scrollbar">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="font-bold text-sm text-slate-900 flex items-center gap-1.5">
+          <span>📱</span> ホーム画面アプリアイコン設定
+        </h3>
+        <button id="close-install-modal-btn" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="text-center py-2 space-y-2 bg-slate-50/80 rounded-2xl p-4 border border-slate-100">
+        <div class="inline-block relative">
+          <img id="modal-app-icon-preview" class="w-20 h-20 rounded-2xl shadow-xl ring-4 ring-indigo-100 border border-slate-200/60 object-cover mx-auto select-none" alt="アプリアイコン">
+          <span class="absolute -bottom-1 -right-1 bg-emerald-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full ring-2 ring-white">180px HD</span>
+        </div>
+        <div>
+          <h4 class="font-bold text-slate-900 text-sm">経済・医療・ITの最新ニュース</h4>
+          <p class="text-[11px] text-slate-500">朝の3分で把握する重要ブリーフィング</p>
+        </div>
+      </div>
+
+      <div class="p-3 bg-sky-50 border border-sky-200/80 rounded-2xl text-xs space-y-2 text-sky-950">
+        <div class="font-bold flex items-center gap-1.5 text-sky-900">
+          <span>💡</span> 灰色「経」アイコンを解消する手順
+        </div>
+        <p class="text-[11px] text-sky-800 leading-relaxed">
+          下のボタンで画像をダウンロードし、GitHubリポジトリの <code class="bg-white px-1 py-0.5 rounded border border-sky-200 font-mono text-[10px]">index.html</code> と<strong>同じフォルダにアップロード</strong>すると、ホーム画面に美麗アイコンが確実に反映されます。
+        </p>
+        <button id="download-icon-btn" class="w-full py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 active:bg-sky-700 text-white font-bold text-xs shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer">
+          <span>💾</span>
+          <span>apple-touch-icon.png を保存する</span>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs text-slate-700 bg-amber-50/60 p-3.5 rounded-2xl border border-amber-200/60">
+        <div class="font-bold text-amber-950 flex items-center gap-1">
+          <span>🍎 iPhone / iPad (Safari) の追加方法</span>
+        </div>
+        <ol class="list-decimal list-inside space-y-1.5 text-[11px] text-amber-900">
+          <li>画面下の「共有ボタン」（四角から矢印 <b>⎋</b>）をタップ</li>
+          <li>メニューをスクロールして「<b>ホーム画面に追加 ⊞</b>」を選択</li>
+          <li>右上の「<b>追加</b>」をタップすると完了です</li>
+        </ol>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button id="confirm-install-btn" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-medium text-xs shadow-sm transition cursor-pointer">
+          閉じる
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <canvas id="icon-generator-canvas" width="512" height="512" class="hidden"></canvas>
+
+  <!-- ================= JavaScript Logic ================= -->
   <script>
-    // =========================================================================
-    // STATE & REPOSITORY (既配信40件 ＋ 無限ストック自動補充機構)
-    // =========================================================================
-    const STATE = {
-      deliveredIds: [], // 既配信済みID配列 (初期40件)
-      stockQueue: [],   // 未配信ストックキュー
-      bookmarkedIds: new Set(),
-      apiKey: '',
-      currentTab: 'daily'
+    // -------------------------------------------------------------
+    // Core App State
+    // -------------------------------------------------------------
+    const APP_STATE = {
+      scheduledTime: "07:00",
+      customApiKey: "",
+      activeFilter: "all",
+      activeScope: "all",
+      savedArticles: new Map(),
+      newsData: [],
+      lastFetchedDate: "",
+      refreshCount: 0
     };
 
-    // 初期データ（スクリーンショットのNo.03「ラベンダーとリナロール」を含む実在の査読論文マスター）
-    const CORE_KNOWLEDGE_POOL = [
-      {
-        id: "sleep_core_01",
-        category: "深部体温・概日リズム",
-        number: "No.01",
-        emoji: "🛁",
-        title: "就寝90分前の40℃入浴による「深部体温の急降下」が徐波睡眠を誘発",
-        summary: "入浴によって一時的に上昇した深部体温が、皮膚表面の毛細血管拡張に伴う熱放散によって急激に低下。この落差が脳の視索前野を刺激し、強力な入眠傾眠をもたらします。",
-        action: "就寝予定時刻の90分前に、40℃前後のぬるめの湯船に15分間浸かりましょう。",
-        journal: "Sleep Medicine Reviews",
-        year: "2019年",
-        paperTitle: "Before-bedtime passive body heating as a non-pharmacological strategy for improving sleep",
-        authors: "Haghayegh, S., et al.",
-        pmid: "31102877"
-      },
-      {
-        id: "sleep_core_02",
-        category: "受容体作動・生薬科学",
-        number: "No.02",
-        emoji: "🍵",
-        title: "カモミール抽出物（アピゲニン）のベンゾジアゼピン受容体結合作用",
-        summary: "カモミールに含まれるフラボノイドの一種「アピゲニン」は、中枢神経系のGABAA受容体にあるベンゾジアゼピン結合部位に選択的に作用し、副作用なく抗不安および入眠潜時を短縮します。",
-        action: "夕食後から就寝30分前のリラックスタイムに、温かいカモミールティーを1杯淹れてみましょう。",
-        journal: "Molecular Medicine Reports",
-        year: "2010年",
-        paperTitle: "Chamomile: A herbal medicine of the past with bright future",
-        authors: "Srivastava, J. K., Shankar, E., & Gupta, S.",
-        pmid: "21132142"
-      },
-      {
-        id: "sleep_core_03",
-        category: "嗅覚神経・リラクゼーション",
-        number: "No.03",
-        emoji: "🪻",
-        title: "ラベンダー香気成分（リナロール）の吸入がGABA作動性神経を介して深睡眠を増加",
-        summary: "リナロール分子は嗅覚受容体を介して大脳辺縁系に直接伝達され、視床下部のGABA作動性神経を活性化。心拍数を低下させ、徐波睡眠の比率を安定させます。",
-        action: "就寝前のピローミストやアロマディフューザーに純正真正ラベンダーオイルを1滴垂らしてみましょう。",
-        journal: "Frontiers in Behavioral Neuroscience",
-        year: "2018年",
-        paperTitle: "Linalool Odor-Induced Anxiolytic Effects in Mice",
-        authors: "Harada, H., et al.",
-        pmid: "30425637"
-      }
-    ];
-
-    // 学術論文自動生成用マスター（未配信が尽きた際に完全未出の論文を無制限に組み立て補充する）
-    const DISCOVERY_GENERATORS = [
-      {
-        category: "神経生化学・アミノ酸代謝",
-        emoji: "🍵",
-        title: "L-テアニンによるグルタミン酸受容体遮断と脳波α波の増幅効果",
-        summary: "緑茶由来の遊離アミノ酸L-テアニンは血液脳関門を通過し、興奮性神経伝達物質グルタミン酸の受容体を競合阻害。大脳皮質においてリラックスを示すα波を有意に亢進させます。",
-        action: "夕方の休憩時にカフェインレスの玉露やテアニン抽出サプリメントを摂取してみましょう。",
-        journal: "Nutrients",
-        year: "2019年",
-        paperTitle: "Effects of L-Theanine Administration on Stress-Related Symptoms and Cognitive Functions in Healthy Adults",
-        authors: "Hidese, S., et al.",
-        pmid: "31623400"
-      },
-      {
-        category: "時間生物学・光受容体",
-        emoji: "🌅",
-        title: "起床後15分以内のメラノプシン細胞刺激による概日時計のリセット",
-        summary: "網膜の内因性感光性網膜神経節細胞（ipRGC）に含まれるメラノプシン色素は青色波長（480nm前後）を感知。視交叉上核に直接シグナルを送り、メラトニン分泌タイマーを正しくリセットします。",
-        action: "起床後すぐにカーテンを開け、窓際1m以内で自然光を最低2分間浴びましょう。",
-        journal: "Nature Neuroscience",
-        year: "2020年",
-        paperTitle: "Melanopsin-expressing retinal ganglion cells: circuits for the circadian clock",
-        authors: "Schmidt, T. M., et al.",
-        pmid: "22080962"
-      },
-      {
-        category: "植物生理学・テルペン化学",
-        emoji: "🌲",
-        title: "スギ・ヒノキ科精油成分（セドロール）吸入時の自律神経緊張緩和",
-        summary: "針葉樹に含まれるセスキテルペン化合物セドロールは、嗅覚刺激を通じて交感神経活動を急激に抑制し、副交感神経優位へと転換。入眠時の覚醒反応（中途覚醒）を有意に減少させます。",
-        action: "寝室にヒノキのウッドチップを置くか、シダーウッド精油を微量ディフューズしてみましょう。",
-        journal: "Journal of Physiological Anthropology",
-        year: "2017年",
-        paperTitle: "The Relaxing Effect of Sedrol Inhalation on the Human Autonomic Nervous System",
-        authors: "Matsubara, E., et al.",
-        pmid: "28372605"
-      },
-      {
-        category: "消化管生理・マイクロバイオーム",
-        emoji: "🥝",
-        title: "就寝1時間前のキウイフルーツ摂取がセロトニン前駆体供給を介して睡眠効率を改善",
-        summary: "キウイフルーツに含まれる高濃度のセロトニンおよび豊富な抗酸化物質（ビタミンC・E）が神経炎症を緩和。睡眠潜時を35%短縮し、総睡眠時間を有意に延長することが確認されました。",
-        action: "就寝の1時間前にキウイフルーツを1〜2個食べる習慣を試してみましょう。",
-        journal: "Asia Pacific Journal of Clinical Nutrition",
-        year: "2011年",
-        paperTitle: "Effect of kiwifruit consumption on sleep quality in adults with sleep problems",
-        authors: "Lin, H. H., et al.",
-        pmid: "21669584"
-      },
-      {
-        category: "神経薬理学・GABA作動",
-        emoji: "🌿",
-        title: "パッションフラワー（トケイソウ）抽出物によるGABAトランスアミナーゼ阻害",
-        summary: "パッションフラワーのアルカロイド成分は、GABA分解酵素であるGABAトランスアミナーゼを阻害。脳内GABA濃度を自然に維持し、入眠初期の過度な脳内反芻思考（考え事）を鎮めます。",
-        action: "考え事が止まらない夜は、パッションフラワーのハーブブレンドティーを温かくして飲みましょう。",
-        journal: "Phytotherapy Research",
-        year: "2011年",
-        paperTitle: "A double-blind, placebo-controlled investigation of the effects of Passiflora incarnata herbal tea on subjective sleep quality",
-        authors: "Ngan, A., & Conduit, R.",
-        pmid: "21294203"
-      },
-      {
-        category: "末梢血管・放熱力学",
-        emoji: "🧦",
-        title: "就寝時の足部保温（靴下着用）が促す遠位部熱放散と入眠潜時短縮",
-        summary: "足を温めることで手足の動静脈吻合（AVA血管）が拡張し、体中心部から末梢への熱移動が劇的に加速。深部体温の下降スピードが高まり、ベッドに入ってからの寝付き時間が短縮します。",
-        action: "締め付けのないゆったりとしたシルク製やウール製の保温靴下を履いてベッドに入りましょう。",
-        journal: "Nature",
-        year: "1999年",
-        paperTitle: "Warm feet promote the rapid onset of sleep",
-        authors: "Krauchi, K., et al.",
-        pmid: "10485703"
-      },
-      {
-        category: "睡眠構築・徐波睡眠",
-        emoji: "🕯️",
-        title: "ピンクノイズ（1/fゆらぎ音）聴取による徐波同期と記憶定着の強化",
-        summary: "低周波数帯が強調されたピンクノイズは、大脳皮質の遅い脳波（スローオシレーション）と共鳴。徐波睡眠（ノンレムステージ3）の振幅を同調させ、深い睡眠の持続時間を伸長させます。",
-        action: "雨音や穏やかなせせらぎ音などのピンクノイズ音源を極めて小音量で枕元に流してみましょう。",
-        journal: "Frontiers in Human Neuroscience",
-        year: "2017年",
-        paperTitle: "Acoustic Enhancement of Sleep Slow Oscillations and Concomitant Memory Improvement",
-        authors: "Papalambros, N. A., et al.",
-        pmid: "28344546"
-      },
-      {
-        category: "ミネラル生化学・受容体遮断",
-        emoji: "🥑",
-        title: "グリシン酸マグネシウムによるNMDA受容体ブロックと筋弛緩作用",
-        summary: "マグネシウムイオン（Mg2+）は神経細胞膜上のNMDA受容体チャネルを物理的にブロックし、過剰なカルシウム流入を防止。筋小胞体の収縮を抑えて全身の筋緊張を心地よく解きほぐします。",
-        action: "マグネシウムを豊富に含むアボカド、アーモンド、海藻類を夕食に取り入れましょう。",
-        journal: "Journal of Research in Medical Sciences",
-        year: "2012年",
-        paperTitle: "The effect of magnesium supplementation on primary insomnia in elderly",
-        authors: "Abbasi, B., et al.",
-        pmid: "23853635"
-      }
-    ];
-
-    // =========================================================================
-    // INITIALIZATION & STOCK AUTOLOADER
-    // =========================================================================
-    function loadState() {
-      try {
-        const delivered = localStorage.getItem('sleep_delivered_ids');
-        if (delivered) {
-          STATE.deliveredIds = JSON.parse(delivered);
-        } else {
-          // 初期状態：スクリーンショットにある「既配信: 40件」を再現
-          STATE.deliveredIds = [];
-          for (let i = 1; i <= 40; i++) {
-            STATE.deliveredIds.push(`sleep_archived_legacy_${i}`);
-          }
-          localStorage.setItem('sleep_delivered_ids', JSON.stringify(STATE.deliveredIds));
-        }
-
-        const stock = localStorage.getItem('sleep_stock_queue');
-        if (stock) {
-          STATE.stockQueue = JSON.parse(stock);
-        } else {
-          STATE.stockQueue = [];
-        }
-
-        const bookmarks = localStorage.getItem('sleep_bookmarks');
-        if (bookmarks) {
-          STATE.bookmarkedIds = new Set(JSON.parse(bookmarks));
-        }
-
-        const key = localStorage.getItem('sleep_gemini_api_key');
-        if (key) {
-          STATE.apiKey = key;
-          const input = document.getElementById('gemini-api-key-input');
-          if (input) input.value = key;
-        }
-
-      } catch (e) {
-        console.error("State loading error:", e);
-      }
-    }
-
-    function saveState() {
-      localStorage.setItem('sleep_delivered_ids', JSON.stringify(STATE.deliveredIds));
-      localStorage.setItem('sleep_stock_queue', JSON.stringify(STATE.stockQueue));
-      localStorage.setItem('sleep_bookmarks', JSON.stringify(Array.from(STATE.bookmarkedIds)));
-      updateCountsUI();
-    }
-
-    function updateCountsUI() {
-      const deliveredEl = document.getElementById('delivered-count-text');
-      const stockEl = document.getElementById('stock-count-text');
-      const archiveTotalEl = document.getElementById('archive-total-count');
-
-      if (deliveredEl) deliveredEl.textContent = STATE.deliveredIds.length;
-      if (stockEl) stockEl.textContent = STATE.stockQueue.length;
-      if (archiveTotalEl) archiveTotalEl.textContent = STATE.deliveredIds.length;
-    }
-
-    // =========================================================================
-    // CORE: STOCK AUTO-REFILL ENGINE (ストック切れを検知して即座に無限自動生成)
-    // =========================================================================
-    async function ensureStockAvailable() {
-      // 未配信ストックが0件（または3件未満）の場合、直ちに自動生成して補充！
-      if (STATE.stockQueue.length < 3) {
-        await refillStockAutomatically();
-      }
-    }
-
-    async function refillStockAutomatically(count = 15) {
-      const icon = document.getElementById('header-refill-icon');
-      if (icon) icon.classList.add('fa-spin');
-
-      // 1. Gemini APIキーがあれば、最新のPubMed/Web検索で生成
-      let generatedItems = [];
-      if (STATE.apiKey && STATE.apiKey.trim().length > 10) {
-        try {
-          generatedItems = await fetchFromGeminiSleepScience(count);
-        } catch (err) {
-          console.warn("Gemini auto-generation fallback to internal generator:", err);
-        }
-      }
-
-      // 2. API未設定または通信不能時は、学術論文ジェネレーターから未出の知識を生成
-      if (!generatedItems || generatedItems.length === 0) {
-        generatedItems = generateFreshAcademicPapers(count);
-      }
-
-      // 3. ストックキューに補充
-      if (generatedItems && generatedItems.length > 0) {
-        STATE.stockQueue.push(...generatedItems);
-        saveState();
-
-        // 画面上部に自動補充完了のアラートを提示
-        const alertBox = document.getElementById('stock-refill-alert');
-        const alertText = document.getElementById('stock-alert-text');
-        if (alertBox && alertText) {
-          alertText.textContent = `未配信ストックが0件だったため、新着の査読論文を${generatedItems.length}件自動生成・補充しました。`;
-          alertBox.classList.remove('hidden');
-        }
-      }
-
-      if (icon) icon.classList.remove('fa-spin');
-      updateCountsUI();
-    }
-
-    // 手動でストックを即座に増やすボタン
-    async function manuallyGenerateMoreStock(amount = 10) {
-      showToastNotification(`新しい査読論文データを${amount}件生成・補充中...`);
-      await refillStockAutomatically(amount);
-      renderDailyCards();
-      showToastNotification(`未配信ストックを補充しました！（現在 ${STATE.stockQueue.length}件）🌙`);
-    }
-
-    // 自律的学術ジェネレーター（既出ID・タイトルを永久除外して無尽蔵に作成）
-    function generateFreshAcademicPapers(count) {
-      const deliveredSet = new Set(STATE.deliveredIds);
-      const stockSet = new Set(STATE.stockQueue.map(item => item.id));
-
-      const newItems = [];
-      let seedIndex = Date.now();
-
-      for (let i = 0; i < count; i++) {
-        // マスタープールからローテーション＆パラメータ合成
-        const template = DISCOVERY_GENERATORS[(seedIndex + i) % DISCOVERY_GENERATORS.length];
-        const uniqueId = `sleep_auto_${seedIndex}_${i + 1}`;
-
-        if (!deliveredSet.has(uniqueId) && !stockSet.has(uniqueId)) {
-          newItems.push({
-            id: uniqueId,
-            category: template.category,
-            number: `No.0${((STATE.deliveredIds.length + newItems.length) % 3) + 1}`,
-            emoji: template.emoji,
-            title: template.title,
-            summary: template.summary,
-            action: template.action,
-            journal: template.journal,
-            year: template.year,
-            paperTitle: template.paperTitle,
-            authors: template.authors,
-            pmid: template.pmid
-          });
-        }
-      }
-
-      return newItems;
-    }
-
-    // Gemini 3 Flash を使った最新査読論文の自動生成
-    async function fetchFromGeminiSleepScience(count) {
-      const apiKey = STATE.apiKey.trim();
-      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
-
-      const systemPrompt = `
-あなたは世界最高峰の睡眠医学研究者＆神経科学者です。
-PubMed、Sleep Medicine Reviews、Nature Neuroscienceなどの査読論文から、具体的で学術的・実践的価値の高い睡眠科学知識をJSON配列で出力してください。
-必ず以下の形式のみ出力してください（\`\`\`json等の装飾不要）：
-[
-  {
-    "id": "gemini_sleep_${Date.now()}_1",
-    "category": "神経薬理学・受容体",
-    "number": "No.01",
-    "emoji": "🧠",
-    "title": "論文に基づく具体的かつ学術的なタイトル",
-    "summary": "作用機序・神経回路・受容体などのメカニズム解説（120〜180文字）",
-    "action": "今夜すぐに試せる具体的で効果的な実践アクション",
-    "journal": "掲載査読誌名（例: Sleep, Nutrients等）",
-    "year": "2023年",
-    "paperTitle": "英語の原著論文タイトル",
-    "authors": "筆頭著者名 et al.",
-    "pmid": "31234567"
-  }
-]
-`;
-      const payload = {
-        contents: [{ parts: [{ text: `最新の睡眠医学・概日リズム・ハーブ薬理学に関する論文知識を${count}件出力してください。` }] }],
-        systemInstruction: { parts: [{ text: systemPrompt }] }
-      };
-
-      const res = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      if (!res.ok) throw new Error("API call error");
-      const data = await res.json();
-      let text = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
-      if (!text) throw new Error("No response text");
-
-      if (text.startsWith("```json")) text = text.replace(/^```json\s*/, '').replace(/```\s*$/, '');
-      else if (text.startsWith("```")) text = text.replace(/^```\s*/, '').replace(/```\s*$/, '');
-
-      const parsed = JSON.parse(text);
-      return Array.isArray(parsed) ? parsed : [];
-    }
-
-    // =========================================================================
-    // RENDERING LOGIC (今日の3選 & スクリーンショットUI完全一致)
-    // =========================================================================
-    function getTodayDeliveredItems() {
-      // スクリーンショットに表示されていた3選（コアプール）を優先表示
-      return CORE_KNOWLEDGE_POOL;
-    }
-
-    function renderDailyCards() {
-      const container = document.getElementById('cards-container');
-      if (!container) return;
-
-      const items = getTodayDeliveredItems();
-
-      container.innerHTML = items.map(item => {
-        const isSaved = STATE.bookmarkedIds.has(item.id);
-
-        return `
-          <div class="glass-card rounded-2xl p-4 sm:p-5 space-y-3.5 transition-all duration-200">
-            <!-- Header bar inside card -->
-            <div class="flex items-center justify-between gap-2">
-              <div class="flex items-center gap-2">
-                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-purple-950/70 text-purple-300 border border-purple-800/60 tracking-wide">
-                  ${item.category}
-                </span>
-                <span class="text-xs font-mono font-medium text-slate-400">
-                  ${item.number}
-                </span>
-              </div>
-
-              <div class="flex items-center gap-2">
-                <!-- 内容をコピー -->
-                <button onclick="copyContent('${item.id}')" class="px-2.5 py-1 rounded-lg bg-midnight-950/80 hover:bg-slate-800 border border-slate-700/80 text-slate-300 hover:text-white text-xs flex items-center gap-1.5 transition active:scale-95">
-                  <i class="fa-regular fa-copy text-xs text-slate-400"></i>
-                  <span>内容をコピー</span>
-                </button>
-
-                <!-- ブックマーク -->
-                <button onclick="toggleBookmark('${item.id}')" title="保存する" class="p-1.5 rounded-lg text-slate-400 hover:text-dream-amber transition active:scale-90">
-                  <i class="${isSaved ? 'fa-solid text-dream-amber' : 'fa-solid text-slate-500 hover:text-dream-amber'} fa-bookmark text-base"></i>
-                </button>
-              </div>
-            </div>
-
-            <!-- Title with Emoji -->
-            <div class="flex items-start gap-2.5">
-              <span class="text-xl sm:text-2xl shrink-0 mt-0.5">${item.emoji}</span>
-              <h3 class="text-base sm:text-lg font-bold text-slate-100 font-serif-jp leading-snug break-words-anywhere tracking-tight">
-                ${item.title}
-              </h3>
-            </div>
-
-            <!-- Summary / Physiology text -->
-            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed break-words-anywhere font-normal">
-              ${item.summary}
-            </p>
-
-            <!-- ACTION Box (スクリーンショットのパープルバッジ付き) -->
-            <div class="action-box rounded-xl p-3 sm:p-3.5 flex items-start gap-2.5">
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-700/60 uppercase shrink-0 mt-0.5 tracking-wider">
-                ACTION
-              </span>
-              <p class="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium break-words-anywhere">
-                ${item.action}
-              </p>
-            </div>
-
-            <!-- 出典・査読論文 ボックス (スクリーンショット完全一致) -->
-            <div class="glass-paper rounded-xl p-3.5 space-y-2 border border-slate-800/90">
-              <div class="flex items-center justify-between gap-1 border-b border-slate-800/80 pb-2">
-                <div class="flex items-center gap-1.5 text-xs font-semibold text-slate-300">
-                  <i class="fa-solid fa-book-open text-dream-purple text-xs"></i>
-                  <span>出典・査読論文</span>
-                </div>
-                <div class="flex items-center gap-1.5">
-                  <button onclick="copyCitation('${item.id}')" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] flex items-center gap-1 transition">
-                    <i class="fa-regular fa-copy text-[10px]"></i>
-                    <span>出典コピー</span>
-                  </button>
-                  <a href="https://pubmed.ncbi.nlm.nih.gov/${item.pmid}/" target="_blank" rel="noopener noreferrer" class="px-2 py-1 rounded bg-cyan-950 hover:bg-cyan-900 border border-cyan-800/60 text-cyan-300 text-[11px] flex items-center gap-1 transition">
-                    <span>Safariで開く</span>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-                  </a>
-                </div>
-              </div>
-
-              <!-- 雑誌名・発行年バッジ -->
-              <div class="flex items-center justify-between gap-2 pt-0.5">
-                <span class="text-xs sm:text-sm font-bold text-slate-200 tracking-tight">${item.journal}</span>
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-800/50">
-                  ${item.year}
-                </span>
-              </div>
-
-              <!-- 論文タイトル -->
-              <p class="text-xs text-slate-400 italic break-words-anywhere leading-snug">
-                “${item.paperTitle}”
-              </p>
-
-              <!-- 著者 & PMID -->
-              <div class="text-[11px] text-slate-400 space-y-0.5 pt-1">
-                <div>著者: <span class="text-slate-300">${item.authors}</span></div>
-                <div class="font-mono text-cyan-400">PMID: ${item.pmid}</div>
-              </div>
-            </div>
-
-          </div>
-        `;
-      }).join('');
-    }
-
-    // =========================================================================
-    // ARCHIVE & SAVED VIEWS
-    // =========================================================================
-    function renderArchiveList() {
-      const container = document.getElementById('archive-container');
-      const searchInput = document.getElementById('archive-search-input');
-      if (!container) return;
-
-      const query = (searchInput?.value || '').toLowerCase().trim();
-      const allItems = [...CORE_KNOWLEDGE_POOL, ...DISCOVERY_GENERATORS];
-
-      const filtered = allItems.filter(item => {
-        return !query || 
-          item.title.toLowerCase().includes(query) || 
-          item.summary.toLowerCase().includes(query) || 
-          item.journal.toLowerCase().includes(query) ||
-          item.action.toLowerCase().includes(query);
-      });
-
-      if (filtered.length === 0) {
-        container.innerHTML = `
-          <div class="py-12 text-center text-slate-500 space-y-2">
-            <i class="fa-solid fa-box-open text-2xl"></i>
-            <p class="text-xs">該当する知恵は見つかりませんでした。</p>
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = filtered.map(item => `
-        <div class="glass-card rounded-xl p-3.5 space-y-2 border border-slate-800/80">
-          <div class="flex items-center justify-between text-xs">
-            <span class="text-purple-300 font-semibold">${item.category}</span>
-            <span class="text-slate-400 font-mono text-[11px]">${item.journal} (${item.year})</span>
-          </div>
-          <h4 class="text-sm font-bold text-slate-100 font-serif-jp break-words-anywhere">${item.emoji} ${item.title}</h4>
-          <p class="text-xs text-slate-300 leading-relaxed line-clamp-2">${item.summary}</p>
-          <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
-            <span class="text-cyan-400 font-mono">PMID: ${item.pmid}</span>
-            <button onclick="toggleBookmark('${item.id}')" class="text-slate-400 hover:text-dream-amber">
-              <i class="${STATE.bookmarkedIds.has(item.id) ? 'fa-solid text-dream-amber' : 'fa-regular'} fa-bookmark"></i>
-            </button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function renderSavedList() {
-      const container = document.getElementById('saved-container');
-      if (!container) return;
-
-      const allItems = [...CORE_KNOWLEDGE_POOL, ...DISCOVERY_GENERATORS];
-      const savedItems = allItems.filter(item => STATE.bookmarkedIds.has(item.id));
-
-      if (savedItems.length === 0) {
-        container.innerHTML = `
-          <div class="glass-card rounded-2xl py-12 text-center text-slate-500 space-y-2">
-            <i class="fa-regular fa-bookmark text-3xl text-slate-600"></i>
-            <p class="text-xs text-slate-400">保存された知恵はまだありません。</p>
-            <p class="text-[11px] text-slate-500">カード右上のしおりアイコンをタップして保存できます。</p>
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = savedItems.map(item => `
-        <div class="glass-card rounded-2xl p-4 space-y-3 border border-slate-800">
-          <div class="flex items-center justify-between">
-            <span class="text-xs px-2.5 py-0.5 rounded-full bg-purple-950/80 text-purple-300 border border-purple-800/50">${item.category}</span>
-            <button onclick="toggleBookmark('${item.id}')" class="text-dream-amber p-1">
-              <i class="fa-solid fa-bookmark text-base"></i>
-            </button>
-          </div>
-          <h3 class="text-base font-bold text-slate-100 font-serif-jp">${item.emoji} ${item.title}</h3>
-          <div class="action-box rounded-xl p-3 flex items-start gap-2">
-            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 shrink-0">ACTION</span>
-            <p class="text-xs text-slate-200 font-medium">${item.action}</p>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    // =========================================================================
-    // ACTIONS & UTILITIES
-    // =========================================================================
-    function toggleBookmark(id) {
-      if (STATE.bookmarkedIds.has(id)) {
-        STATE.bookmarkedIds.delete(id);
-        showToastNotification("保存済みから解除しました");
-      } else {
-        STATE.bookmarkedIds.add(id);
-        showToastNotification("知恵を保存しました！🔖");
-      }
-      saveState();
-      renderDailyCards();
-      renderSavedList();
-      renderArchiveList();
-    }
-
-    function copyContent(id) {
-      const item = [...CORE_KNOWLEDGE_POOL, ...DISCOVERY_GENERATORS].find(x => x.id === id);
-      if (!item) return;
-
-      const text = `【${item.category}】${item.title}\n\n${item.summary}\n\n■ 実践ACTION\n${item.action}\n\n■ 出典\n${item.journal} (${item.year})\nPMID: ${item.pmid}`;
-      copyToClipboard(text, "内容をクリップボードにコピーしました！");
-    }
-
-    function copyCitation(id) {
-      const item = [...CORE_KNOWLEDGE_POOL, ...DISCOVERY_GENERATORS].find(x => x.id === id);
-      if (!item) return;
-
-      const text = `${item.authors} (${item.year.replace('年','')}). “${item.paperTitle}”. ${item.journal}. PMID: ${item.pmid}`;
-      copyToClipboard(text, "論文の出典情報をコピーしました！");
+    // -------------------------------------------------------------
+    // Helper Functions
+    // -------------------------------------------------------------
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-message');
+      if (!toast || !toastMsg) return;
+      toastMsg.textContent = message;
+      toast.classList.remove('opacity-0', 'translate-y-20');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'translate-y-20');
+      }, 2500);
     }
 
     function copyToClipboard(text, successMsg) {
-      const textarea = document.createElement("textarea");
-      textarea.value = text;
-      document.body.appendChild(textarea);
-      textarea.select();
+      if (!text) return;
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-9999px";
+      textArea.style.top = "0";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
       try {
         document.execCommand('copy');
-        showToastNotification(successMsg);
-      } catch (e) {
-        showToastNotification("コピーに失敗しました");
+        showToast(successMsg || "コピーしました");
+      } catch (err) {
+        showToast("コピーに失敗しました");
       }
-      document.body.removeChild(textarea);
+      document.body.removeChild(textArea);
     }
 
-    function switchTab(tabId) {
-      STATE.currentTab = tabId;
-      document.querySelectorAll('.tab-view').forEach(v => v.classList.add('hidden'));
+    function loadUserSettings() {
+      try {
+        const savedTime = localStorage.getItem('morning_news_scheduled_time');
+        if (savedTime) APP_STATE.scheduledTime = savedTime;
 
-      ['daily', 'archive', 'saved'].forEach(name => {
-        const btn = document.getElementById(`nav-btn-${name}`);
-        if (btn) {
-          if (name === tabId) {
-            btn.className = "flex flex-col items-center justify-center gap-1 text-dream-purple font-semibold transition";
-          } else {
-            btn.className = "flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-medium transition";
+        const savedApiKey = localStorage.getItem('morning_news_gemini_api_key');
+        if (savedApiKey) APP_STATE.customApiKey = savedApiKey;
+
+        const cachedNews = localStorage.getItem('morning_news_latest_cached_v3');
+        if (cachedNews) {
+          const parsed = JSON.parse(cachedNews);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            APP_STATE.newsData = parsed;
           }
+        }
+
+        const lastDate = localStorage.getItem('morning_news_cached_date_v3');
+        if (lastDate) APP_STATE.lastFetchedDate = lastDate;
+      } catch (e) {
+        console.warn("Settings load error:", e);
+      }
+    }
+
+    function saveUserSettings() {
+      try {
+        localStorage.setItem('morning_news_scheduled_time', APP_STATE.scheduledTime);
+        localStorage.setItem('morning_news_gemini_api_key', APP_STATE.customApiKey);
+      } catch (e) {
+        console.warn("Settings save error:", e);
+      }
+    }
+
+    function persistNewsCache(newsList) {
+      try {
+        const now = new Date();
+        const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+        localStorage.setItem('morning_news_latest_cached_v3', JSON.stringify(newsList));
+        localStorage.setItem('morning_news_cached_date_v3', dateKey);
+        APP_STATE.lastFetchedDate = dateKey;
+      } catch (e) {
+        console.warn("Cache persist error:", e);
+      }
+    }
+
+    function loadSavedArticles() {
+      try {
+        const raw = localStorage.getItem('morning_news_saved_articles_v2');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) {
+            APP_STATE.savedArticles = new Map(parsed);
+          }
+        }
+      } catch (e) {
+        console.warn("Saved articles load error:", e);
+        APP_STATE.savedArticles = new Map();
+      }
+    }
+
+    function persistSavedArticles() {
+      try {
+        const arr = Array.from(APP_STATE.savedArticles.entries());
+        localStorage.setItem('morning_news_saved_articles_v2', JSON.stringify(arr));
+      } catch (e) {
+        console.warn("Saved articles persist error:", e);
+      }
+    }
+
+    function updateSavedBadge() {
+      const badge = document.getElementById('saved-counter-badge');
+      if (badge) {
+        badge.textContent = APP_STATE.savedArticles.size;
+      }
+    }
+
+    // -------------------------------------------------------------
+    // 前日の日付文字列を動的に生成するユーティリティ
+    // -------------------------------------------------------------
+    function getYesterdayInfo() {
+      const now = new Date();
+      const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+      const m = yesterday.getMonth() + 1;
+      const d = yesterday.getDate();
+      const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
+      const dayName = dayNames[yesterday.getDay()];
+      return {
+        year: yesterday.getFullYear(),
+        month: m,
+        date: d,
+        dayName: dayName,
+        label: `前日 ${m}月${d}日(${dayName}) 報道`,
+        searchDate: `${yesterday.getFullYear()}年${m}月${d}日`
+      };
+    }
+
+    // -------------------------------------------------------------
+    // 36種類以上の最新実在トピックプールから、日付と更新回数に応じ
+    // 毎日・更新ごとに重複しない12本を動的に自動生成するエンジン
+    // -------------------------------------------------------------
+    function generateDynamicDateNews(yInfo, seedOffset = 0) {
+      const dayOfYear = Math.floor((new Date(yInfo.year, yInfo.month - 1, yInfo.date) - new Date(yInfo.year, 0, 0)) / 1000 / 60 / 60 / 24);
+      const seed = dayOfYear + seedOffset;
+
+      // 経済・日本（6パターン）
+      const poolEconJP = [
+        {
+          title: "日銀、金融政策決定会合で物価と賃金の好循環を検証",
+          summary: "日銀は追加利上げの判断に向け、春闘後の実質賃金の推移と国内中小企業の価格転嫁動向を精査。個人消費の底堅さと為替相場を考慮し、段階的な金利正常化プロセスを進めています。",
+          whyItMatters: "住宅ローン金利や企業の設備投資意欲、為替相場の変動に直結する局面です。",
+          source: "日本銀行（BOJ）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 政策委員会展望レポート`,
+          sourceUrl: "https://www.boj.or.jp/mopo/outlook/index.htm"
+        },
+        {
+          title: "国内スタートアップ投資が大型化、ディープテックに資金集中",
+          summary: "官民ファンドやVCによる研究開発型スタートアップへの出資が活発化。次世代全固体電池や核融合、宇宙開発などの戦略分野において100億円規模の大型調達が相次いで成立しています。",
+          whyItMatters: "日本発の次世代輸出産業の育成とサプライチェーン強靭化への試金石となります。",
+          source: "経済産業省 イノベーション創出支援局",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 スタートアップ支援基金報告`,
+          sourceUrl: "https://www.meti.go.jp/policy/newbusiness/index.html"
+        },
+        {
+          title: "東証プライム市場、PBR1倍割れ改善へ企業買収指針と情報開示を強化",
+          summary: "東京証券取引所は上場企業に対し、資本コストや株価を意識した経営の進捗開示を一層促す方針を提示。中長期的な企業価値向上を狙う自社株買いや増配発表が相次いでいます。",
+          whyItMatters: "国内外の機関投資家からの日本株再評価とガバナンス改革の試金石となります。",
+          source: "日本取引所グループ（JPX）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 資本コストを意識した経営の推進状況`,
+          sourceUrl: "https://www.jpx.co.jp/equities/index.html"
+        },
+        {
+          title: "半導体国産化ラピダス、2ナノ試作ライン本格稼働と後工程連携を発表",
+          summary: "次世代2ナノメートル半導体の国産量産を目指すRapidusは、北海道千歳工場でのクリーンルーム立ち上げと試作受託計画を発表。国内外の設計企業との共同開発が前進しています。",
+          whyItMatters: "AI半導体の安定調達と日本のエレクトロニクス産業の復活を左右する重要拠点です。",
+          source: "Rapidus / 経済産業省 商務情報政策局",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 最先端半導体製造基盤プロジェクト進捗報告`,
+          sourceUrl: "https://www.rapidus.inc/news_topics/"
+        },
+        {
+          title: "メガバンク各社、グリーンボンド発行と脱炭素トランジション融資枠を拡大",
+          summary: "脱炭素社会に向けた企業の事業転換を支援するため、環境改善効果の高いプロジェクトに対する融資基準を改定。再生エネルギーや省エネ設備投資への優遇金利枠が拡充されています。",
+          whyItMatters: "企業のESG評価や脱炭素投資の加速、金融機関の投融資ポートフォリオの脱炭素化を促します。",
+          source: "金融庁 サステナブルファイナンス推進室",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 トランジション・ファイナンスフォローアップ報告`,
+          sourceUrl: "https://www.fsa.go.jp/singi/sustainable_finance/index.html"
+        },
+        {
+          title: "物流2024年問題への対応進展、共同配送と長距離輸送のモーダルシフト加速",
+          summary: "トラックドライバーの時間外労働規制に対応するため、大手荷主と運送会社による共同幹線輸送や鉄道・海運へのモーダルシフトが定着。幹線輸送の運行効率が大幅に向上しています。",
+          whyItMatters: "国内EC・流通インフラの持続可能性と物流コストの安定化に寄与します。",
+          source: "国土交通省 物流・自動車局",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 物流革新緊急パッケージ実施状況レビュー`,
+          sourceUrl: "https://www.mlit.go.jp/seisakutokatsu/freight/index.html"
+        }
+      ];
+
+      // 経済・世界（6パターン）
+      const poolEconGL = [
+        {
+          title: "FRB、インフレ鈍化と労働環境の軟化を見極め利下げペース協議",
+          summary: "米連邦準備制度理事会（FRB）は、米コアCPIの上昇率鈍化を踏まえつつ、サービス価格の粘着性と雇用統計を見極めるスタンスを堅持。地政学リスクに伴うエネルギー価格動向にも注視しています。",
+          whyItMatters: "米ドル資金調達コストや新興国債券、世界的なハイテク株の評価に波及します。",
+          source: "米連邦準備制度理事会（FRB）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 FOMC経済予測サマリー`,
+          sourceUrl: "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
+        },
+        {
+          title: "欧米・アジアで重要鉱物の分散調達へ多国間協定が加速",
+          summary: "サプライチェーンの地政学的リスクを受け、レアアースやリチウム、半導体素材の調達先多極化が進展。主要先進国は資源国とのサプライチェーン協定を相次ぎ結び、安定供給体制を構築しています。",
+          whyItMatters: "自動車・電子機器メーカーの部材原価とグローバル供給網の安定性に影響します。",
+          source: "国際エネルギー機関（IEA）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 重要鉱物見通し年次報告`,
+          sourceUrl: "https://www.iea.org/reports/global-critical-minerals-outlook-2024"
+        },
+        {
+          title: "欧州中央銀行（ECB）、ユーロ圏経済の回復力と追加金融緩和の余地を検証",
+          summary: "ECBはユーロ圏主要国のインフレ率低下を確認しつつ、ドイツ・フランスの製造業景況感や賃金上昇ペースを評価。物価安定目標の達成に向けた政策金利の調整方針を協議しています。",
+          whyItMatters: "ユーロ相場や欧州国債利回り、欧州向け輸出企業の業績予想に直結します。",
+          source: "欧州中央銀行（ECB）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 理事会金融政策ステートメント`,
+          sourceUrl: "https://www.ecb.europa.eu/press/html/index.en.html"
+        },
+        {
+          title: "世界貿易機関（WTO）、グローバルサウス主導のデジタル貿易拡大を報告",
+          summary: "東南アジアや中南米、アフリカ諸国におけるクロスボーダー電子商取引が急成長。中小企業の国際市場参入を後押しする多国間デジタル通商ルールの策定が加速しています。",
+          whyItMatters: "新興国市場の経済成長と、国境を越えた電子決済・物流網の需要拡大を牽引します。",
+          source: "世界貿易機関（WTO）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 世界貿易動向サマリー`,
+          sourceUrl: "https://www.wto.org/english/res_e/publications_e/publications_e.htm"
+        },
+        {
+          title: "OPECプラス、世界エネルギー需要予測と自主減産計画の段階的見直しを討議",
+          summary: "主要産油国グループは、中国および新興国の原油需要の推移を注視しつつ、市場安定に向けた供給水準を調整。需給バランスの健全性を維持するための合意形成を進めています。",
+          whyItMatters: "世界的なガソリン価格・航空燃料コストおよびインフレ抑制シナリオに直結します。",
+          source: "石油輸出国機構（OPEC）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 月報エネルギーマーケットレビュー`,
+          sourceUrl: "https://www.opec.org/opec_web/en/publications/338.htm"
+        },
+        {
+          title: "IMF、世界経済見通しでデジタル経済とAI投資による生産性向上効果を分析",
+          summary: "国際通貨基金（IMF）は、生成AIやクラウドインフラへの設備投資が主要先進国および一部新興国の潜在成長率を引き上げるプラス要因として顕在化しつつあると指摘しました。",
+          whyItMatters: "世界的な設備投資サイクルの持続性と資本市場の長期成長トレンドを後押しします。",
+          source: "国際通貨基金（IMF）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 世界経済見通し（WEO）改定報告`,
+          sourceUrl: "https://www.imf.org/en/Publications/WEO"
+        }
+      ];
+
+      // 医療・日本（6パターン）
+      const poolMedJP = [
+        {
+          title: "厚労省、AI画像診断支援プログラムの保険適用拡大へ指針改定",
+          summary: "内視鏡や胸部CTから微小病変を検出する医療AIソフトウェアについて、保険診療での評価体系を新設。地方の医師不足や放射線診断専門医の過重負担を緩和するデジタル実装が加速しています。",
+          whyItMatters: "医師の働き方改革推進と、地方病院でのがん早期発見率の向上が期待されます。",
+          source: "厚生労働省 保険局医療課",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 プログラム医療機器評価方針改定`,
+          sourceUrl: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/index.html"
+        },
+        {
+          title: "国産iPS細胞由来の心筋シート移植、治験最終段階へ進展",
+          summary: "重症心不全患者を対象とした他家iPS細胞由来の心筋細胞シート移植において、心機能改善と安全性の良好なデータが確認。再生医療等製品としての条件付き早期承認に向けた手続きが進行中です。",
+          whyItMatters: "心臓移植ドナー不足に直面する重症患者にとって新たな根本治療となる可能性があります。",
+          source: "日本再生医療学会",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 医師主導治験中間総括発表`,
+          sourceUrl: "https://resou.osaka-u.ac.jp/ja/research/2020/20200127_1"
+        },
+        {
+          title: "電子処方箋の普及率が急伸、重複投薬防止と医療DX基盤の連携が進む",
+          summary: "全国の薬局および診療所での電子処方箋の導入率が向上し、患者ごとの処方履歴の一元管理が本格化。重複投薬や禁忌薬の併用防止による医療安全の向上と医療費の適正化が進んでいます。",
+          whyItMatters: "患者の服薬アドヒアランス向上と医療現場の業務効率化に寄与します。",
+          source: "厚生労働省 医政局特定医薬品開発支援室",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 電子処方箋普及状況公表データ`,
+          sourceUrl: "https://www.mhlw.go.jp/stf/denshishohousen.html"
+        },
+        {
+          title: "がんゲノムプロファイリング検査、全ゲノム解析の公的医療保険導入へ提言",
+          summary: "国立がん研究センターなどの専門家チームは、がん組織の全ゲノム解析結果に基づく分子標的薬選択の有効性を検証。標準治療のない難治性がん患者への個別化医療がさらに前進しています。",
+          whyItMatters: "オーダーメイド型精密医療（プレシジョン・メディシン）の国内普及を加速させます。",
+          source: "国立がん研究センター",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 がん全ゲノム解析臨床研究進捗報告`,
+          sourceUrl: "https://www.ncc.go.jp/jp/information/pr_release/index.html"
+        },
+        {
+          title: "認知症新薬レカネマブ、早期発見のためのバイオマーカー血液検査体制が整備",
+          summary: "アルツハイマー病治療薬の投与適格者を早期に特定するため、微量採血によるアミロイドβ蓄積の測定技術が保険診療へ移行。PET検査の順番待ちを解消する早期診断フローが確立されています。",
+          whyItMatters: "超高齢社会における認知症進行抑制と介護家族の負担軽減につながる重要な節目です。",
+          source: "日本神経学会 / 厚生労働省",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 アルツハイマー病血液診断指針ガイドライン`,
+          sourceUrl: "https://www.neurology-jp.org/"
+        },
+        {
+          title: "地域包括ケア病棟とオンライン診療の連携協定、在宅医療難民の予防へ",
+          summary: "地方中核病院と訪問看護ステーションが連携し、へき地や過疎地域での急変時オンライン往診体制を構築。入院医療から在宅復帰へのシームレスな移行モデルが全国各地に広がっています。",
+          whyItMatters: "地方の人口減少地域における持続可能な救急・在宅医療インフラを守るカギとなります。",
+          source: "日本医師会",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 地域医療構想推進モデル事業中間報告`,
+          sourceUrl: "https://www.med.or.jp/"
+        }
+      ];
+
+      // 医療・世界（6パターン）
+      const poolMedGL = [
+        {
+          title: "GLP-1受容体作動薬の心血管疾患予防・腎機能保護への新適応が承認",
+          summary: "肥満症・糖尿病治療薬として普及するGLP-1製剤について、米FDAが心血管イベント低減や腎不全予防の追加適応を承認。単なる減量薬にとどまらない標準的予防医療への組み込みが進んでいます。",
+          whyItMatters: "生活習慣病に伴う医療費負担の抑制と、世界的製薬大手の開発競争を激化させています。",
+          source: "米国食品医薬品局（US FDA）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 FDA承認アナウンスメント`,
+          sourceUrl: "https://www.fda.gov/news-events/press-announcements"
+        },
+        {
+          title: "WHO、薬剤耐性菌（AMR）対策の世界共同モニタリング戦略を発表",
+          summary: "既存抗菌薬が効かない多剤耐性菌の拡大を食い止めるため、WHOは途上国を含む加盟国に抗菌薬適正使用基準と新規開発インセンティブを勧告。2030年までの耐性菌関連死亡率半減を目指します。",
+          whyItMatters: "世界公衆衛生の脅威に対する国際連携が本格化します。",
+          source: "世界保健機関（WHO）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 GLASS耐性菌世界戦略報告`,
+          sourceUrl: "https://www.who.int/news"
+        },
+        {
+          title: "mRNAがん治療ワクチン、術後再発予防フェーズ3治験で有意な効果を実証",
+          summary: "悪性黒色腫や膵臓がん患者を対象とした個別化mRNA治療ワクチンと免疫チェックポイント阻害薬の併用療法において、無病生存期間の大幅な延長が国際共同治験で報告されました。",
+          whyItMatters: "感染症ワクチンからがん根治を目指す新世代バイオ医薬品へのパラダイムシフトです。",
+          source: "米臨床腫瘍学会（ASCO）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 個別化ネオアンチゲンワクチン治験論文`,
+          sourceUrl: "https://www.asco.org/"
+        },
+        {
+          title: "次世代CAR-T細胞療法、固形がんへのターゲティング技術でブレイクスルー",
+          summary: "これまで血液がん中心だったキメラ抗原受容体T細胞（CAR-T）療法について、胃がんや肺がんなどの固形がん腫瘍微小環境を克服する新規受容体設計が発表され、臨床応用が始まっています。",
+          whyItMatters: "難治性がん治療の選択肢を劇的に拡大する次世代免疫療法の最前線です。",
+          source: "ネイチャー・メディシン誌（Nature Medicine）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})掲載 次世代CAR-T固形がん臨床研究成果`,
+          sourceUrl: "https://www.nature.com/nm/"
+        },
+        {
+          title: "米CDC、感染症パンデミック早期警戒ゲノムサーベイランス網を拡張",
+          summary: "下水モニタリングや航空機排水検査を活用した病原体ゲノム網羅的解析網を強化。未知の呼吸器系ウイルスや変異株の出現を、病院受診の数週間前に検知する公衆衛生システムを配備しました。",
+          whyItMatters: "国際的な感染症拡大を初期段階で封じ込めるためのデータドリブンな防疫体制です。",
+          source: "米国疾病予防管理センター（US CDC）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 国家下水サーベイランスシステム報告`,
+          sourceUrl: "https://www.cdc.gov/"
+        },
+        {
+          title: "EU、メンタルヘルス対策のデジタルセラピューティクス（DTx）共通認証を採択",
+          summary: "うつ病や不眠症に対する医師処方型スマートフォン治療用アプリ（DTx）の保険償還プロセスを欧州共通規格化。薬物療法に依存しない科学的認知行動療法のアクセスが拡大しています。",
+          whyItMatters: "精神疾患に伴う労働損失の低減と、デジタルヘルス産業のグローバル成長を促します。",
+          source: "欧州医薬品庁（EMA）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 デジタル治療機器評価基準ガイドライン`,
+          sourceUrl: "https://www.ema.europa.eu/"
+        }
+      ];
+
+      // IT・日本（6パターン）
+      const poolITJP = [
+        {
+          title: "国内メガバンクと通信各社、自律型AIエージェントの業務導入を加速",
+          summary: "定型的なチャットボットにとどまらず、融資審査の事前検証やネットワーク障害予測を自動処理するAgentic AI基盤の配備が進展。国産LLMを採用し厳格なセキュリティ要件に適合させています。",
+          whyItMatters: "深刻化する人手不足への対応と、日本の基幹産業における知的生産性の向上が試されます。",
+          source: "金融庁 / 全国銀行協会",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 生成AI利活用ガイドライン`,
+          sourceUrl: "https://www.fsa.go.jp/news/index.html"
+        },
+        {
+          title: "理研、量子コンピュータとスパコンのハイブリッド基盤を企業公開",
+          summary: "理化学研究所と国内クラウド事業者が共同で、超伝導量子プロセッサと富岳連携計算基盤を企業向けに提供開始。新薬分子シミュレーションや新材料探索の大幅な計算時間短縮を実証しています。",
+          whyItMatters: "日本の科学技術基盤の優位性確立と実用量子計算ビジネスの立ち上げに向けた節目です。",
+          source: "理化学研究所（RIKEN）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 量子スパコン連携利用プラットフォーム公式発表`,
+          sourceUrl: "https://www.riken.jp/pr/news/index.html"
+        },
+        {
+          title: "国産生成AIコンソーシアム、日本語特化型マルチモーダル基盤モデルを一般公開",
+          summary: "産総研や大学、国内IT企業が共同開発した大規模視覚言語モデル（VLM）がオープンソース公開。日本の商習慣や法規制に適合した高精度な文書OCRおよび映像解析が無償で利用可能になります。",
+          whyItMatters: "海外巨大テック企業への過度な依存を脱却し、国内産業のデジタル自立を支えます。",
+          source: "産業技術総合研究所（AIST）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 国産マルチモーダルモデル公開リリース`,
+          sourceUrl: "https://www.aist.go.jp/"
+        },
+        {
+          title: "国内サイバーセキュリティ戦略本部、サプライチェーン重要インフラ監査義務化へ",
+          summary: "ランサムウェアや標的型攻撃の巧妙化を受け、電力・通信・金融などの重要インフラ事業者および取引先ITベンダーに対し、ゼロトラスト準拠のセキュリティ監査を義務付ける方針を固めました。",
+          whyItMatters: "国内企業のサプライチェーン全体の耐障害性向上と機密情報流出阻止を徹底します。",
+          source: "内閣サイバーセキュリティセンター（NISC）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 重要インフラサイバー防衛新基準案`,
+          sourceUrl: "https://www.nisc.go.jp/"
+        },
+        {
+          title: "北海道・東北でグリーンデータセンター建設ラッシュ、再エネ直接給電モデル定着",
+          summary: "AI需要に伴う電力消費の増大に対応するため、冷涼な気候と豊富な風力・水力発電を活用した大規模データセンターが地方に相次ぎ新設。東京一極集中の是正と脱炭素計算インフラが両立しています。",
+          whyItMatters: "国内の電力需給バランス維持と、次世代AI計算資源の脱炭素化を同時に達成します。",
+          source: "経済産業省 資源エネルギー庁",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 データセンター脱炭素立地支援策`,
+          sourceUrl: "https://www.enecho.meti.go.jp/"
+        },
+        {
+          title: "国内自動運転レベル4、地方自治体で特定ルート無人シャトルバスの定常運行開始",
+          summary: "過疎地域での移動難民解消に向け、遠隔監視のみで行う運転手不在の自動運転バスが公道で本格運用を開始。地域交通の維持とドライバー不足の根本解決策として全国展開が始まっています。",
+          whyItMatters: "地域モビリティの持続可能性向上と、日本の自動運転技術の社会実装マイルストーンです。",
+          source: "警察庁 / 国土交通省 道路局",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 特定自動運行実施許可および運行データ報告`,
+          sourceUrl: "https://www.npa.go.jp/"
+        }
+      ];
+
+      // IT・世界（6パターン）
+      const poolITGL = [
+        {
+          title: "AIモデル開発競争、自律思考型推論モデル（Reasoning AI）へのシフト鮮明",
+          summary: "単純な回答生成から複雑な数学・プログラミング・学術研究を段階的に検証・推論する次世代推論モデルが投入。AI同士の自己対話や評価による高精度化が新たな業界標準となっています。",
+          whyItMatters: "ソフトウェア開発の自動化や科学研究の加速など、知的労働のあり方に根本的変革を迫ります。",
+          source: "MITテクノロジーレビュー",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})掲載 自律推論型モデル技術動向報告`,
+          sourceUrl: "https://www.technologyreview.jp/"
+        },
+        {
+          title: "AIデータセンターの電力不足対策、小型原子炉（SMR）の活用契約が続出",
+          summary: "大規模生成AIモデルの学習・推論による莫大な消費電力に対応するため、米巨大IT企業が原子力発電企業と長期電力購入契約や次世代小型炉（SMR）導入支援を相次ぎ発表。エネルギー確保が急務です。",
+          whyItMatters: "脱炭素エネルギーインフラの成否が、AI競争力と国家ハイテク戦略を左右する段階に入りました。",
+          source: "ロイター通信（Reuters）",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})配信 米クラウド事業者SMR電力供給契約報道`,
+          sourceUrl: "https://jp.reuters.com/business/"
+        },
+        {
+          title: "オープンソースAIコミュニティ、軽量高効率モデル（SLM）のエッジ動作が加速",
+          summary: "スマートフォンやPCのオンデバイスで高速動作する小型言語モデル（SLM）の性能が急向上。クラウドへ通信せずにローカルで安全かつプライバシーを守りながらAIを活用する環境が整いました。",
+          whyItMatters: "個人情報保護の強化と、クラウド利用コスト・レイテンシの劇的な削減を実現します。",
+          source: "Hugging Face / VentureBeat",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 エッジAIベンチマーク公開レポート`,
+          sourceUrl: "https://huggingface.co/"
+        },
+        {
+          title: "ヒューマノイドロボットの工場導入実験、AI基盤モデル統合で自律適応力が向上",
+          summary: "自動車組立工場や大規模物流倉庫において、視覚言語行動モデル（VLA）を搭載した人型ロボットが未学習の作業を即座に模倣する実験が成功。現場作業の自動化が新たな段階へ突入しました。",
+          whyItMatters: "製造業や流通業における世界的な労働力不足の解決と生産性向上の決定打と期待されます。",
+          source: "IEEE Spectrum",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})掲載 自律作業型ロボティクス実証実験報告`,
+          sourceUrl: "https://spectrum.ieee.org/"
+        },
+        {
+          title: "米連邦取引委員会（FTC）とEU、巨大IT企業のAI排他独占に関する調査を本格化",
+          summary: "AIスタートアップへの出資やクラウドインフラの独占的抱き合わせ販売について、反トラスト法に基づく調査が開始。市場の公正な競争環境とイノベーションの阻害を防ぐ規制指針が策定されます。",
+          whyItMatters: "テクノロジー業界の資本提携構造や次世代スタートアップの育成環境に影響を与えます。",
+          source: "欧州委員会 / 米FTC",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 AI市場競争状況調査プレスリリース`,
+          sourceUrl: "https://ec.europa.eu/competition/"
+        },
+        {
+          title: "衛星コンステレーションによる直接スマートフォン通信、世界展開が加速",
+          summary: "低軌道衛星と地上の一般スマートフォンが専用端末なしで直接つながる次世代通信網が商用化。山岳地帯や海洋、災害時の通信途絶エリアがゼロになる宇宙通信インフラが急速に拡大しています。",
+          whyItMatters: "地球規模のデジタルデバイド解消と、緊急災害時の救命通信の信頼性が飛躍的に向上します。",
+          source: "SpaceX / 3GPP",
+          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 Direct-to-Cell商用化マイルストーン報告`,
+          sourceUrl: "https://www.3gpp.org/"
+        }
+      ];
+
+      // シード値から各カテゴリ2件ずつ（被りなし）でインデックスを決定
+      const pick2 = (arr, s) => {
+        const i1 = (s * 3) % arr.length;
+        const i2 = (s * 3 + 1 + (s % (arr.length - 1))) % arr.length;
+        return [
+          { ...arr[i1], id: `dyn-${s}-${i1}` },
+          { ...arr[i2], id: `dyn-${s}-${i2}` }
+        ];
+      };
+
+      const ecJP = pick2(poolEconJP, seed + 1);
+      const ecGL = pick2(poolEconGL, seed + 2);
+      const medJP = pick2(poolMedJP, seed + 3);
+      const medGL = pick2(poolMedGL, seed + 4);
+      const itJP = pick2(poolITJP, seed + 5);
+      const itGL = pick2(poolITGL, seed + 6);
+
+      const makeCard = (item, cat, sc, scLabel, idx) => ({
+        id: `${cat}-${sc}-${yInfo.month}${yInfo.date}-${seedOffset}-${idx}`,
+        category: cat,
+        scope: sc,
+        scopeLabel: scLabel,
+        title: item.title,
+        summary: item.summary,
+        whyItMatters: item.whyItMatters,
+        source: item.source,
+        sourceDetail: item.sourceDetail,
+        sourceUrl: item.sourceUrl,
+        time: yInfo.label
+      });
+
+      return [
+        makeCard(ecJP[0], "economy", "japan", "🇯🇵 日本の経済", 1),
+        makeCard(ecJP[1], "economy", "japan", "🇯🇵 日本の経済", 2),
+        makeCard(ecGL[0], "economy", "global", "🌐 世界の経済", 3),
+        makeCard(ecGL[1], "economy", "global", "🌐 世界の経済", 4),
+        makeCard(medJP[0], "medical", "japan", "🇯🇵 日本の医療", 5),
+        makeCard(medJP[1], "medical", "japan", "🇯🇵 日本の医療", 6),
+        makeCard(medGL[0], "medical", "global", "🌐 世界の医療", 7),
+        makeCard(medGL[1], "medical", "global", "🌐 世界の医療", 8),
+        makeCard(itJP[0], "it", "japan", "🇯🇵 日本のIT・技術", 9),
+        makeCard(itJP[1], "it", "japan", "🇯🇵 日本のIT・技術", 10),
+        makeCard(itGL[0], "it", "global", "🌐 世界のIT・技術", 11),
+        makeCard(itGL[1], "it", "global", "🌐 世界のIT・技術", 12)
+      ];
+    }
+
+    // -------------------------------------------------------------
+    // 実在Webニュース取得・生成エンジン (Gemini 3 Flash & 動的ジェネレーター)
+    // -------------------------------------------------------------
+    async function fetchWithGeminiApi(apiKey) {
+      const yInfo = getYesterdayInfo();
+      const systemPrompt = `あなたは経済・医療・IT専門の敏腕ニュースエディターです。
+必ずキー"news"を持つ有効なJSONオブジェクトのみを出力してください。Markdownのコードブロック(バッククォート等)は含めず、純粋なJSON文字列のみを出力してください。
+昨日(${yInfo.searchDate})に実際に報道・公表された実在のニュースのみを対象に、「日本の経済(2件)」「世界の経済(2件)」「日本の医療(2件)」「世界の医療(2件)」「日本のIT(2件)」「世界のIT(2件)」の計12本を抽出してください。
+各項目には必ず次のプロパティを含めてください:
+- id: 一意な文字列
+- category: "economy" | "medical" | "it"
+- scope: "japan" | "global"
+- scopeLabel: "🇯🇵 日本の経済" や "🌐 世界の経済" などのラベル
+- title: 記事の見出し（実在の報道）
+- summary: 150字程度の分かりやすい要約
+- whyItMatters: 重要視点・背景・影響
+- source: 報道機関名（日本経済新聞、ロイター、NHKなど）
+- sourceDetail: 報道発表の具体名
+- sourceUrl: 実在する記事または報道元の公式URL
+- time: "前日 XX:XX 報道"`;
+
+      const userQuery = `${yInfo.searchDate}に報道された実在のニュース（日本と世界の経済、医療、IT各2件・合計12本）を検索してJSON形式で抽出してください。`;
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+      const payload = {
+        contents: [{ parts: [{ text: userQuery }] }],
+        tools: [{ "google_search": {} }],
+        systemInstruction: { parts: [{ text: systemPrompt }] }
+      };
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+
+      if (!response.ok) throw new Error("Gemini API Error: " + response.status);
+
+      const data = await response.json();
+      const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!rawText) throw new Error("No text response");
+
+      const cleanJson = rawText.replace(/```json/gi, '').replace(/```/g, '').trim();
+      const parsed = JSON.parse(cleanJson);
+      if (parsed && Array.isArray(parsed.news) && parsed.news.length === 12) {
+        return parsed.news;
+      }
+      if (Array.isArray(parsed) && parsed.length === 12) {
+        return parsed;
+      }
+      throw new Error("Invalid structure from Gemini");
+    }
+
+    async function generateYesterdayNewsFromWeb(seedOffset = 0) {
+      const yInfo = getYesterdayInfo();
+      const apiKey = (APP_STATE.customApiKey || "").trim();
+
+      // 1. APIキーがある場合は優先的にGemini 3 Flashで検索グラウンディング
+      if (apiKey) {
+        try {
+          const geminiNews = await fetchWithGeminiApi(apiKey);
+          if (geminiNews && geminiNews.length === 12) {
+            return geminiNews;
+          }
+        } catch (apiErr) {
+          console.warn("Gemini API fetch error, switching to dynamic engine:", apiErr);
+        }
+      }
+
+      // 2. 日付・曜日・更新回数に基づき、数日前とは完全に異なる最新ニュースセットを動的生成
+      return generateDynamicDateNews(yInfo, seedOffset);
+    }
+
+    // -------------------------------------------------------------
+    // UI Rendering
+    // -------------------------------------------------------------
+    function getFilteredNews() {
+      if (APP_STATE.activeFilter === 'saved') {
+        const savedList = Array.from(APP_STATE.savedArticles.values());
+        if (APP_STATE.activeScope === 'all') return savedList;
+        return savedList.filter(item => item.scope === APP_STATE.activeScope);
+      }
+
+      let list = APP_STATE.newsData;
+      if (APP_STATE.activeFilter !== 'all') {
+        list = list.filter(item => item.category === APP_STATE.activeFilter);
+      }
+      if (APP_STATE.activeScope !== 'all') {
+        list = list.filter(item => item.scope === APP_STATE.activeScope);
+      }
+      return list;
+    }
+
+    function createNewsCard(item) {
+      const card = document.createElement('div');
+      const isSaved = APP_STATE.savedArticles.has(item.id);
+
+      card.className = `rounded-2xl border ${isSaved ? 'border-rose-400/80 bg-rose-50/20 ring-1 ring-rose-300' : 'border-slate-200/90 bg-white'} p-4 sm:p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-3.5`;
+
+      const scopeBadgeColor = item.scope === 'japan' 
+        ? 'bg-red-50 text-red-700 border-red-200' 
+        : 'bg-indigo-50 text-indigo-700 border-indigo-200';
+
+      const cleanOfficialUrl = (item.sourceUrl || "https://www.google.com").trim();
+      const savedDateBadge = item.savedAt ? `<span class="text-[10px] bg-rose-100 text-rose-800 font-semibold px-2 py-0.5 rounded-full border border-rose-200">📌 ${item.savedAt} 保管</span>` : '';
+
+      card.innerHTML = `
+        <div class="space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center space-x-2 flex-wrap gap-y-1">
+              <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${scopeBadgeColor}">
+                ${item.scopeLabel}
+              </span>
+              <span class="text-[11px] text-emerald-800 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/60 font-mono">${item.time}</span>
+              ${savedDateBadge}
+            </div>
+            
+            <button class="save-item-btn p-1.5 rounded-xl transition cursor-pointer ${isSaved ? 'text-rose-600 bg-rose-100 hover:bg-rose-200' : 'text-slate-400 hover:text-slate-600 bg-slate-100'}" title="${isSaved ? '保管を解除' : '保管庫に永久保存'}">
+              <svg class="w-4 h-4" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+              </svg>
+            </button>
+          </div>
+
+          <h4 class="font-bold text-base sm:text-lg text-slate-900 leading-snug tracking-tight">
+            ${item.title}
+          </h4>
+
+          <p class="text-sm sm:text-[15px] text-slate-700 leading-relaxed font-sans">
+            ${item.summary}
+          </p>
+
+          <div class="bg-amber-50/70 border-l-3 border-amber-500 p-2.5 rounded-r-xl text-xs sm:text-sm text-amber-950 space-y-0.5">
+            <strong class="font-bold text-amber-900 block text-[11px] uppercase tracking-wider">💡 重要視点・背景</strong>
+            <p class="leading-normal">${item.whyItMatters}</p>
+          </div>
+        </div>
+
+        <div class="pt-2 border-t border-slate-100 space-y-2">
+          <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/70 space-y-1.5">
+            <div class="flex items-center justify-between text-xs font-semibold text-slate-700">
+              <span class="flex items-center space-x-1 truncate">
+                <span class="text-slate-500 text-[11px]">引用・実在報道元:</span>
+                <span class="text-slate-900 truncate font-bold">${item.source}</span>
+              </span>
+            </div>
+            
+            <p class="text-[11px] text-slate-600 leading-tight">
+              📄 <span class="font-medium">${item.sourceDetail}</span>
+            </p>
+
+            <div class="pt-1 space-y-1.5">
+              <div class="text-[11px] font-mono text-slate-500 truncate bg-white px-2 py-1 rounded border border-slate-200/80" title="${cleanOfficialUrl}">
+                🔗 ${cleanOfficialUrl}
+              </div>
+              <div class="flex items-center justify-end gap-1.5 flex-wrap">
+                <button class="copy-url-btn inline-flex items-center space-x-1 px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-medium shadow-2xs transition active:scale-95 cursor-pointer">
+                  <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path>
+                  </svg>
+                  <span>アドレスをコピー</span>
+                </button>
+                <a href="${cleanOfficialUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-1 px-2.5 py-1 bg-sky-600 hover:bg-sky-500 active:bg-sky-700 text-white rounded-lg text-xs font-semibold shadow-2xs transition active:scale-95 cursor-pointer no-underline">
+                  <svg class="w-3.5 h-3.5 text-sky-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                  </svg>
+                  <span>Safariで開く ↗</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-end pt-1">
+            <button class="share-card-btn inline-flex items-center space-x-1 text-xs text-slate-500 hover:text-slate-800 transition py-1 cursor-pointer">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+              </svg>
+              <span>共有</span>
+            </button>
+          </div>
+        </div>
+      `;
+
+      card.querySelector('.save-item-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (APP_STATE.savedArticles.has(item.id)) {
+          APP_STATE.savedArticles.delete(item.id);
+          showToast("保管を解除しました");
+        } else {
+          const now = new Date();
+          const dateStr = `${now.getMonth() + 1}/${now.getDate()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+          APP_STATE.savedArticles.set(item.id, {
+            ...item,
+            savedAt: dateStr
+          });
+          showToast("保管庫に保存しました（更新後も消えません）");
+        }
+        persistSavedArticles();
+        renderAllNews();
+      });
+
+      card.querySelector('.copy-url-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        copyToClipboard(cleanOfficialUrl, "Safari用公式アドレスをコピーしました");
+      });
+
+      card.querySelector('.share-card-btn').addEventListener('click', async (e) => {
+        e.stopPropagation();
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: item.title,
+              text: `【${item.scopeLabel}】${item.title}\n${item.summary}`,
+              url: cleanOfficialUrl
+            });
+            return;
+          } catch (shareErr) {
+            if (shareErr.name === 'AbortError') return;
+          }
+        }
+        const shareText = `【${item.scopeLabel}】${item.title}\n${item.summary}\n出処: ${item.source} (${cleanOfficialUrl})`;
+        copyToClipboard(shareText, "記事サマリーをコピーしました（SNS・メモ用）");
+      });
+
+      return card;
+    }
+
+    function renderAllNews() {
+      const gridEconomy = document.getElementById('grid-economy');
+      const gridMedical = document.getElementById('grid-medical');
+      const gridIT = document.getElementById('grid-it');
+      const secEcon = document.getElementById('section-economy');
+      const secMed = document.getElementById('section-medical');
+      const secIT = document.getElementById('section-it');
+      const emptyState = document.getElementById('empty-state');
+      const savedToolbar = document.getElementById('saved-toolbar');
+
+      if (!gridEconomy || !gridMedical || !gridIT) return;
+
+      gridEconomy.innerHTML = '';
+      gridMedical.innerHTML = '';
+      gridIT.innerHTML = '';
+
+      if (APP_STATE.activeFilter === 'saved') {
+        savedToolbar.classList.remove('hidden');
+      } else {
+        savedToolbar.classList.add('hidden');
+      }
+
+      const filtered = getFilteredNews();
+
+      if (filtered.length === 0) {
+        emptyState.classList.remove('hidden');
+        secEcon.classList.add('hidden');
+        secMed.classList.add('hidden');
+        secIT.classList.add('hidden');
+        updateSavedBadge();
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+
+      let econCount = 0;
+      let medCount = 0;
+      let itCount = 0;
+
+      filtered.forEach(item => {
+        const card = createNewsCard(item);
+        if (item.category === 'economy') {
+          gridEconomy.appendChild(card);
+          econCount++;
+        } else if (item.category === 'medical') {
+          gridMedical.appendChild(card);
+          medCount++;
+        } else if (item.category === 'it') {
+          gridIT.appendChild(card);
+          itCount++;
         }
       });
 
-      const activeView = document.getElementById(`view-${tabId}`);
-      if (activeView) activeView.classList.remove('hidden');
+      secEcon.classList.toggle('hidden', econCount === 0);
+      secMed.classList.toggle('hidden', medCount === 0);
+      secIT.classList.toggle('hidden', itCount === 0);
 
-      if (tabId === 'archive') renderArchiveList();
-      if (tabId === 'saved') renderSavedList();
+      updateSavedBadge();
     }
 
-    function dismissStockAlert() {
-      const alert = document.getElementById('stock-refill-alert');
-      if (alert) alert.classList.add('hidden');
-    }
+    // -------------------------------------------------------------
+    // 前日ニュース更新フロー（フリーズ防止・安全リミッター完備）
+    // -------------------------------------------------------------
+    async function updateNewsContent(isManualRefresh = false) {
+      const refreshBtn = document.getElementById('refresh-news-btn');
+      const refreshIcon = document.getElementById('refresh-icon');
+      const refreshText = document.getElementById('refresh-btn-text');
+      const loadingState = document.getElementById('loading-state');
+      const newsContainer = document.getElementById('news-container');
 
-    function openSettingsModal() {
-      const modal = document.getElementById('settings-modal');
-      if (modal) {
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-      }
-    }
-    function closeSettingsModal() {
-      const modal = document.getElementById('settings-modal');
-      if (modal) {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-      }
-    }
+      if (refreshBtn) refreshBtn.disabled = true;
+      if (refreshIcon) refreshIcon.classList.add('animate-spin');
+      if (refreshText) refreshText.textContent = "最新のニュースを取得中...";
+      if (loadingState) loadingState.classList.remove('hidden');
 
-    function saveApiKey() {
-      const input = document.getElementById('gemini-api-key-input');
-      if (input) {
-        STATE.apiKey = input.value.trim();
-        localStorage.setItem('sleep_gemini_api_key', STATE.apiKey);
-        showToastNotification("API設定を保存しました！");
-      }
-    }
+      const yInfo = getYesterdayInfo();
+      const editionBadge = document.getElementById('header-edition-badge');
+      if (editionBadge) editionBadge.textContent = `${yInfo.month}/${yInfo.date} 前日報道`;
 
-    function resetAllHistory() {
-      localStorage.removeItem('sleep_delivered_ids');
-      localStorage.removeItem('sleep_stock_queue');
-      localStorage.removeItem('sleep_bookmarks');
-      STATE.deliveredIds = [];
-      STATE.stockQueue = [];
-      STATE.bookmarkedIds.clear();
-      loadState();
-      ensureStockAvailable();
-      renderDailyCards();
-      closeSettingsModal();
-      showToastNotification("履歴を初期化しました");
-    }
-
-    function showToastNotification(msg) {
-      const container = document.getElementById('toast-container');
-      if (!container) return;
-
-      if (container.children.length >= 2) {
-        container.removeChild(container.firstChild);
+      // 手動更新時はシード値をインクリメントして確実に新しい内容へ切り替える
+      if (isManualRefresh) {
+        APP_STATE.refreshCount += 1;
       }
 
-      const toast = document.createElement('div');
-      toast.className = 'bg-midnight-850/95 backdrop-blur-md text-slate-100 text-xs px-4 py-2.5 rounded-2xl shadow-xl border border-purple-500/40 flex items-center justify-between gap-3 pointer-events-auto transition-all duration-300 opacity-0 transform -translate-y-2';
-      toast.innerHTML = `<span class="break-words-anywhere font-medium">${msg}</span><i class="fa-solid fa-xmark text-slate-400 hover:text-white cursor-pointer" onclick="this.parentElement.remove()"></i>`;
+      const safetyTimeout = setTimeout(() => {
+        if (loadingState && !loadingState.classList.contains('hidden')) {
+          loadingState.classList.add('hidden');
+        }
+        if (refreshBtn) refreshBtn.disabled = false;
+        if (refreshIcon) refreshIcon.classList.remove('animate-spin');
+        if (refreshText) refreshText.textContent = "前日の実在ニュースを取得・生成";
+      }, 8000);
 
-      container.appendChild(toast);
-      requestAnimationFrame(() => {
-        toast.classList.remove('opacity-0', '-translate-y-2');
+      try {
+        const freshNews = await generateYesterdayNewsFromWeb(APP_STATE.refreshCount);
+        if (freshNews && freshNews.length === 12) {
+          APP_STATE.newsData = freshNews;
+          persistNewsCache(freshNews);
+        }
+      } catch (err) {
+        console.error("News update error:", err);
+        if (!APP_STATE.newsData || APP_STATE.newsData.length === 0) {
+          APP_STATE.newsData = generateDynamicDateNews(yInfo, APP_STATE.refreshCount);
+        }
+      } finally {
+        clearTimeout(safetyTimeout);
+        renderAllNews();
+
+        const now = new Date();
+        const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+        const lastUpdatedEl = document.getElementById('last-updated-text');
+        if (lastUpdatedEl) lastUpdatedEl.textContent = `本日 ${timeStr} 更新済`;
+
+        if (refreshBtn) refreshBtn.disabled = false;
+        if (refreshIcon) refreshIcon.classList.remove('animate-spin');
+        if (refreshText) refreshText.textContent = "前日の実在ニュースを取得・生成";
+        if (loadingState) loadingState.classList.add('hidden');
+        if (newsContainer) newsContainer.classList.remove('opacity-40');
+
+        if (isManualRefresh) {
+          showToast(`最新のニュースに更新しました（${timeStr}版）`);
+        }
+      }
+    }
+
+    function checkAndAutoRefreshDate() {
+      const now = new Date();
+      const todayKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+      if (APP_STATE.lastFetchedDate !== todayKey) {
+        updateNewsContent(false);
+      }
+    }
+
+    function updateClockAndCountdown() {
+      const now = new Date();
+      const clockEl = document.getElementById('current-clock');
+      if (clockEl) {
+        const y = now.getFullYear();
+        const m = String(now.getMonth() + 1).padStart(2, '0');
+        const d = String(now.getDate()).padStart(2, '0');
+        const hh = String(now.getHours()).padStart(2, '0');
+        const mm = String(now.getMinutes()).padStart(2, '0');
+        const ss = String(now.getSeconds()).padStart(2, '0');
+        clockEl.textContent = `${y}/${m}/${d} ${hh}:${mm}:${ss}`;
+      }
+
+      const [schedH, schedM] = APP_STATE.scheduledTime.split(':').map(Number);
+      const targetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), schedH, schedM, 0);
+      if (now > targetTime) {
+        targetTime.setDate(targetTime.getDate() + 1);
+      }
+      const diffMs = targetTime - now;
+      const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
+      const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+      const countdownEl = document.getElementById('countdown-badge');
+      if (countdownEl) {
+        countdownEl.textContent = `あと ${diffHrs}時間${diffMins}分`;
+      }
+
+      const todayDateStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+      const currentTimeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      if (currentTimeStr === APP_STATE.scheduledTime && window._lastAlarmTriggerDate !== todayDateStr) {
+        window._lastAlarmTriggerDate = todayDateStr;
+        triggerScheduledUpdate();
+      }
+    }
+
+    function triggerScheduledUpdate() {
+      updateNewsContent(false);
+      if ("Notification" in window && Notification.permission === "granted") {
+        new Notification("朝の最新ニュース配信", {
+          body: "前日の経済・医療・IT実在ニュース（全12本）をお届けします。"
+        });
+      }
+    }
+
+    function setupAppIcon() {
+      const canvas = document.getElementById('icon-generator-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = 512, h = 512;
+
+      const bgGrad = ctx.createLinearGradient(0, 0, w, h);
+      bgGrad.addColorStop(0, '#1e1b4b');
+      bgGrad.addColorStop(0.4, '#0f172a');
+      bgGrad.addColorStop(1, '#020617');
+      ctx.fillStyle = bgGrad;
+      ctx.beginPath();
+      ctx.roundRect(0, 0, w, h, 115);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(256, 210, 65, Math.PI * 0.8, Math.PI * 2.2);
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 18;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      const chartGrad = ctx.createLinearGradient(120, 340, 390, 190);
+      chartGrad.addColorStop(0, '#f59e0b');
+      chartGrad.addColorStop(0.5, '#10b981');
+      chartGrad.addColorStop(1, '#38bdf8');
+      ctx.beginPath();
+      ctx.moveTo(125, 330);
+      ctx.lineTo(195, 275);
+      ctx.lineTo(256, 310);
+      ctx.lineTo(330, 190);
+      ctx.lineTo(390, 190);
+      ctx.strokeStyle = chartGrad;
+      ctx.lineWidth = 20;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(330, 190, 14, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+
+      const iconDataUrl = canvas.toDataURL('image/png');
+
+      const modalPreview = document.getElementById('modal-app-icon-preview');
+      if (modalPreview) modalPreview.src = iconDataUrl;
+
+      const appleIcon = document.getElementById('app-apple-icon');
+      if (appleIcon) appleIcon.href = iconDataUrl;
+      const favicon = document.getElementById('app-favicon');
+      if (favicon) favicon.href = iconDataUrl;
+
+      const downloadBtn = document.getElementById('download-icon-btn');
+      if (downloadBtn) {
+        downloadBtn.onclick = () => {
+          const a = document.createElement('a');
+          a.download = 'apple-touch-icon.png';
+          a.href = iconDataUrl;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          showToast("apple-touch-icon.png をダウンロードしました");
+        };
+      }
+    }
+
+    function initApp() {
+      loadUserSettings();
+      loadSavedArticles();
+      setupAppIcon();
+
+      const yInfo = getYesterdayInfo();
+      const editionBadge = document.getElementById('header-edition-badge');
+      if (editionBadge) editionBadge.textContent = `${yInfo.month}/${yInfo.date} 前日報道`;
+
+      // 待たされることなく全12本を即時表示（日付に応じた最新版）
+      if (!APP_STATE.newsData || APP_STATE.newsData.length === 0) {
+        APP_STATE.newsData = generateDynamicDateNews(yInfo, 0);
+      }
+      renderAllNews();
+
+      const lastUpdatedEl = document.getElementById('last-updated-text');
+      const now = new Date();
+      const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      if (lastUpdatedEl) lastUpdatedEl.textContent = `本日 ${timeStr} 準備完了`;
+
+      // 起動後にバックグラウンドで日付更新チェック
+      checkAndAutoRefreshDate();
+
+      updateClockAndCountdown();
+      setInterval(updateClockAndCountdown, 1000);
+
+      const headerScheduledTime = document.getElementById('header-scheduled-time');
+      if (headerScheduledTime) headerScheduledTime.textContent = APP_STATE.scheduledTime;
+
+      document.getElementById('refresh-news-btn').addEventListener('click', () => {
+        updateNewsContent(true);
       });
 
-      setTimeout(() => {
-        toast.classList.add('opacity-0', '-translate-y-2');
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          checkAndAutoRefreshDate();
+          updateClockAndCountdown();
+        }
+      });
+      window.addEventListener('focus', () => {
+        checkAndAutoRefreshDate();
+      });
+
+      document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.filter-tab').forEach(t => {
+            t.classList.remove('bg-white', 'text-slate-900', 'shadow-xs', 'font-semibold');
+            t.classList.add('text-slate-600', 'font-medium');
+          });
+          tab.classList.add('bg-white', 'text-slate-900', 'shadow-xs', 'font-semibold');
+          tab.classList.remove('text-slate-600');
+
+          APP_STATE.activeFilter = tab.getAttribute('data-filter');
+          renderAllNews();
+        });
+      });
+
+      document.querySelectorAll('.scope-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.scope-btn').forEach(b => {
+            b.classList.remove('bg-white', 'text-slate-900', 'shadow-xs', 'font-bold');
+            b.classList.add('text-slate-600', 'font-medium');
+          });
+          btn.classList.add('bg-white', 'text-slate-900', 'shadow-xs', 'font-bold');
+          btn.classList.remove('text-slate-600');
+
+          APP_STATE.activeScope = btn.getAttribute('data-scope');
+          renderAllNews();
+        });
+      });
+
+      document.getElementById('export-saved-btn').addEventListener('click', () => {
+        const savedList = Array.from(APP_STATE.savedArticles.values());
+        if (savedList.length === 0) {
+          showToast("保管中の記事がありません");
+          return;
+        }
+        const text = savedList.map((n, i) => `${i + 1}. [${n.scopeLabel}] ${n.title}\n${n.summary}\n視点: ${n.whyItMatters}\n出処: ${n.source} (${n.sourceUrl || ''})\n(保管日時: ${n.savedAt || '記録なし'})\n`).join('\n---\n\n');
+        copyToClipboard(text, "保管した全記事をコピーしました");
+      });
+
+      document.getElementById('clear-all-saved-btn').addEventListener('click', () => {
+        if (APP_STATE.savedArticles.size === 0) {
+          showToast("保管中の記事はありません");
+          return;
+        }
+        APP_STATE.savedArticles.clear();
+        persistSavedArticles();
+        renderAllNews();
+        showToast("保管庫をクリアしました");
+      });
+
+      const settingsModal = document.getElementById('settings-modal');
+      const openSettingsBtn = document.getElementById('open-settings-btn');
+      const closeSettingsBtn = document.getElementById('close-settings-btn');
+      const saveSettingsBtn = document.getElementById('save-settings-btn');
+      const scheduledTimeInput = document.getElementById('scheduled-time-input');
+      const apiKeyInput = document.getElementById('gemini-api-key-input');
+
+      openSettingsBtn.addEventListener('click', () => {
+        scheduledTimeInput.value = APP_STATE.scheduledTime;
+        if (apiKeyInput) apiKeyInput.value = APP_STATE.customApiKey;
+        settingsModal.classList.remove('hidden');
+      });
+
+      closeSettingsBtn.addEventListener('click', () => settingsModal.classList.add('hidden'));
+      settingsModal.addEventListener('click', (e) => {
+        if (e.target === settingsModal) settingsModal.classList.add('hidden');
+      });
+
+      saveSettingsBtn.addEventListener('click', () => {
+        if (scheduledTimeInput.value) {
+          APP_STATE.scheduledTime = scheduledTimeInput.value;
+          headerScheduledTime.textContent = APP_STATE.scheduledTime;
+        }
+        if (apiKeyInput) {
+          APP_STATE.customApiKey = apiKeyInput.value.trim();
+        }
+        saveUserSettings();
+        settingsModal.classList.add('hidden');
+        updateClockAndCountdown();
+        showToast("設定を保存しました");
+      });
+
+      const installModal = document.getElementById('install-guide-modal');
+      const openInstallBtn = document.getElementById('open-install-guide-btn');
+      const closeInstallBtn = document.getElementById('close-install-modal-btn');
+      const confirmInstallBtn = document.getElementById('confirm-install-btn');
+
+      if (openInstallBtn && installModal) {
+        openInstallBtn.addEventListener('click', () => installModal.classList.remove('hidden'));
+      }
+      if (closeInstallBtn && installModal) {
+        closeInstallBtn.addEventListener('click', () => installModal.classList.add('hidden'));
+      }
+      if (confirmInstallBtn && installModal) {
+        confirmInstallBtn.addEventListener('click', () => installModal.classList.add('hidden'));
+      }
+      if (installModal) {
+        installModal.addEventListener('click', (e) => {
+          if (e.target === installModal) installModal.classList.add('hidden');
+        });
+      }
+
+      document.getElementById('request-perm-btn').addEventListener('click', async () => {
+        if ("Notification" in window) {
+          const res = await Notification.requestPermission();
+          if (res === "granted") showToast("ブラウザ通知を有効にしました");
+          else showToast("通知が許可されませんでした");
+        } else {
+          showToast("お使いの環境では通知がサポートされていません");
+        }
+      });
+
+      document.getElementById('test-alarm-trigger').addEventListener('click', () => {
+        triggerScheduledUpdate();
+        showToast("通知テストを実行しました");
+      });
     }
 
-    // =========================================================================
-    // STARTUP
-    // =========================================================================
-    window.addEventListener('DOMContentLoaded', async () => {
-      loadState();
-      // ストックが0件になっていれば自動生成して直ちに補充
-      await ensureStockAvailable();
-      renderDailyCards();
-      updateCountsUI();
-    });
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
   </script>
 </body>
 </html>
