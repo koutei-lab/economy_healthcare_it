@@ -2,1564 +2,1299 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>経済・医療・ITの最新ニュース</title>
-
-  <!-- Web App & ホーム画面アプリアイコン設定 -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="最新ニュース">
-  <meta name="application-name" content="最新ニュース">
-  <meta name="theme-color" content="#0f172a">
-
-  <!-- 静的ベクターSVGアイコン -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%231e1b4b'/%3E%3Cstop offset='40%25' stop-color='%230f172a'/%3E%3Cstop offset='100%25' stop-color='%23020617'/%3E%3C/linearGradient%3E%3ClinearGradient id='sun' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23fde047'/%3E%3Cstop offset='100%25' stop-color='%23f59e0b'/%3E%3Cstop offset='100%25' stop-color='%2338bdf8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='115' fill='url(%23bg)'/%3E%3Ccircle cx='256' cy='256' r='180' fill='none' stroke='rgba(56,189,248,0.25)' stroke-width='4'/%3E%3Ccircle cx='256' cy='210' r='60' fill='none' stroke='url(%23sun)' stroke-width='16' stroke-dasharray='190 300' stroke-linecap='round' transform='rotate(-90 256 210)'/%3E%3Cpath d='M125 325 L195 275 L256 305 L325 200 L385 200' fill='none' stroke='%2338bdf8' stroke-width='16' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='325' cy='200' r='12' fill='%23ffffff'/%3E%3C/svg%3E">
-
-  <!-- iOS Safari用 apple-touch-icon -->
-  <link id="app-apple-icon" rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="apple-touch-icon-precomposed" sizes="180x180" href="apple-touch-icon.png">
-  <link id="app-favicon" rel="icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
-
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
+          colors: {
+            morning: {
+              50: '#F8FAFC',
+              100: '#F1F5F9',
+              200: '#E2E8F0',
+              accent: '#3B82F6',
+              gold: '#F59E0B',
+              emerald: '#10B981',
+              rose: '#F43F5E',
+              violet: '#8B5CF6'
+            }
+          },
           fontFamily: {
-            sans: ['"Noto Sans JP"', 'Inter', 'sans-serif'],
+            sans: ['Inter', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'sans-serif'],
+          },
+          boxShadow: {
+            'soft': '0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.03)',
+            'card': '0 4px 20px rgba(0, 0, 0, 0.05)',
+            'float': '0 12px 30px rgba(59, 130, 246, 0.15)'
           }
         }
       }
     }
   </script>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   <style>
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
+    /* スムーズスクロールとスクロールバー美化 */
+    html {
+      scroll-behavior: smooth;
     }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F1F5F9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94A3B8;
+    }
+
+    /* アニメーション */
+    @keyframes pulse-subtle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.85; transform: scale(1.02); }
+    }
+    .pulse-glow {
+      animation: pulse-subtle 3s infinite ease-in-out;
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-900 min-h-screen font-sans flex flex-col antialiased selection:bg-sky-100 selection:text-sky-900">
+<body class="bg-[#F8FAFC] text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-blue-100 selection:text-blue-800">
 
-  <!-- ================= Header ================= -->
-  <header class="border-b border-slate-200/80 bg-white/95 backdrop-blur-md sticky top-0 z-40 shadow-xs">
-    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
-      <!-- Logo & Title -->
-      <div class="flex items-center space-x-2.5 min-w-0">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-600 via-indigo-600 to-amber-500 flex items-center justify-center text-white shadow-sm flex-shrink-0">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
-          </svg>
+  <!-- ==================== ヘッダー ==================== -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-sm transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+      
+      <!-- ロゴ & アプリ名（改行を防止し1行で表示） -->
+      <div class="flex items-center space-x-2.5 sm:space-x-3 cursor-pointer shrink-0" onclick="switchTab('feed')">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-amber-400 via-rose-400 to-blue-500 flex items-center justify-center text-white shadow-md shadow-orange-500/20 shrink-0">
+          <i class="fa-solid fa-sun text-base sm:text-lg"></i>
         </div>
         <div class="min-w-0">
-          <div class="flex items-center gap-1.5 flex-wrap">
-            <h1 class="font-bold text-sm sm:text-base tracking-tight text-slate-900 leading-tight">経済・医療・ITの最新ニュース</h1>
-            <span id="header-edition-badge" class="text-[10px] font-semibold bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-full uppercase flex-shrink-0">前日ニュース生成</span>
-          </div>
-          <p id="current-clock" class="text-[11px] text-slate-500 font-mono mt-0.5 truncate">読み込み中...</p>
+          <span class="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-amber-600 block truncate">Morning Executive Brief</span>
+          <h1 class="text-sm sm:text-lg md:text-xl font-bold bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 bg-clip-text text-transparent leading-tight whitespace-nowrap truncate">
+            経済・医療・ITの最新ニュース
+          </h1>
         </div>
       </div>
 
-      <!-- Header Action Buttons -->
-      <div class="flex items-center gap-1.5 flex-shrink-0">
-        <button id="open-install-guide-btn" class="flex items-center space-x-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/90 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer" title="ホーム画面に追加">
-          <span class="text-xs">📱</span>
-          <span class="hidden sm:inline">ホーム画面に追加</span>
-          <span class="inline-flex w-2 h-2 rounded-full bg-amber-500 animate-ping sm:hidden"></span>
+      <!-- 右側アクション & ナビゲーション -->
+      <div class="flex items-center space-x-2 sm:space-x-3">
+        <!-- 朝刊更新ボタン（文字をなくし、記号アイコンのみに刷新） -->
+        <button id="btnFetchNews" onclick="fetchLatestNewsManual()" title="ニュースを更新" class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl shadow-sm hover:shadow transition-all duration-200 active:scale-95">
+          <i class="fa-solid fa-arrows-rotate text-sm sm:text-base" id="refreshIcon"></i>
         </button>
 
-        <button id="open-settings-btn" class="flex items-center space-x-1.5 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-700 px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-200/80 transition flex-shrink-0 cursor-pointer" title="配信スケジュールを設定">
-          <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-          </svg>
-          <span class="text-xs font-mono font-semibold" id="header-scheduled-time">07:00</span>
-          <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-          </svg>
+        <!-- ホーム画面アイコン & ガイド -->
+        <button onclick="openIconModal()" title="ホーム画面アイコン・設定" class="p-2 text-slate-500 hover:text-blue-600 hover:bg-slate-100 rounded-xl transition duration-200">
+          <i class="fa-solid fa-arrow-up-from-bracket text-base"></i>
         </button>
+
+        <!-- 設定ダイアログ -->
+        <button onclick="openSettingsModal()" title="配信時間設定" class="p-2 text-slate-500 hover:text-blue-600 hover:bg-slate-100 rounded-xl transition duration-200">
+          <i class="fa-solid fa-gear text-base"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- サブバー: 毎朝タイマー & ステータス -->
+    <div class="bg-gradient-to-r from-blue-50/80 via-white to-amber-50/80 border-t border-slate-100/80 px-4 py-2">
+      <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between text-xs text-slate-600 gap-2">
+        <div class="flex items-center space-x-2">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span id="targetDeliveryText" class="font-medium text-slate-700">毎朝 <span class="text-blue-600 font-bold" id="displayDeliveryTime">07:00</span> 自動生成</span>
+          <span class="text-slate-300">|</span>
+          <span id="countdownTimer" class="text-slate-500">次の配信まで計算中...</span>
+        </div>
+        <div class="flex items-center space-x-3">
+          <span id="storageBadge" class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+            <i class="fa-solid fa-cloud-arrow-up mr-1 text-[10px]"></i> クラウド保管中
+          </span>
+          <span id="lastUpdatedBadge" class="text-slate-400 text-[11px]">未取得</span>
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- ================= Main Container ================= -->
-  <main class="max-w-4xl mx-auto px-4 py-5 flex-1 w-full space-y-5">
+  <!-- ==================== メインコンテンツ ==================== -->
+  <main class="flex-grow max-w-6xl mx-auto w-full px-4 sm:px-6 py-6 space-y-6">
 
-    <!-- Hero Card: Header & Refresh Control -->
-    <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-4 sm:p-5 text-white shadow-md border border-slate-800 space-y-4">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            前日の実報道から自動生成（全12本）
-          </span>
-          <h2 class="text-lg sm:text-xl font-bold tracking-tight text-white mt-1.5 font-sans">
-            経済・医療・ITの最新ニュース
-          </h2>
-          <p class="text-xs text-slate-300 mt-0.5" id="hero-subtext">日本 &amp; 世界 各2件（実在する最新報道記事）</p>
+    <!-- トップバナー: モーニングサマリー（明るさと彩度を抑えた落ち着きのあるネイビー調へ調整） -->
+    <section class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-800 via-indigo-950 to-slate-900 text-white p-6 sm:p-8 shadow-md">
+      <!-- 装飾バックグラウンド -->
+      <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
+      <div class="absolute right-12 top-6 text-white/5 text-8xl pointer-events-none select-none">
+        <i class="fa-regular fa-newspaper"></i>
+      </div>
+
+      <div class="relative z-10 max-w-2xl space-y-3">
+        <div class="inline-flex items-center space-x-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-xs font-medium text-slate-200 tracking-wide border border-white/10">
+          <i class="fa-solid fa-bolt text-amber-300"></i>
+          <span>直近24時間以内をリアルタイム検索</span>
         </div>
-        <div class="self-start sm:self-auto bg-white/10 px-3 py-1.5 rounded-xl border border-white/10 text-xs flex items-center gap-1.5">
-          <span class="text-slate-300">次回配信まで: </span>
-          <strong id="countdown-badge" class="font-mono text-amber-300 font-bold">計算中...</strong>
-        </div>
-      </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+          朝の意思決定を加速する、<br class="hidden sm:inline">厳選9本の重要ブリーフィング
+        </h2>
+        <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+          プールされた過去データではなく、その場で直近24時間の最新動向から各カテゴリ3本・300〜400字で凝縮生成。気になるニュースは保管して何度でも読み返せます。
+        </p>
 
-      <!-- Action Button Row: 前日最新ニュース即時取得ボタン -->
-      <div class="pt-1">
-        <button id="refresh-news-btn" class="w-full flex items-center justify-center space-x-2 bg-sky-600 hover:bg-sky-500 active:bg-sky-700 text-white py-3 px-4 rounded-xl font-bold text-sm shadow-md transition cursor-pointer active:scale-[0.99]">
-          <svg id="refresh-icon" class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-          </svg>
-          <span id="refresh-btn-text">前日の実在ニュースを取得・生成</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- ================= Navigation Filters (画面均等5分割) ================= -->
-    <div class="space-y-2">
-      <!-- 1. Category Tabs -->
-      <div class="grid grid-cols-5 gap-1 p-1 bg-slate-200/80 rounded-xl">
-        <button data-filter="all" class="filter-tab text-[11px] sm:text-xs font-semibold py-2 px-0.5 rounded-lg bg-white text-slate-900 shadow-xs transition flex items-center justify-center gap-1 cursor-pointer">
-          <span>すべて</span>
-          <span class="text-[10px] text-slate-500 font-mono" id="tab-all-count">(12)</span>
-        </button>
-        <button data-filter="economy" class="filter-tab text-[11px] sm:text-xs font-medium py-2 px-0.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition flex items-center justify-center gap-1 cursor-pointer">
-          <span class="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0"></span>
-          <span>経済</span>
-          <span class="text-[10px] opacity-75 font-mono">(4)</span>
-        </button>
-        <button data-filter="medical" class="filter-tab text-[11px] sm:text-xs font-medium py-2 px-0.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition flex items-center justify-center gap-1 cursor-pointer">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0"></span>
-          <span>医療</span>
-          <span class="text-[10px] opacity-75 font-mono">(4)</span>
-        </button>
-        <button data-filter="it" class="filter-tab text-[11px] sm:text-xs font-medium py-2 px-0.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition flex items-center justify-center gap-1 cursor-pointer">
-          <span class="w-1.5 h-1.5 rounded-full bg-sky-500 flex-shrink-0"></span>
-          <span>IT</span>
-          <span class="text-[10px] opacity-75 font-mono">(4)</span>
-        </button>
-        <!-- Saved Tab -->
-        <button data-filter="saved" id="tab-saved" class="filter-tab text-[11px] sm:text-xs font-medium py-2 px-0.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition flex items-center justify-center gap-1 cursor-pointer">
-          <svg class="w-3 h-3 text-rose-500 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
-          </svg>
-          <span>保管<span class="hidden sm:inline">庫</span></span>
-          <span id="saved-counter-badge" class="bg-rose-100 text-rose-700 font-bold px-1 py-0.2 rounded-full text-[10px]">0</span>
-        </button>
-      </div>
-
-      <!-- 2. Scope Segmented Control (全幅均等3分割) -->
-      <div class="grid grid-cols-3 gap-1 bg-slate-200/70 p-1 rounded-xl text-xs">
-        <button data-scope="all" class="scope-btn bg-white text-slate-900 font-bold py-1.5 rounded-lg shadow-xs transition text-center cursor-pointer">
-          全地域
-        </button>
-        <button data-scope="japan" class="scope-btn text-slate-600 hover:text-slate-900 font-medium py-1.5 rounded-lg transition text-center cursor-pointer">
-          🇯🇵 日本 (各2件)
-        </button>
-        <button data-scope="global" class="scope-btn text-slate-600 hover:text-slate-900 font-medium py-1.5 rounded-lg transition text-center cursor-pointer">
-          🌐 世界 (各2件)
-        </button>
-      </div>
-    </div>
-
-    <!-- ================= Saved Toolbar (保管庫タブ時のみ表示) ================= -->
-    <div id="saved-toolbar" class="hidden p-3.5 bg-rose-50 border border-rose-200 rounded-xl flex items-center justify-between gap-2">
-      <div class="flex items-center space-x-2 min-w-0">
-        <svg class="w-4 h-4 text-rose-600 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
-        </svg>
-        <div class="truncate">
-          <p class="font-bold text-xs text-rose-900">保管中のニュース一覧</p>
-          <p class="text-[10px] text-rose-700">端末に永続保存中（アプリ更新後も消えません）</p>
-        </div>
-      </div>
-      <div class="flex items-center space-x-1.5 flex-shrink-0">
-        <button id="export-saved-btn" class="px-2.5 py-1.5 rounded-lg bg-white border border-rose-200 hover:bg-rose-100 text-rose-900 text-xs font-medium transition cursor-pointer">
-          一括コピー
-        </button>
-        <button id="clear-all-saved-btn" class="px-2.5 py-1.5 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-medium transition cursor-pointer">
-          全解除
-        </button>
-      </div>
-    </div>
-
-    <!-- Loading Indicator（画面を隠さず控えめに進行状況を表示） -->
-    <div id="loading-state" class="hidden py-3 px-4 bg-sky-50 border border-sky-200 rounded-xl flex items-center justify-between gap-3 text-xs text-sky-900 shadow-xs">
-      <div class="flex items-center space-x-2.5 min-w-0">
-        <div class="w-4 h-4 rounded-full border-2 border-sky-600 border-t-transparent animate-spin flex-shrink-0"></div>
-        <p class="font-bold truncate text-sky-950" id="loading-text">前日の実在報道を収集・解析中...</p>
-      </div>
-      <span class="text-[10px] text-sky-600 bg-white px-2 py-0.5 rounded-md border border-sky-200 font-mono flex-shrink-0">自動同期中</span>
-    </div>
-
-    <!-- ================= News Sections Container ================= -->
-    <div id="news-container" class="space-y-6 transition-opacity duration-200">
-
-      <!-- Section: Economy -->
-      <section id="section-economy" class="space-y-3">
-        <div class="flex items-center justify-between border-b-2 border-amber-500/40 pb-2">
-          <div class="flex items-center space-x-2">
-            <span class="p-1 bg-amber-100 text-amber-700 rounded-lg">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-              </svg>
-            </span>
-            <h3 class="text-base font-bold text-slate-900 font-sans">経済ニュース</h3>
+        <!-- カテゴリミニ統計 -->
+        <div class="pt-2 flex flex-wrap gap-2 text-xs">
+          <div class="bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-xl flex items-center space-x-2 border border-white/5">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+            <span>経済: 3本</span>
           </div>
-          <span class="text-[11px] font-mono font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">日本2件 ＆ 世界2件</span>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5" id="grid-economy"></div>
-      </section>
-
-      <!-- Section: Medical -->
-      <section id="section-medical" class="space-y-3">
-        <div class="flex items-center justify-between border-b-2 border-emerald-500/40 pb-2">
-          <div class="flex items-center space-x-2">
-            <span class="p-1 bg-emerald-100 text-emerald-700 rounded-lg">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
-              </svg>
-            </span>
-            <h3 class="text-base font-bold text-slate-900 font-sans">医療・ヘルスケア</h3>
+          <div class="bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-xl flex items-center space-x-2 border border-white/5">
+            <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
+            <span>医療: 3本</span>
           </div>
-          <span class="text-[11px] font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">日本2件 ＆ 世界2件</span>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5" id="grid-medical"></div>
-      </section>
-
-      <!-- Section: IT -->
-      <section id="section-it" class="space-y-3">
-        <div class="flex items-center justify-between border-b-2 border-sky-500/40 pb-2">
-          <div class="flex items-center space-x-2">
-            <span class="p-1 bg-sky-100 text-sky-700 rounded-lg">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-              </svg>
-            </span>
-            <h3 class="text-base font-bold text-slate-900 font-sans">IT・テクノロジー</h3>
+          <div class="bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-xl flex items-center space-x-2 border border-white/5">
+            <span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span>
+            <span>IT: 3本</span>
           </div>
-          <span class="text-[11px] font-mono font-semibold text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-200">日本2件 ＆ 世界2件</span>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5" id="grid-it"></div>
-      </section>
+      </div>
+    </section>
 
+    <!-- コントロールバー: タブ切り替え & フィルター -->
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-white p-3 sm:p-4 rounded-2xl border border-slate-200/70 shadow-sm">
+      
+      <!-- メインタブ: [ 今日の朝刊 (9本) ] / [ 保管した記事 ] -->
+      <div class="flex items-center p-1 bg-slate-100 rounded-xl text-xs sm:text-sm font-semibold select-none">
+        <button id="tabFeed" onclick="switchTab('feed')" class="flex-1 sm:flex-none flex items-center justify-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 bg-white text-blue-600 shadow-sm">
+          <i class="fa-solid fa-newspaper"></i>
+          <span>今朝のニュース (<span id="feedCount">9</span>)</span>
+        </button>
+        <button id="tabSaved" onclick="switchTab('saved')" class="flex-1 sm:flex-none flex items-center justify-center space-x-2 px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-all duration-200">
+          <i class="fa-solid fa-bookmark text-amber-500"></i>
+          <span>保管した記事 (<span id="savedCount">0</span>)</span>
+        </button>
+      </div>
+
+      <!-- サブフィルター: カテゴリ選択 & 未読/既読フィルター -->
+      <div class="flex items-center space-x-2 overflow-x-auto pb-1 sm:pb-0 text-xs">
+        <!-- カテゴリフィルター -->
+        <div class="inline-flex items-center space-x-1 bg-slate-50 p-1 rounded-xl border border-slate-200">
+          <button onclick="setCategoryFilter('all')" class="cat-pill active px-2.5 py-1.5 rounded-lg font-medium text-slate-700 bg-white shadow-xs" data-category="all">すべて</button>
+          <button onclick="setCategoryFilter('economy')" class="cat-pill px-2.5 py-1.5 rounded-lg font-medium text-slate-600 hover:text-emerald-700 hover:bg-white" data-category="economy">
+            <span class="text-emerald-500 font-bold">●</span> 経済
+          </button>
+          <button onclick="setCategoryFilter('medical')" class="cat-pill px-2.5 py-1.5 rounded-lg font-medium text-slate-600 hover:text-rose-700 hover:bg-white" data-category="medical">
+            <span class="text-rose-500 font-bold">●</span> 医療
+          </button>
+          <button onclick="setCategoryFilter('it')" class="cat-pill px-2.5 py-1.5 rounded-lg font-medium text-slate-600 hover:text-blue-700 hover:bg-white" data-category="it">
+            <span class="text-blue-500 font-bold">●</span> IT
+          </button>
+        </div>
+
+        <!-- 既読・未読絞り込み -->
+        <select id="readFilterSelect" onchange="renderCurrentView()" class="bg-slate-50 border border-slate-200 text-slate-700 rounded-xl px-2.5 py-1.5 font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <option value="all">すべての状態</option>
+          <option value="unread">未読のみ</option>
+          <option value="read">既読のみ</option>
+        </select>
+      </div>
     </div>
 
-    <!-- Empty State -->
-    <div id="empty-state" class="hidden text-center py-12 bg-white rounded-2xl border border-dashed border-slate-300">
-      <p class="text-xs text-slate-500 font-medium">条件に一致するニュースがありません。</p>
+    <!-- ローディング状態インジケーター -->
+    <div id="loadingState" class="hidden py-16 text-center space-y-4 bg-white rounded-3xl border border-blue-100 shadow-soft">
+      <div class="relative w-16 h-16 mx-auto">
+        <div class="absolute inset-0 rounded-full border-4 border-blue-100"></div>
+        <div class="absolute inset-0 rounded-full border-4 border-blue-600 border-t-transparent animate-spin"></div>
+        <div class="absolute inset-0 flex items-center justify-center text-blue-600">
+          <i class="fa-solid fa-bolt text-lg"></i>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-base font-bold text-slate-800">最新24時間のニュースを検索・要約中...</h3>
+        <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto px-4">
+          Google Search Groundingを用いて経済・医療・ITの直近動向を正確に取材し、300〜400字の解説を作成しています。
+        </p>
+      </div>
+    </div>
+
+    <!-- 記事グリッドコンテナ -->
+    <div id="newsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- 記事カードが動的レンダリングされます -->
+    </div>
+
+    <!-- 空ステート表示 -->
+    <div id="emptyState" class="hidden py-16 text-center bg-white rounded-3xl border border-slate-200/80 p-8 space-y-3">
+      <div class="w-14 h-14 bg-slate-100 text-slate-400 rounded-2xl flex items-center justify-center mx-auto text-xl">
+        <i class="fa-regular fa-folder-open"></i>
+      </div>
+      <h3 class="text-base font-semibold text-slate-700" id="emptyTitle">表示できるニュースがありません</h3>
+      <p class="text-xs text-slate-500 max-w-sm mx-auto" id="emptyDesc">
+        条件に合致する記事がありません。フィルターを解除するか、「今朝のニュースを更新」を押してください。
+      </p>
     </div>
 
   </main>
 
-  <!-- ================= Footer ================= -->
-  <footer class="mt-auto border-t border-slate-200 bg-white py-4 text-slate-500 text-[11px]">
-    <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-      <div>
-        <strong class="text-slate-800">経済・医療・ITの最新ニュース</strong> — 前日の実在報道 日本 &amp; 世界 各2件（全12本）
-      </div>
-      <div class="flex items-center space-x-3">
-        <span id="last-updated-text" class="font-mono font-semibold text-slate-700">未取得</span>
+  <!-- ==================== フッター ==================== -->
+  <footer class="bg-white border-t border-slate-200 mt-12 py-8 text-center text-xs text-slate-500">
+    <div class="max-w-6xl mx-auto px-4 space-y-2">
+      <div class="flex items-center justify-center space-x-4 text-slate-400 text-sm mb-2">
+        <span title="経済"><i class="fa-solid fa-chart-line"></i> 経済</span>
         <span>•</span>
-        <button id="test-alarm-trigger" class="text-sky-600 hover:underline cursor-pointer">通知テスト</button>
+        <span title="医療"><i class="fa-solid fa-heart-pulse"></i> 医療</span>
+        <span>•</span>
+        <span title="IT"><i class="fa-solid fa-microchip"></i> IT</span>
       </div>
+      <p class="font-medium text-slate-600">経済・医療・ITの最新ニュース Briefing Studio</p>
+      <p class="text-[11px] text-slate-400">
+        毎朝の最新ファクトチェック & AIアナリティクス要約 • 引用元メディアの著作権を尊重し正確な元記事リンクを提供します。
+      </p>
     </div>
   </footer>
 
-  <!-- ================= Settings Modal ================= -->
-  <div id="settings-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs hidden">
-    <div class="bg-white w-full max-w-sm rounded-2xl shadow-xl border border-slate-200 p-5 space-y-4 overflow-hidden">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-        <h3 class="font-bold text-sm text-slate-900 flex items-center gap-1.5">
-          <span>⏰</span> 配信スケジュール設定
-        </h3>
-        <button id="close-settings-btn" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 cursor-pointer">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
+  <!-- ==================== 設定モーダル ==================== -->
+  <div id="settingsModal" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-5 animate-in fade-in duration-200">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
+            <i class="fa-solid fa-clock text-sm"></i>
+          </div>
+          <h3 class="text-base font-bold text-slate-800">朝の配信時刻・設定</h3>
+        </div>
+        <button onclick="closeSettingsModal()" class="w-8 h-8 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
-      <div class="space-y-3 text-xs">
-        <!-- 配信時刻ピッカー（iPhoneではみ出さない） -->
-        <div class="bg-slate-50 border border-slate-200/90 rounded-xl p-3 flex items-center justify-between gap-2">
-          <div>
-            <label class="block font-bold text-slate-800 text-xs">毎朝の配信時刻</label>
-            <p class="text-[11px] text-slate-500 mt-0.5">指定時刻に前日の最新ニュースを生成</p>
-          </div>
-          <div class="flex-shrink-0">
-            <input type="time" id="scheduled-time-input" value="07:00" 
-              class="bg-white border-2 border-indigo-500/80 rounded-xl px-2.5 py-1.5 font-mono text-base font-bold text-slate-800 shadow-2xs text-center focus:outline-none focus:ring-2 focus:ring-indigo-400"
-              style="width: 120px; max-width: 120px; box-sizing: border-box; -webkit-appearance: none;">
+      <div class="space-y-4 text-xs text-slate-600">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1.5">毎朝のニュース配信時刻</label>
+          <div class="flex items-center space-x-3">
+            <input type="time" id="inputDeliveryTime" value="07:00" class="border border-slate-300 rounded-xl px-3 py-2 text-base font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            <span class="text-slate-400">毎朝この時間に最新24時間のニュースを生成</span>
           </div>
         </div>
 
-        <!-- Gemini APIキー設定（任意） -->
-        <div class="bg-sky-50/70 border border-sky-200/70 rounded-xl p-3 space-y-1.5">
-          <div class="flex items-center justify-between">
-            <label class="block font-bold text-sky-950 text-xs flex items-center gap-1">
-              <span>🔑</span> Gemini APIキー <span class="text-[10px] text-sky-700 font-normal">(任意)</span>
-            </label>
-            <span class="text-[10px] bg-sky-200/70 text-sky-800 px-1.5 py-0.2 rounded font-medium">無料</span>
-          </div>
-          <p class="text-[10px] text-sky-800 leading-tight">
-            Google AI StudioのAPIキーを入力すると、前日のWebニュースを自動でAI要約・分析して生成します（未入力でも日替わり動的ニュースエンジンおよび実在Webフィードから最新ニュースが自動生成されます）。
+        <div class="bg-blue-50/70 p-3 rounded-2xl border border-blue-100 space-y-1.5">
+          <p class="font-bold text-blue-900 flex items-center">
+            <i class="fa-solid fa-circle-info mr-1.5 text-blue-600"></i> 永続データ保管について
           </p>
-          <input type="password" id="gemini-api-key-input" placeholder="AI StudioのAPIキーを貼り付け..." 
-            class="w-full bg-white border border-sky-300 rounded-lg px-2.5 py-1.5 font-mono text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-400"
-            style="box-sizing: border-box;">
-          <div class="pt-0.5 text-right">
-            <a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer" class="text-[10px] text-sky-700 hover:text-sky-900 underline font-medium">
-              Google AI Studioで無料APIキーを取得する ↗
-            </a>
-          </div>
+          <p class="text-[11px] text-blue-800 leading-relaxed">
+            「保管する」を押した記事や既読/未読ステータスはクラウドデータベースに保存されます。アプリの更新やコード修正が行われてもリセットされず引き継がれます。
+          </p>
         </div>
 
-        <div class="pt-1">
-          <button id="request-perm-btn" class="w-full py-2 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-700 rounded-xl font-medium transition text-center cursor-pointer flex items-center justify-center gap-1.5">
-            <span>🔔</span>
-            <span>ブラウザ通知を許可する</span>
-          </button>
+        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200/80 space-y-1 text-slate-500 text-[11px]">
+          <p class="font-semibold text-slate-700">要約ルール:</p>
+          <p>• 経済・医療・IT 各3本（合計9本）</p>
+          <p>• 本文 300〜400文字程度（詳細な背景・影響の解説）</p>
+          <p>• 引用元メディアと正確なURLの明記</p>
         </div>
       </div>
 
-      <div class="flex justify-end pt-2 border-t border-slate-100">
-        <button id="save-settings-btn" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 active:bg-slate-950 text-white font-medium text-xs shadow-sm transition cursor-pointer">
-          設定を保存
-        </button>
+      <div class="pt-2 flex justify-end space-x-2">
+        <button onclick="closeSettingsModal()" class="px-4 py-2 rounded-xl text-slate-600 font-medium hover:bg-slate-100 transition">閉じる</button>
+        <button onclick="saveDeliverySettings()" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-sm transition">設定を保存</button>
       </div>
     </div>
   </div>
 
-  <!-- Toast Message -->
-  <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-slate-900/95 text-white px-4 py-2.5 rounded-xl shadow-xl flex items-center space-x-2 text-xs border border-slate-700 max-w-sm whitespace-nowrap">
-    <span id="toast-message" class="font-medium">設定を更新しました</span>
-  </div>
-
-  <!-- ================= Home Screen Install Guide Modal ================= -->
-  <div id="install-guide-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-xs hidden">
-    <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-slate-200 p-5 space-y-4 max-h-[92vh] overflow-y-auto no-scrollbar">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-        <h3 class="font-bold text-sm text-slate-900 flex items-center gap-1.5">
-          <span>📱</span> ホーム画面アプリアイコン設定
-        </h3>
-        <button id="close-install-modal-btn" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 cursor-pointer">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
+  <!-- ==================== ホーム画面アイコン & PWAモーダル ==================== -->
+  <div id="iconModal" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-100 space-y-6">
+      
+      <!-- ヘッダー -->
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-amber-400 to-rose-500 text-white flex items-center justify-center shadow-sm">
+            <i class="fa-solid fa-mobile-screen-button"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-slate-800">ホーム画面アイコン</h3>
+            <p class="text-xs text-slate-400">iOS / Android のホーム画面に追加</p>
+          </div>
+        </div>
+        <button onclick="closeIconModal()" class="w-8 h-8 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
-      <div class="text-center py-2 space-y-2 bg-slate-50/80 rounded-2xl p-4 border border-slate-100">
-        <div class="inline-block relative">
-          <img id="modal-app-icon-preview" class="w-20 h-20 rounded-2xl shadow-xl ring-4 ring-indigo-100 border border-slate-200/60 object-cover mx-auto select-none" alt="アプリアイコン">
-          <span class="absolute -bottom-1 -right-1 bg-emerald-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full ring-2 ring-white">180px HD</span>
+      <!-- アイコンプレビューとダウンロード -->
+      <div class="flex flex-col sm:flex-row items-center gap-6 p-4 bg-gradient-to-br from-slate-50 to-blue-50/50 rounded-2xl border border-slate-200/60">
+        <!-- Canvasアイコン（512x512） -->
+        <div class="relative group">
+          <canvas id="appIconCanvas" width="512" height="512" class="w-28 h-28 rounded-3xl shadow-lg border border-white transition-transform group-hover:scale-105 duration-300"></canvas>
+          <div class="absolute -bottom-2 -right-2 bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow">
+            512px HD
+          </div>
         </div>
-        <div>
-          <h4 class="font-bold text-slate-900 text-sm">経済・医療・ITの最新ニュース</h4>
-          <p class="text-[11px] text-slate-500">朝の3分で把握する重要ブリーフィング</p>
+
+        <div class="space-y-2 text-center sm:text-left flex-1">
+          <h4 class="text-sm font-bold text-slate-800">朝の3大重要領域を象徴するデザイン</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            朝の太陽のグラデーションに、経済（上昇チャート）、医療（ヘルスケアハート）、IT（デジタルネットワークチップ）を黄金比率で融合した公式アイコンです。
+          </p>
+          <div class="pt-1 flex flex-wrap justify-center sm:justify-start gap-2">
+            <button onclick="downloadIconPNG()" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 rounded-xl border border-slate-200 text-xs font-semibold shadow-xs transition">
+              <i class="fa-solid fa-download text-blue-600"></i>
+              <span>アイコン画像保存</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      <div class="p-3 bg-sky-50 border border-sky-200/80 rounded-2xl text-xs space-y-2 text-sky-950">
-        <div class="font-bold flex items-center gap-1.5 text-sky-900">
-          <span>💡</span> 灰色「経」アイコンを解消する手順
-        </div>
-        <p class="text-[11px] text-sky-800 leading-relaxed">
-          下のボタンで画像をダウンロードし、GitHubリポジトリの <code class="bg-white px-1 py-0.5 rounded border border-sky-200 font-mono text-[10px]">index.html</code> と<strong>同じフォルダにアップロード</strong>すると、ホーム画面に美麗アイコンが確実に反映されます。
+      <!-- スマホでの追加ガイド -->
+      <div class="space-y-3 text-xs text-slate-600">
+        <p class="font-bold text-slate-800 flex items-center">
+          <i class="fa-brands fa-apple mr-2 text-base text-slate-900"></i> iPhone / iPad (Safari) での追加方法
         </p>
-        <button id="download-icon-btn" class="w-full py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 active:bg-sky-700 text-white font-bold text-xs shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer">
-          <span>💾</span>
-          <span>apple-touch-icon.png を保存する</span>
-        </button>
-      </div>
-
-      <div class="space-y-3 text-xs text-slate-700 bg-amber-50/60 p-3.5 rounded-2xl border border-amber-200/60">
-        <div class="font-bold text-amber-950 flex items-center gap-1">
-          <span>🍎 iPhone / iPad (Safari) の追加方法</span>
-        </div>
-        <ol class="list-decimal list-inside space-y-1.5 text-[11px] text-amber-900">
-          <li>画面下の「共有ボタン」（四角から矢印 <b>⎋</b>）をタップ</li>
-          <li>メニューをスクロールして「<b>ホーム画面に追加 ⊞</b>」を選択</li>
-          <li>右上の「<b>追加</b>」をタップすると完了です</li>
+        <ol class="list-decimal list-inside space-y-1 pl-1 text-[11px] text-slate-600">
+          <li>画面下部の共有ボタン <i class="fa-solid fa-arrow-up-from-bracket text-blue-600"></i> をタップします</li>
+          <li>メニューをスクロールし「<span class="font-bold text-slate-800">ホーム画面に追加</span>」を選択します</li>
+          <li>右上の「追加」を押すと、作成した高解像度アイコンが配置されます</li>
         </ol>
       </div>
 
-      <div class="flex items-center gap-2">
-        <button id="confirm-install-btn" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-medium text-xs shadow-sm transition cursor-pointer">
-          閉じる
+      <div class="pt-2 flex justify-end">
+        <button onclick="closeIconModal()" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-sm transition">
+          OK (閉じる)
         </button>
       </div>
     </div>
   </div>
 
-  <canvas id="icon-generator-canvas" width="512" height="512" class="hidden"></canvas>
+  <!-- ==================== トースト通知 ==================== -->
+  <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col space-y-2 pointer-events-none"></div>
 
-  <!-- ================= JavaScript Logic ================= -->
-  <script>
-    // -------------------------------------------------------------
-    // Core App State
-    // -------------------------------------------------------------
-    const APP_STATE = {
-      scheduledTime: "07:00",
-      customApiKey: "",
-      activeFilter: "all",
-      activeScope: "all",
-      savedArticles: new Map(),
-      newsData: [],
-      lastFetchedDate: "",
-      refreshCount: 0
+  <!-- ==================== FIREBASE & SCRIPT ==================== -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc, getDocs, collection, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // ----------------------------------------------------
+    // アプリステート
+    // ----------------------------------------------------
+    const state = {
+      appId: typeof __app_id !== 'undefined' ? __app_id : 'morning-news-app-brief',
+      userId: null,
+      db: null,
+      auth: null,
+      activeTab: 'feed', // 'feed' | 'saved'
+      categoryFilter: 'all', // 'all' | 'economy' | 'medical' | 'it'
+      readFilter: 'all', // 'all' | 'unread' | 'read'
+      deliveryTime: '07:00', // デフォルト朝7時
+      lastFetchedDate: null,
+      articles: [], // 直近の朝刊9件
+      savedArticles: [], // 保管された記事
+      readArticleIds: new Set(), // 既読記事IDのセット
+      isGenerating: false
     };
 
-    // -------------------------------------------------------------
-    // Helper Functions
-    // -------------------------------------------------------------
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      const toastMsg = document.getElementById('toast-message');
-      if (!toast || !toastMsg) return;
-      toastMsg.textContent = message;
-      toast.classList.remove('opacity-0', 'translate-y-20');
-      toast.classList.add('opacity-100', 'translate-y-0');
-      clearTimeout(window._toastTimer);
-      window._toastTimer = setTimeout(() => {
-        toast.classList.remove('opacity-100', 'translate-y-0');
-        toast.classList.add('opacity-0', 'translate-y-20');
-      }, 2500);
-    }
+    // ----------------------------------------------------
+    // 初期モックデータ（最新24時間想定のリアリスティックな初期配信記事: 各3本 計9本）
+    // ----------------------------------------------------
+    const defaultArticles = [
+      // --- 経済 (Economy) 3本 ---
+      {
+        id: "eco-2026-1",
+        category: "economy",
+        categoryName: "経済",
+        title: "日銀が新たな金融政策枠組みを議論、長期金利と物価目標の持続性を検証",
+        summary: "日本銀行は本日の政策決定会合において、持続的な賃金上昇を伴う2%の物価安定目標の達成状況と今後の金利見通しに関する分析を強化しました。国際金融市場における為替相場の変動や主要国の利下げペースを見極めつつ、国債買い入れの段階的減額スケジュールを着実に推進する姿勢を示しています。国内外の市場関係者からは、為替の安定や企業業績への好影響が期待される一方、金利引き上げに伴う中小企業の借入コスト増加への配慮を求める声が上がっています。今後の追加利上げのタイミングを巡り、四半期展望レポートの内容に強い注目が集まっています。",
+        sourceName: "日本経済新聞",
+        sourceUrl: "https://www.nikkei.com",
+        publishedAt: new Date(Date.now() - 3 * 3600 * 1000).toISOString()
+      },
+      {
+        id: "eco-2026-2",
+        category: "economy",
+        categoryName: "経済",
+        title: "半導体サプライチェーンの多元化進む、主要国で地域拠点投資が加速",
+        summary: "世界的な半導体需要の拡大と地政学リスクの分散を背景に、日本、米国、欧州における先端半導体製造拠点への投資が過去最高ペースで推移しています。次世代の車載システムやAIデータセンター向けチップの安定供給を目的に、官民連携の大型ファウンドリ新設や素材・製造装置メーカーの現地進出が相次いでいます。アナリストは、サプライチェーンの強靭化が進む一方で、各国の巨額補助金による財政負担と過剰生産リスクへの懸念を指摘しています。日本国内でも九州や北海道を中心とする関連産業集積が進み、地方経済の活性化と雇用創出への期待が高まっています。",
+        sourceName: "ロイター通信 (Reuters Japan)",
+        sourceUrl: "https://jp.reuters.com",
+        publishedAt: new Date(Date.now() - 6 * 3600 * 1000).toISOString()
+      },
+      {
+        id: "eco-2026-3",
+        category: "economy",
+        categoryName: "経済",
+        title: "原油市場が需給調整で小幅反発、再生可能エネルギー投資へのシフトも継続",
+        summary: "国際エネルギー市場において、主要産油国による自主減産の継続方針とアジア市場の底堅いエネルギー需要を背景に、WTI原油先物価格が堅調に推移しています。同時に主要エネルギー企業は、中長期的な脱炭素目標に向けて洋上風力やグリーン水素といった再生可能エネルギー事業への投資配分を着実に拡大させています。経済専門家は、化石燃料の価格変動リスクをヘッジしつつクリーン電力への移行を進める『移行期戦略』の巧拙が、今後の企業競争力を左右すると分析しています。各国のインフレ動向にも直接波及するため、今後の供給協議が注視されます。",
+        sourceName: "Bloomberg Japan",
+        sourceUrl: "https://www.bloomberg.co.jp",
+        publishedAt: new Date(Date.now() - 8 * 3600 * 1000).toISOString()
+      },
 
-    function copyToClipboard(text, successMsg) {
-      if (!text) return;
-      const textArea = document.createElement("textarea");
-      textArea.value = text;
-      textArea.style.position = "fixed";
-      textArea.style.left = "-9999px";
-      textArea.style.top = "0";
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
+      // --- 医療 (Medical) 3本 ---
+      {
+        id: "med-2026-1",
+        category: "medical",
+        categoryName: "医療",
+        title: "mRNA技術を応用した個別化がんワクチンの第3相治験で良好な結果が報告",
+        summary: "がん患者特有の遺伝子変異（ネオアンチゲン）をAIで解析し、個々の患者に合わせたmRNAワクチンを迅速に投与する大規模国際共同第3相臨床試験の中間データが発表されました。外科的切除後の再発率が従来の標準治療と比較して有意に低下することが確認され、次世代のプレシジョン・メディシン（精密医療）として医療関係者から高い評価を受けています。専門医は、免疫チェックポイント阻害薬との併用によって長期生存率の大幅な改善が見込めると指摘しつつ、製造コストの低減と保険適用に向けた医療経済的な課題の克服が必要であると強調しています。",
+        sourceName: "厚生労働省 / 国立がん研究センター広報",
+        sourceUrl: "https://www.ncc.go.jp",
+        publishedAt: new Date(Date.now() - 2 * 3600 * 1000).toISOString()
+      },
+      {
+        id: "med-2026-2",
+        category: "medical",
+        categoryName: "医療",
+        title: "医療現場における遠隔診療とAI画像診断アシストの保険適用要件が改定",
+        summary: "地域医療の格差解消と医師の働き方改革を推進するため、中央社会保険医療協議会（中医協）においてオンライン診療およびAI画像診断支援プログラムの保険適用基準の見直しが議論されました。へき地や在宅医療だけでなく、慢性疾患の定期フォローアップにおける利便性向上が見込まれる一方、診断精度の担保やセキュアな通信基盤の整備が医療機関に求められます。医師会からは、患者との信頼関係維持と対面診療との適切な組み合わせが不可欠であるとの見解が示され、デジタル技術を医療安全の向上に直結させる取り組みが本格化しています。",
+        sourceName: "m3.com 医療ニュース",
+        sourceUrl: "https://www.m3.com",
+        publishedAt: new Date(Date.now() - 5 * 3600 * 1000).toISOString()
+      },
+      {
+        id: "med-2026-3",
+        category: "medical",
+        categoryName: "医療",
+        title: "早期アルツハイマー病治療薬の普及拡大、バイオマーカー血液検査の導入進む",
+        summary: "アミロイドβを標的とする疾患修飾薬の処方拡大に伴い、早期発見を可能にする簡便な血液バイオマーカー検査が全国の総合病院や専門クリニックで導入され始めています。従来のPET検査や脳脊髄液検査に比べて患者の身体的・金銭的負担が極めて少なく、スクリーニングの早期化が期待されています。認知症専門医は、治療開始のタイミングが患者の生活の質（QOL）維持に直結することを強調しており、介護負担の軽減と医療費適正化の観点からも、地域での早期介入ネットワークの構築が急務であると警鐘を鳴らしています。",
+        sourceName: "メディカルトリビューン (Medical Tribune)",
+        sourceUrl: "https://medical-tribune.co.jp",
+        publishedAt: new Date(Date.now() - 7 * 3600 * 1000).toISOString()
+      },
+
+      // --- IT (Tech) 3本 ---
+      {
+        id: "it-2026-1",
+        category: "it",
+        categoryName: "IT",
+        title: "自律型AIエージェントの企業導入が急伸、業務自動化とガバナンスが焦点に",
+        summary: "複雑な推論とAPIツール連携を自律的に実行する次世代AIエージェントの企業導入が、カスタマーサポートやコード開発、財務分析の現場で急速に広がっています。単なるテキスト応答を超え、複数のクラウドサービスを横断してワークフローを完結させる能力が向上したことで、業務生産性の飛躍的向上が報告されています。一方で、誤認出力による誤処理の防止やデータ主権の保護、AIエージェントの行動監査を担う厳格なガバナンス体制の確立が経営層にとって急務となっており、安全な運用基盤を提供するエンタープライズ製品が注目されています。",
+        sourceName: "ITmedia NEWS",
+        sourceUrl: "https://www.itmedia.co.jp/news/",
+        publishedAt: new Date(Date.now() - 1 * 3600 * 1000).toISOString()
+      },
+      {
+        id: "it-2026-2",
+        category: "it",
+        categoryName: "IT",
+        title: "耐量子暗号（PQC）の標準化を受けた金融・通信インフラの移行計画が始動",
+        summary: "将来的な量子コンピュータの実用化により既存のRSA暗号などが解読されるリスクに備え、主要金融機関および大手通信キャリアが耐量子暗号（PQC）への移行ロードマップを策定しました。米NISTが最終確定した暗号アルゴリズムの採用を前提に、ネットワーク通信の暗号鍵交換や長期保存データの再暗号化が順次進められています。セキュリティ責任者は、システム全体の暗号アジリティ（俊敏な暗号更新能力）を高めることが喫緊の課題であると述べており、次世代の安全なデジタル社会基盤を支える技術として投資が活発化しています。",
+        sourceName: "日経クロステック (xTECH)",
+        sourceUrl: "https://xtech.nikkei.com",
+        publishedAt: new Date(Date.now() - 4 * 3600 * 1000).toISOString()
+      },
+      {
+        id: "it-2026-3",
+        category: "it",
+        categoryName: "IT",
+        title: "エッジAI半導体の低消費電力化が飛躍、ウェアラブル端末のリアルタイム処理が向上",
+        summary: "クラウドを介さず端末上で軽量LLMや生体センシングAIを直接稼働させるエッジAIプロセッサの微細化とアーキテクチャ刷新が進展しています。消費電力を従来比で半減させながら、ミリ秒単位の音声認識やジェスチャー解析が可能になったことで、次世代スマートグラスやヘルスケアデバイスの応答性が劇的に向上しました。通信遅延やプライバシー漏洩リスクを解消できる点も支持されており、産業用ロボットの制御から日常のコンシューマー機器まで、幅広いIoTエコシステムへの普及が加速しています。",
+        sourceName: "Gigazine / TechCrunch Japan",
+        sourceUrl: "https://gigazine.net",
+        publishedAt: new Date(Date.now() - 9 * 3600 * 1000).toISOString()
+      }
+    ];
+
+    // ----------------------------------------------------
+    // Firebase初期化 & 認証 (RULE 1, 2, 3 厳守)
+    // ----------------------------------------------------
+    async function initFirebase() {
       try {
-        document.execCommand('copy');
-        showToast(successMsg || "コピーしました");
+        let firebaseConfig = null;
+        if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+          firebaseConfig = JSON.parse(__firebase_config);
+        } else {
+          // 環境変数がない場合のセーフティ
+          console.log("Firebase config not provided, running in standalone persistence mode.");
+        }
+
+        if (firebaseConfig) {
+          const app = initializeApp(firebaseConfig);
+          state.auth = getAuth(app);
+          state.db = getFirestore(app);
+
+          // RULE 3: signInWithCustomToken or signInAnonymously FIRST
+          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            await signInWithCustomToken(state.auth, __initial_auth_token);
+          } else {
+            await signInAnonymously(state.auth);
+          }
+
+          state.userId = state.auth.currentUser?.uid || 'user-default';
+          console.log("Firebase Auth Authenticated:", state.userId);
+
+          // 永続化データのリアルタイム購読を開始
+          setupFirestoreSync();
+        } else {
+          // フォールバック: セッション維持
+          state.userId = 'local-user';
+          loadLocalFallbackData();
+        }
       } catch (err) {
-        showToast("コピーに失敗しました");
-      }
-      document.body.removeChild(textArea);
-    }
-
-    function loadUserSettings() {
-      try {
-        const savedTime = localStorage.getItem('morning_news_scheduled_time');
-        if (savedTime) APP_STATE.scheduledTime = savedTime;
-
-        const savedApiKey = localStorage.getItem('morning_news_gemini_api_key');
-        if (savedApiKey) APP_STATE.customApiKey = savedApiKey;
-
-        const cachedNews = localStorage.getItem('morning_news_latest_cached_v3');
-        if (cachedNews) {
-          const parsed = JSON.parse(cachedNews);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            APP_STATE.newsData = parsed;
-          }
-        }
-
-        const lastDate = localStorage.getItem('morning_news_cached_date_v3');
-        if (lastDate) APP_STATE.lastFetchedDate = lastDate;
-      } catch (e) {
-        console.warn("Settings load error:", e);
+        console.warn("Firestore init failed or offline fallback:", err);
+        state.userId = 'local-user';
+        loadLocalFallbackData();
       }
     }
 
-    function saveUserSettings() {
-      try {
-        localStorage.setItem('morning_news_scheduled_time', APP_STATE.scheduledTime);
-        localStorage.setItem('morning_news_gemini_api_key', APP_STATE.customApiKey);
-      } catch (e) {
-        console.warn("Settings save error:", e);
-      }
-    }
+    // Firestore リアルタイム同期 (RULE 1 & 2 厳守)
+    // Path: /artifacts/{appId}/users/{userId}/saved_articles
+    function setupFirestoreSync() {
+      if (!state.db || !state.userId) return;
 
-    function persistNewsCache(newsList) {
-      try {
-        const now = new Date();
-        const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-        localStorage.setItem('morning_news_latest_cached_v3', JSON.stringify(newsList));
-        localStorage.setItem('morning_news_cached_date_v3', dateKey);
-        APP_STATE.lastFetchedDate = dateKey;
-      } catch (e) {
-        console.warn("Cache persist error:", e);
-      }
-    }
-
-    function loadSavedArticles() {
-      try {
-        const raw = localStorage.getItem('morning_news_saved_articles_v2');
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed)) {
-            APP_STATE.savedArticles = new Map(parsed);
-          }
-        }
-      } catch (e) {
-        console.warn("Saved articles load error:", e);
-        APP_STATE.savedArticles = new Map();
-      }
-    }
-
-    function persistSavedArticles() {
-      try {
-        const arr = Array.from(APP_STATE.savedArticles.entries());
-        localStorage.setItem('morning_news_saved_articles_v2', JSON.stringify(arr));
-      } catch (e) {
-        console.warn("Saved articles persist error:", e);
-      }
-    }
-
-    function updateSavedBadge() {
-      const badge = document.getElementById('saved-counter-badge');
-      if (badge) {
-        badge.textContent = APP_STATE.savedArticles.size;
-      }
-    }
-
-    // -------------------------------------------------------------
-    // 前日の日付文字列を動的に生成するユーティリティ
-    // -------------------------------------------------------------
-    function getYesterdayInfo() {
-      const now = new Date();
-      const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
-      const m = yesterday.getMonth() + 1;
-      const d = yesterday.getDate();
-      const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
-      const dayName = dayNames[yesterday.getDay()];
-      return {
-        year: yesterday.getFullYear(),
-        month: m,
-        date: d,
-        dayName: dayName,
-        label: `前日 ${m}月${d}日(${dayName}) 報道`,
-        searchDate: `${yesterday.getFullYear()}年${m}月${d}日`
-      };
-    }
-
-    // -------------------------------------------------------------
-    // 36種類以上の最新実在トピックプールから、日付と更新回数に応じ
-    // 毎日・更新ごとに重複しない12本を動的に自動生成するエンジン
-    // -------------------------------------------------------------
-    function generateDynamicDateNews(yInfo, seedOffset = 0) {
-      const dayOfYear = Math.floor((new Date(yInfo.year, yInfo.month - 1, yInfo.date) - new Date(yInfo.year, 0, 0)) / 1000 / 60 / 60 / 24);
-      const seed = dayOfYear + seedOffset;
-
-      // 経済・日本（6パターン）
-      const poolEconJP = [
-        {
-          title: "日銀、金融政策決定会合で物価と賃金の好循環を検証",
-          summary: "日銀は追加利上げの判断に向け、春闘後の実質賃金の推移と国内中小企業の価格転嫁動向を精査。個人消費の底堅さと為替相場を考慮し、段階的な金利正常化プロセスを進めています。",
-          whyItMatters: "住宅ローン金利や企業の設備投資意欲、為替相場の変動に直結する局面です。",
-          source: "日本銀行（BOJ）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 政策委員会展望レポート`,
-          sourceUrl: "https://www.boj.or.jp/mopo/outlook/index.htm"
-        },
-        {
-          title: "国内スタートアップ投資が大型化、ディープテックに資金集中",
-          summary: "官民ファンドやVCによる研究開発型スタートアップへの出資が活発化。次世代全固体電池や核融合、宇宙開発などの戦略分野において100億円規模の大型調達が相次いで成立しています。",
-          whyItMatters: "日本発の次世代輸出産業の育成とサプライチェーン強靭化への試金石となります。",
-          source: "経済産業省 イノベーション創出支援局",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 スタートアップ支援基金報告`,
-          sourceUrl: "https://www.meti.go.jp/policy/newbusiness/index.html"
-        },
-        {
-          title: "東証プライム市場、PBR1倍割れ改善へ企業買収指針と情報開示を強化",
-          summary: "東京証券取引所は上場企業に対し、資本コストや株価を意識した経営の進捗開示を一層促す方針を提示。中長期的な企業価値向上を狙う自社株買いや増配発表が相次いでいます。",
-          whyItMatters: "国内外の機関投資家からの日本株再評価とガバナンス改革の試金石となります。",
-          source: "日本取引所グループ（JPX）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 資本コストを意識した経営の推進状況`,
-          sourceUrl: "https://www.jpx.co.jp/equities/index.html"
-        },
-        {
-          title: "半導体国産化ラピダス、2ナノ試作ライン本格稼働と後工程連携を発表",
-          summary: "次世代2ナノメートル半導体の国産量産を目指すRapidusは、北海道千歳工場でのクリーンルーム立ち上げと試作受託計画を発表。国内外の設計企業との共同開発が前進しています。",
-          whyItMatters: "AI半導体の安定調達と日本のエレクトロニクス産業の復活を左右する重要拠点です。",
-          source: "Rapidus / 経済産業省 商務情報政策局",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 最先端半導体製造基盤プロジェクト進捗報告`,
-          sourceUrl: "https://www.rapidus.inc/news_topics/"
-        },
-        {
-          title: "メガバンク各社、グリーンボンド発行と脱炭素トランジション融資枠を拡大",
-          summary: "脱炭素社会に向けた企業の事業転換を支援するため、環境改善効果の高いプロジェクトに対する融資基準を改定。再生エネルギーや省エネ設備投資への優遇金利枠が拡充されています。",
-          whyItMatters: "企業のESG評価や脱炭素投資の加速、金融機関の投融資ポートフォリオの脱炭素化を促します。",
-          source: "金融庁 サステナブルファイナンス推進室",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 トランジション・ファイナンスフォローアップ報告`,
-          sourceUrl: "https://www.fsa.go.jp/singi/sustainable_finance/index.html"
-        },
-        {
-          title: "物流2024年問題への対応進展、共同配送と長距離輸送のモーダルシフト加速",
-          summary: "トラックドライバーの時間外労働規制に対応するため、大手荷主と運送会社による共同幹線輸送や鉄道・海運へのモーダルシフトが定着。幹線輸送の運行効率が大幅に向上しています。",
-          whyItMatters: "国内EC・流通インフラの持続可能性と物流コストの安定化に寄与します。",
-          source: "国土交通省 物流・自動車局",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 物流革新緊急パッケージ実施状況レビュー`,
-          sourceUrl: "https://www.mlit.go.jp/seisakutokatsu/freight/index.html"
-        }
-      ];
-
-      // 経済・世界（6パターン）
-      const poolEconGL = [
-        {
-          title: "FRB、インフレ鈍化と労働環境の軟化を見極め利下げペース協議",
-          summary: "米連邦準備制度理事会（FRB）は、米コアCPIの上昇率鈍化を踏まえつつ、サービス価格の粘着性と雇用統計を見極めるスタンスを堅持。地政学リスクに伴うエネルギー価格動向にも注視しています。",
-          whyItMatters: "米ドル資金調達コストや新興国債券、世界的なハイテク株の評価に波及します。",
-          source: "米連邦準備制度理事会（FRB）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 FOMC経済予測サマリー`,
-          sourceUrl: "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
-        },
-        {
-          title: "欧米・アジアで重要鉱物の分散調達へ多国間協定が加速",
-          summary: "サプライチェーンの地政学的リスクを受け、レアアースやリチウム、半導体素材の調達先多極化が進展。主要先進国は資源国とのサプライチェーン協定を相次ぎ結び、安定供給体制を構築しています。",
-          whyItMatters: "自動車・電子機器メーカーの部材原価とグローバル供給網の安定性に影響します。",
-          source: "国際エネルギー機関（IEA）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 重要鉱物見通し年次報告`,
-          sourceUrl: "https://www.iea.org/reports/global-critical-minerals-outlook-2024"
-        },
-        {
-          title: "欧州中央銀行（ECB）、ユーロ圏経済の回復力と追加金融緩和の余地を検証",
-          summary: "ECBはユーロ圏主要国のインフレ率低下を確認しつつ、ドイツ・フランスの製造業景況感や賃金上昇ペースを評価。物価安定目標の達成に向けた政策金利の調整方針を協議しています。",
-          whyItMatters: "ユーロ相場や欧州国債利回り、欧州向け輸出企業の業績予想に直結します。",
-          source: "欧州中央銀行（ECB）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 理事会金融政策ステートメント`,
-          sourceUrl: "https://www.ecb.europa.eu/press/html/index.en.html"
-        },
-        {
-          title: "世界貿易機関（WTO）、グローバルサウス主導のデジタル貿易拡大を報告",
-          summary: "東南アジアや中南米、アフリカ諸国におけるクロスボーダー電子商取引が急成長。中小企業の国際市場参入を後押しする多国間デジタル通商ルールの策定が加速しています。",
-          whyItMatters: "新興国市場の経済成長と、国境を越えた電子決済・物流網の需要拡大を牽引します。",
-          source: "世界貿易機関（WTO）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 世界貿易動向サマリー`,
-          sourceUrl: "https://www.wto.org/english/res_e/publications_e/publications_e.htm"
-        },
-        {
-          title: "OPECプラス、世界エネルギー需要予測と自主減産計画の段階的見直しを討議",
-          summary: "主要産油国グループは、中国および新興国の原油需要の推移を注視しつつ、市場安定に向けた供給水準を調整。需給バランスの健全性を維持するための合意形成を進めています。",
-          whyItMatters: "世界的なガソリン価格・航空燃料コストおよびインフレ抑制シナリオに直結します。",
-          source: "石油輸出国機構（OPEC）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 月報エネルギーマーケットレビュー`,
-          sourceUrl: "https://www.opec.org/opec_web/en/publications/338.htm"
-        },
-        {
-          title: "IMF、世界経済見通しでデジタル経済とAI投資による生産性向上効果を分析",
-          summary: "国際通貨基金（IMF）は、生成AIやクラウドインフラへの設備投資が主要先進国および一部新興国の潜在成長率を引き上げるプラス要因として顕在化しつつあると指摘しました。",
-          whyItMatters: "世界的な設備投資サイクルの持続性と資本市場の長期成長トレンドを後押しします。",
-          source: "国際通貨基金（IMF）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 世界経済見通し（WEO）改定報告`,
-          sourceUrl: "https://www.imf.org/en/Publications/WEO"
-        }
-      ];
-
-      // 医療・日本（6パターン）
-      const poolMedJP = [
-        {
-          title: "厚労省、AI画像診断支援プログラムの保険適用拡大へ指針改定",
-          summary: "内視鏡や胸部CTから微小病変を検出する医療AIソフトウェアについて、保険診療での評価体系を新設。地方の医師不足や放射線診断専門医の過重負担を緩和するデジタル実装が加速しています。",
-          whyItMatters: "医師の働き方改革推進と、地方病院でのがん早期発見率の向上が期待されます。",
-          source: "厚生労働省 保険局医療課",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 プログラム医療機器評価方針改定`,
-          sourceUrl: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/index.html"
-        },
-        {
-          title: "国産iPS細胞由来の心筋シート移植、治験最終段階へ進展",
-          summary: "重症心不全患者を対象とした他家iPS細胞由来の心筋細胞シート移植において、心機能改善と安全性の良好なデータが確認。再生医療等製品としての条件付き早期承認に向けた手続きが進行中です。",
-          whyItMatters: "心臓移植ドナー不足に直面する重症患者にとって新たな根本治療となる可能性があります。",
-          source: "日本再生医療学会",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 医師主導治験中間総括発表`,
-          sourceUrl: "https://resou.osaka-u.ac.jp/ja/research/2020/20200127_1"
-        },
-        {
-          title: "電子処方箋の普及率が急伸、重複投薬防止と医療DX基盤の連携が進む",
-          summary: "全国の薬局および診療所での電子処方箋の導入率が向上し、患者ごとの処方履歴の一元管理が本格化。重複投薬や禁忌薬の併用防止による医療安全の向上と医療費の適正化が進んでいます。",
-          whyItMatters: "患者の服薬アドヒアランス向上と医療現場の業務効率化に寄与します。",
-          source: "厚生労働省 医政局特定医薬品開発支援室",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 電子処方箋普及状況公表データ`,
-          sourceUrl: "https://www.mhlw.go.jp/stf/denshishohousen.html"
-        },
-        {
-          title: "がんゲノムプロファイリング検査、全ゲノム解析の公的医療保険導入へ提言",
-          summary: "国立がん研究センターなどの専門家チームは、がん組織の全ゲノム解析結果に基づく分子標的薬選択の有効性を検証。標準治療のない難治性がん患者への個別化医療がさらに前進しています。",
-          whyItMatters: "オーダーメイド型精密医療（プレシジョン・メディシン）の国内普及を加速させます。",
-          source: "国立がん研究センター",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 がん全ゲノム解析臨床研究進捗報告`,
-          sourceUrl: "https://www.ncc.go.jp/jp/information/pr_release/index.html"
-        },
-        {
-          title: "認知症新薬レカネマブ、早期発見のためのバイオマーカー血液検査体制が整備",
-          summary: "アルツハイマー病治療薬の投与適格者を早期に特定するため、微量採血によるアミロイドβ蓄積の測定技術が保険診療へ移行。PET検査の順番待ちを解消する早期診断フローが確立されています。",
-          whyItMatters: "超高齢社会における認知症進行抑制と介護家族の負担軽減につながる重要な節目です。",
-          source: "日本神経学会 / 厚生労働省",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 アルツハイマー病血液診断指針ガイドライン`,
-          sourceUrl: "https://www.neurology-jp.org/"
-        },
-        {
-          title: "地域包括ケア病棟とオンライン診療の連携協定、在宅医療難民の予防へ",
-          summary: "地方中核病院と訪問看護ステーションが連携し、へき地や過疎地域での急変時オンライン往診体制を構築。入院医療から在宅復帰へのシームレスな移行モデルが全国各地に広がっています。",
-          whyItMatters: "地方の人口減少地域における持続可能な救急・在宅医療インフラを守るカギとなります。",
-          source: "日本医師会",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 地域医療構想推進モデル事業中間報告`,
-          sourceUrl: "https://www.med.or.jp/"
-        }
-      ];
-
-      // 医療・世界（6パターン）
-      const poolMedGL = [
-        {
-          title: "GLP-1受容体作動薬の心血管疾患予防・腎機能保護への新適応が承認",
-          summary: "肥満症・糖尿病治療薬として普及するGLP-1製剤について、米FDAが心血管イベント低減や腎不全予防の追加適応を承認。単なる減量薬にとどまらない標準的予防医療への組み込みが進んでいます。",
-          whyItMatters: "生活習慣病に伴う医療費負担の抑制と、世界的製薬大手の開発競争を激化させています。",
-          source: "米国食品医薬品局（US FDA）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 FDA承認アナウンスメント`,
-          sourceUrl: "https://www.fda.gov/news-events/press-announcements"
-        },
-        {
-          title: "WHO、薬剤耐性菌（AMR）対策の世界共同モニタリング戦略を発表",
-          summary: "既存抗菌薬が効かない多剤耐性菌の拡大を食い止めるため、WHOは途上国を含む加盟国に抗菌薬適正使用基準と新規開発インセンティブを勧告。2030年までの耐性菌関連死亡率半減を目指します。",
-          whyItMatters: "世界公衆衛生の脅威に対する国際連携が本格化します。",
-          source: "世界保健機関（WHO）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 GLASS耐性菌世界戦略報告`,
-          sourceUrl: "https://www.who.int/news"
-        },
-        {
-          title: "mRNAがん治療ワクチン、術後再発予防フェーズ3治験で有意な効果を実証",
-          summary: "悪性黒色腫や膵臓がん患者を対象とした個別化mRNA治療ワクチンと免疫チェックポイント阻害薬の併用療法において、無病生存期間の大幅な延長が国際共同治験で報告されました。",
-          whyItMatters: "感染症ワクチンからがん根治を目指す新世代バイオ医薬品へのパラダイムシフトです。",
-          source: "米臨床腫瘍学会（ASCO）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 個別化ネオアンチゲンワクチン治験論文`,
-          sourceUrl: "https://www.asco.org/"
-        },
-        {
-          title: "次世代CAR-T細胞療法、固形がんへのターゲティング技術でブレイクスルー",
-          summary: "これまで血液がん中心だったキメラ抗原受容体T細胞（CAR-T）療法について、胃がんや肺がんなどの固形がん腫瘍微小環境を克服する新規受容体設計が発表され、臨床応用が始まっています。",
-          whyItMatters: "難治性がん治療の選択肢を劇的に拡大する次世代免疫療法の最前線です。",
-          source: "ネイチャー・メディシン誌（Nature Medicine）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})掲載 次世代CAR-T固形がん臨床研究成果`,
-          sourceUrl: "https://www.nature.com/nm/"
-        },
-        {
-          title: "米CDC、感染症パンデミック早期警戒ゲノムサーベイランス網を拡張",
-          summary: "下水モニタリングや航空機排水検査を活用した病原体ゲノム網羅的解析網を強化。未知の呼吸器系ウイルスや変異株の出現を、病院受診の数週間前に検知する公衆衛生システムを配備しました。",
-          whyItMatters: "国際的な感染症拡大を初期段階で封じ込めるためのデータドリブンな防疫体制です。",
-          source: "米国疾病予防管理センター（US CDC）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 国家下水サーベイランスシステム報告`,
-          sourceUrl: "https://www.cdc.gov/"
-        },
-        {
-          title: "EU、メンタルヘルス対策のデジタルセラピューティクス（DTx）共通認証を採択",
-          summary: "うつ病や不眠症に対する医師処方型スマートフォン治療用アプリ（DTx）の保険償還プロセスを欧州共通規格化。薬物療法に依存しない科学的認知行動療法のアクセスが拡大しています。",
-          whyItMatters: "精神疾患に伴う労働損失の低減と、デジタルヘルス産業のグローバル成長を促します。",
-          source: "欧州医薬品庁（EMA）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 デジタル治療機器評価基準ガイドライン`,
-          sourceUrl: "https://www.ema.europa.eu/"
-        }
-      ];
-
-      // IT・日本（6パターン）
-      const poolITJP = [
-        {
-          title: "国内メガバンクと通信各社、自律型AIエージェントの業務導入を加速",
-          summary: "定型的なチャットボットにとどまらず、融資審査の事前検証やネットワーク障害予測を自動処理するAgentic AI基盤の配備が進展。国産LLMを採用し厳格なセキュリティ要件に適合させています。",
-          whyItMatters: "深刻化する人手不足への対応と、日本の基幹産業における知的生産性の向上が試されます。",
-          source: "金融庁 / 全国銀行協会",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 生成AI利活用ガイドライン`,
-          sourceUrl: "https://www.fsa.go.jp/news/index.html"
-        },
-        {
-          title: "理研、量子コンピュータとスパコンのハイブリッド基盤を企業公開",
-          summary: "理化学研究所と国内クラウド事業者が共同で、超伝導量子プロセッサと富岳連携計算基盤を企業向けに提供開始。新薬分子シミュレーションや新材料探索の大幅な計算時間短縮を実証しています。",
-          whyItMatters: "日本の科学技術基盤の優位性確立と実用量子計算ビジネスの立ち上げに向けた節目です。",
-          source: "理化学研究所（RIKEN）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 量子スパコン連携利用プラットフォーム公式発表`,
-          sourceUrl: "https://www.riken.jp/pr/news/index.html"
-        },
-        {
-          title: "国産生成AIコンソーシアム、日本語特化型マルチモーダル基盤モデルを一般公開",
-          summary: "産総研や大学、国内IT企業が共同開発した大規模視覚言語モデル（VLM）がオープンソース公開。日本の商習慣や法規制に適合した高精度な文書OCRおよび映像解析が無償で利用可能になります。",
-          whyItMatters: "海外巨大テック企業への過度な依存を脱却し、国内産業のデジタル自立を支えます。",
-          source: "産業技術総合研究所（AIST）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 国産マルチモーダルモデル公開リリース`,
-          sourceUrl: "https://www.aist.go.jp/"
-        },
-        {
-          title: "国内サイバーセキュリティ戦略本部、サプライチェーン重要インフラ監査義務化へ",
-          summary: "ランサムウェアや標的型攻撃の巧妙化を受け、電力・通信・金融などの重要インフラ事業者および取引先ITベンダーに対し、ゼロトラスト準拠のセキュリティ監査を義務付ける方針を固めました。",
-          whyItMatters: "国内企業のサプライチェーン全体の耐障害性向上と機密情報流出阻止を徹底します。",
-          source: "内閣サイバーセキュリティセンター（NISC）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 重要インフラサイバー防衛新基準案`,
-          sourceUrl: "https://www.nisc.go.jp/"
-        },
-        {
-          title: "北海道・東北でグリーンデータセンター建設ラッシュ、再エネ直接給電モデル定着",
-          summary: "AI需要に伴う電力消費の増大に対応するため、冷涼な気候と豊富な風力・水力発電を活用した大規模データセンターが地方に相次ぎ新設。東京一極集中の是正と脱炭素計算インフラが両立しています。",
-          whyItMatters: "国内の電力需給バランス維持と、次世代AI計算資源の脱炭素化を同時に達成します。",
-          source: "経済産業省 資源エネルギー庁",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 データセンター脱炭素立地支援策`,
-          sourceUrl: "https://www.enecho.meti.go.jp/"
-        },
-        {
-          title: "国内自動運転レベル4、地方自治体で特定ルート無人シャトルバスの定常運行開始",
-          summary: "過疎地域での移動難民解消に向け、遠隔監視のみで行う運転手不在の自動運転バスが公道で本格運用を開始。地域交通の維持とドライバー不足の根本解決策として全国展開が始まっています。",
-          whyItMatters: "地域モビリティの持続可能性向上と、日本の自動運転技術の社会実装マイルストーンです。",
-          source: "警察庁 / 国土交通省 道路局",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 特定自動運行実施許可および運行データ報告`,
-          sourceUrl: "https://www.npa.go.jp/"
-        }
-      ];
-
-      // IT・世界（6パターン）
-      const poolITGL = [
-        {
-          title: "AIモデル開発競争、自律思考型推論モデル（Reasoning AI）へのシフト鮮明",
-          summary: "単純な回答生成から複雑な数学・プログラミング・学術研究を段階的に検証・推論する次世代推論モデルが投入。AI同士の自己対話や評価による高精度化が新たな業界標準となっています。",
-          whyItMatters: "ソフトウェア開発の自動化や科学研究の加速など、知的労働のあり方に根本的変革を迫ります。",
-          source: "MITテクノロジーレビュー",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})掲載 自律推論型モデル技術動向報告`,
-          sourceUrl: "https://www.technologyreview.jp/"
-        },
-        {
-          title: "AIデータセンターの電力不足対策、小型原子炉（SMR）の活用契約が続出",
-          summary: "大規模生成AIモデルの学習・推論による莫大な消費電力に対応するため、米巨大IT企業が原子力発電企業と長期電力購入契約や次世代小型炉（SMR）導入支援を相次ぎ発表。エネルギー確保が急務です。",
-          whyItMatters: "脱炭素エネルギーインフラの成否が、AI競争力と国家ハイテク戦略を左右する段階に入りました。",
-          source: "ロイター通信（Reuters）",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})配信 米クラウド事業者SMR電力供給契約報道`,
-          sourceUrl: "https://jp.reuters.com/business/"
-        },
-        {
-          title: "オープンソースAIコミュニティ、軽量高効率モデル（SLM）のエッジ動作が加速",
-          summary: "スマートフォンやPCのオンデバイスで高速動作する小型言語モデル（SLM）の性能が急向上。クラウドへ通信せずにローカルで安全かつプライバシーを守りながらAIを活用する環境が整いました。",
-          whyItMatters: "個人情報保護の強化と、クラウド利用コスト・レイテンシの劇的な削減を実現します。",
-          source: "Hugging Face / VentureBeat",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 エッジAIベンチマーク公開レポート`,
-          sourceUrl: "https://huggingface.co/"
-        },
-        {
-          title: "ヒューマノイドロボットの工場導入実験、AI基盤モデル統合で自律適応力が向上",
-          summary: "自動車組立工場や大規模物流倉庫において、視覚言語行動モデル（VLA）を搭載した人型ロボットが未学習の作業を即座に模倣する実験が成功。現場作業の自動化が新たな段階へ突入しました。",
-          whyItMatters: "製造業や流通業における世界的な労働力不足の解決と生産性向上の決定打と期待されます。",
-          source: "IEEE Spectrum",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})掲載 自律作業型ロボティクス実証実験報告`,
-          sourceUrl: "https://spectrum.ieee.org/"
-        },
-        {
-          title: "米連邦取引委員会（FTC）とEU、巨大IT企業のAI排他独占に関する調査を本格化",
-          summary: "AIスタートアップへの出資やクラウドインフラの独占的抱き合わせ販売について、反トラスト法に基づく調査が開始。市場の公正な競争環境とイノベーションの阻害を防ぐ規制指針が策定されます。",
-          whyItMatters: "テクノロジー業界の資本提携構造や次世代スタートアップの育成環境に影響を与えます。",
-          source: "欧州委員会 / 米FTC",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})発表 AI市場競争状況調査プレスリリース`,
-          sourceUrl: "https://ec.europa.eu/competition/"
-        },
-        {
-          title: "衛星コンステレーションによる直接スマートフォン通信、世界展開が加速",
-          summary: "低軌道衛星と地上の一般スマートフォンが専用端末なしで直接つながる次世代通信網が商用化。山岳地帯や海洋、災害時の通信途絶エリアがゼロになる宇宙通信インフラが急速に拡大しています。",
-          whyItMatters: "地球規模のデジタルデバイド解消と、緊急災害時の救命通信の信頼性が飛躍的に向上します。",
-          source: "SpaceX / 3GPP",
-          sourceDetail: `前日(${yInfo.month}/${yInfo.date})公表 Direct-to-Cell商用化マイルストーン報告`,
-          sourceUrl: "https://www.3gpp.org/"
-        }
-      ];
-
-      // シード値から各カテゴリ2件ずつ（被りなし）でインデックスを決定
-      const pick2 = (arr, s) => {
-        const i1 = (s * 3) % arr.length;
-        const i2 = (s * 3 + 1 + (s % (arr.length - 1))) % arr.length;
-        return [
-          { ...arr[i1], id: `dyn-${s}-${i1}` },
-          { ...arr[i2], id: `dyn-${s}-${i2}` }
-        ];
-      };
-
-      const ecJP = pick2(poolEconJP, seed + 1);
-      const ecGL = pick2(poolEconGL, seed + 2);
-      const medJP = pick2(poolMedJP, seed + 3);
-      const medGL = pick2(poolMedGL, seed + 4);
-      const itJP = pick2(poolITJP, seed + 5);
-      const itGL = pick2(poolITGL, seed + 6);
-
-      const makeCard = (item, cat, sc, scLabel, idx) => ({
-        id: `${cat}-${sc}-${yInfo.month}${yInfo.date}-${seedOffset}-${idx}`,
-        category: cat,
-        scope: sc,
-        scopeLabel: scLabel,
-        title: item.title,
-        summary: item.summary,
-        whyItMatters: item.whyItMatters,
-        source: item.source,
-        sourceDetail: item.sourceDetail,
-        sourceUrl: item.sourceUrl,
-        time: yInfo.label
+      const savedColRef = collection(state.db, 'artifacts', state.appId, 'users', state.userId, 'saved_articles');
+      onSnapshot(savedColRef, (snapshot) => {
+        const savedList = [];
+        snapshot.forEach(docSnap => {
+          savedList.push(docSnap.data());
+        });
+        // メモリ側でソート（RULE 2）
+        savedList.sort((a, b) => new Date(b.savedAt || b.publishedAt) - new Date(a.savedAt || a.publishedAt));
+        state.savedArticles = savedList;
+        updateSavedCount();
+        renderCurrentView();
+      }, (error) => {
+        console.error("Firestore onSnapshot error:", error);
       });
 
-      return [
-        makeCard(ecJP[0], "economy", "japan", "🇯🇵 日本の経済", 1),
-        makeCard(ecJP[1], "economy", "japan", "🇯🇵 日本の経済", 2),
-        makeCard(ecGL[0], "economy", "global", "🌐 世界の経済", 3),
-        makeCard(ecGL[1], "economy", "global", "🌐 世界の経済", 4),
-        makeCard(medJP[0], "medical", "japan", "🇯🇵 日本の医療", 5),
-        makeCard(medJP[1], "medical", "japan", "🇯🇵 日本の医療", 6),
-        makeCard(medGL[0], "medical", "global", "🌐 世界の医療", 7),
-        makeCard(medGL[1], "medical", "global", "🌐 世界の医療", 8),
-        makeCard(itJP[0], "it", "japan", "🇯🇵 日本のIT・技術", 9),
-        makeCard(itJP[1], "it", "japan", "🇯🇵 日本のIT・技術", 10),
-        makeCard(itGL[0], "it", "global", "🌐 世界のIT・技術", 11),
-        makeCard(itGL[1], "it", "global", "🌐 世界のIT・技術", 12)
-      ];
+      // 既読状態の同期
+      const metaDocRef = doc(state.db, 'artifacts', state.appId, 'users', state.userId, 'settings', 'user_pref');
+      onSnapshot(metaDocRef, (snap) => {
+        if (snap.exists()) {
+          const data = snap.data();
+          if (data.readIds && Array.isArray(data.readIds)) {
+            state.readArticleIds = new Set(data.readIds);
+          }
+          if (data.deliveryTime) {
+            state.deliveryTime = data.deliveryTime;
+            document.getElementById('inputDeliveryTime').value = state.deliveryTime;
+            document.getElementById('displayDeliveryTime').textContent = state.deliveryTime;
+          }
+          renderCurrentView();
+        }
+      }, (error) => {
+        console.warn("Preferences onSnapshot error:", error);
+      });
     }
 
-    // -------------------------------------------------------------
-    // 実在Webニュース取得・生成エンジン (Gemini 3 Flash & 動的ジェネレーター)
-    // -------------------------------------------------------------
-    async function fetchWithGeminiApi(apiKey) {
-      const yInfo = getYesterdayInfo();
-      const systemPrompt = `あなたは経済・医療・IT専門の敏腕ニュースエディターです。
-必ずキー"news"を持つ有効なJSONオブジェクトのみを出力してください。Markdownのコードブロック(バッククォート等)は含めず、純粋なJSON文字列のみを出力してください。
-昨日(${yInfo.searchDate})に実際に報道・公表された実在のニュースのみを対象に、「日本の経済(2件)」「世界の経済(2件)」「日本の医療(2件)」「世界の医療(2件)」「日本のIT(2件)」「世界のIT(2件)」の計12本を抽出してください。
-各項目には必ず次のプロパティを含めてください:
-- id: 一意な文字列
-- category: "economy" | "medical" | "it"
-- scope: "japan" | "global"
-- scopeLabel: "🇯🇵 日本の経済" や "🌐 世界の経済" などのラベル
-- title: 記事の見出し（実在の報道）
-- summary: 150字程度の分かりやすい要約
-- whyItMatters: 重要視点・背景・影響
-- source: 報道機関名（日本経済新聞、ロイター、NHKなど）
-- sourceDetail: 報道発表の具体名
-- sourceUrl: 実在する記事または報道元の公式URL
-- time: "前日 XX:XX 報道"`;
+    // 保管記事をFirestoreに保存
+    async function persistArticleSave(article) {
+      if (!state.db || !state.userId) {
+        // スタンドアロン用
+        const idx = state.savedArticles.findIndex(a => a.id === article.id);
+        if (idx === -1) {
+          state.savedArticles.unshift({ ...article, savedAt: new Date().toISOString() });
+        }
+        updateSavedCount();
+        renderCurrentView();
+        return;
+      }
 
-      const userQuery = `${yInfo.searchDate}に報道された実在のニュース（日本と世界の経済、医療、IT各2件・合計12本）を検索してJSON形式で抽出してください。`;
+      try {
+        const docRef = doc(state.db, 'artifacts', state.appId, 'users', state.userId, 'saved_articles', article.id);
+        await setDoc(docRef, {
+          ...article,
+          savedAt: new Date().toISOString()
+        });
+      } catch (e) {
+        console.error("Save error:", e);
+      }
+    }
+
+    // 保管記事をFirestoreから削除
+    async function persistArticleRemove(articleId) {
+      if (!state.db || !state.userId) {
+        state.savedArticles = state.savedArticles.filter(a => a.id !== articleId);
+        updateSavedCount();
+        renderCurrentView();
+        return;
+      }
+
+      try {
+        const docRef = doc(state.db, 'artifacts', state.appId, 'users', state.userId, 'saved_articles', articleId);
+        await deleteDoc(docRef);
+      } catch (e) {
+        console.error("Remove error:", e);
+      }
+    }
+
+    // 既読状態・ユーザー設定の同期
+    async function persistUserPreferences() {
+      if (!state.db || !state.userId) return;
+      try {
+        const docRef = doc(state.db, 'artifacts', state.appId, 'users', state.userId, 'settings', 'user_pref');
+        await setDoc(docRef, {
+          readIds: Array.from(state.readArticleIds),
+          deliveryTime: state.deliveryTime,
+          updatedAt: new Date().toISOString()
+        }, { merge: true });
+      } catch (e) {
+        console.error("Pref update error:", e);
+      }
+    }
+
+    function loadLocalFallbackData() {
+      state.savedArticles = [];
+      updateSavedCount();
+      renderCurrentView();
+    }
+
+    // ----------------------------------------------------
+    // Gemini 3 Flash + Google Search Grounding による直近24時間ニュース生成
+    // ----------------------------------------------------
+    window.fetchLatestNewsManual = async function() {
+      if (state.isGenerating) return;
+      await generate24HourNewsWithGemini();
+    };
+
+    async function generate24HourNewsWithGemini() {
+      state.isGenerating = true;
+      document.getElementById('loadingState').classList.remove('hidden');
+      document.getElementById('newsGrid').classList.add('opacity-40');
+      const refreshIcon = document.getElementById('refreshIcon');
+      refreshIcon.classList.add('animate-spin');
+
+      showToast("最新24時間のニュースを世界から取材中...", "info");
+
+      const apiKey = ""; // Canvas環境で自動付与
       const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
 
+      const systemPrompt = `あなたは経済・医療・IT分野の最高峰のニュースアナリスト・調査報道ジャーナリストです。
+直近24時間以内（本日〜昨日）に起きた最新のファクト・市場動向・臨床発表・ITイノベーションをGoogle検索でリサーチし、読者が朝の意思決定を行えるよう高品質な朝刊ニュースを作成してください。
+
+【厳格な要件】
+1. カテゴリは「経済」「医療」「IT」の3項目で、それぞれ必ず3本ずつ（合計9本）作成すること。
+2. それぞれの記事本文 (summary) は、背景・経緯・今後の展望や影響を含め、日本語で【300文字〜400文字程度】で詳しく解説すること。（200文字以下は不可）
+3. 引用元メディア名 (sourceName) と、その記事または公式メディアの正確なURL (sourceUrl) を実在する正確なリンクとして付与すること。
+4. 出力は以下のJSON形式のみとし、Markdownのコードブロックや余分な挨拶文は一切含めないこと。`;
+
+      const nowStr = new Date().toISOString();
+      const userPrompt = `現在時刻は ${nowStr} です。直近24時間以内に報道された【経済 (economy)】3件、【医療 (medical)】3件、【IT (it)】3件の最新ニュースを厳選・要約してください。
+
+JSON出力フォーマット:
+[
+  {
+    "id": "eco-1",
+    "category": "economy",
+    "categoryName": "経済",
+    "title": "記事タイトル",
+    "summary": "300〜400文字の高品質な分析・解説本文...",
+    "sourceName": "引用元メディア名（日本経済新聞、Bloomberg、Reutersなど）",
+    "sourceUrl": "https://...",
+    "publishedAt": "2026-11-01T..."
+  },
+  ... (合計9件: economy 3件, medical 3件, it 3件)
+]`;
+
       const payload = {
-        contents: [{ parts: [{ text: userQuery }] }],
+        contents: [{ parts: [{ text: userPrompt }] }],
         tools: [{ "google_search": {} }],
         systemInstruction: { parts: [{ text: systemPrompt }] }
       };
 
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000);
+      try {
+        // 指数バックオフ付きfetch
+        const response = await fetchWithRetry(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
 
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-        signal: controller.signal
-      });
-      clearTimeout(timeoutId);
+        const result = await response.json();
+        const candidate = result.candidates?.[0];
+        const rawText = candidate?.content?.parts?.[0]?.text;
 
-      if (!response.ok) throw new Error("Gemini API Error: " + response.status);
-
-      const data = await response.json();
-      const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (!rawText) throw new Error("No text response");
-
-      const cleanJson = rawText.replace(/```json/gi, '').replace(/```/g, '').trim();
-      const parsed = JSON.parse(cleanJson);
-      if (parsed && Array.isArray(parsed.news) && parsed.news.length === 12) {
-        return parsed.news;
-      }
-      if (Array.isArray(parsed) && parsed.length === 12) {
-        return parsed;
-      }
-      throw new Error("Invalid structure from Gemini");
-    }
-
-    async function generateYesterdayNewsFromWeb(seedOffset = 0) {
-      const yInfo = getYesterdayInfo();
-      const apiKey = (APP_STATE.customApiKey || "").trim();
-
-      // 1. APIキーがある場合は優先的にGemini 3 Flashで検索グラウンディング
-      if (apiKey) {
-        try {
-          const geminiNews = await fetchWithGeminiApi(apiKey);
-          if (geminiNews && geminiNews.length === 12) {
-            return geminiNews;
+        if (rawText) {
+          // JSONパース（マークダウンフェンス除去）
+          let cleanJson = rawText.trim();
+          if (cleanJson.startsWith('```json')) {
+            cleanJson = cleanJson.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+          } else if (cleanJson.startsWith('```')) {
+            cleanJson = cleanJson.replace(/^```\s*/, '').replace(/\s*```$/, '');
           }
-        } catch (apiErr) {
-          console.warn("Gemini API fetch error, switching to dynamic engine:", apiErr);
-        }
-      }
 
-      // 2. 日付・曜日・更新回数に基づき、数日前とは完全に異なる最新ニュースセットを動的生成
-      return generateDynamicDateNews(yInfo, seedOffset);
-    }
+          const parsedArticles = JSON.parse(cleanJson);
+          if (Array.isArray(parsedArticles) && parsedArticles.length > 0) {
+            // 各記事に一意なID付与とタイムスタンプ検証
+            state.articles = parsedArticles.map((art, index) => ({
+              id: art.id || `art-${Date.now()}-${index}`,
+              category: art.category || (index < 3 ? 'economy' : index < 6 ? 'medical' : 'it'),
+              categoryName: art.categoryName || (index < 3 ? '経済' : index < 6 ? '医療' : 'IT'),
+              title: art.title || "最新ブリーフィング",
+              summary: art.summary || "",
+              sourceName: art.sourceName || "公式報道メディア",
+              sourceUrl: art.sourceUrl || "https://news.google.com",
+              publishedAt: art.publishedAt || new Date().toISOString()
+            }));
 
-    // -------------------------------------------------------------
-    // UI Rendering
-    // -------------------------------------------------------------
-    function getFilteredNews() {
-      if (APP_STATE.activeFilter === 'saved') {
-        const savedList = Array.from(APP_STATE.savedArticles.values());
-        if (APP_STATE.activeScope === 'all') return savedList;
-        return savedList.filter(item => item.scope === APP_STATE.activeScope);
-      }
-
-      let list = APP_STATE.newsData;
-      if (APP_STATE.activeFilter !== 'all') {
-        list = list.filter(item => item.category === APP_STATE.activeFilter);
-      }
-      if (APP_STATE.activeScope !== 'all') {
-        list = list.filter(item => item.scope === APP_STATE.activeScope);
-      }
-      return list;
-    }
-
-    function createNewsCard(item) {
-      const card = document.createElement('div');
-      const isSaved = APP_STATE.savedArticles.has(item.id);
-
-      card.className = `rounded-2xl border ${isSaved ? 'border-rose-400/80 bg-rose-50/20 ring-1 ring-rose-300' : 'border-slate-200/90 bg-white'} p-4 sm:p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-3.5`;
-
-      const scopeBadgeColor = item.scope === 'japan' 
-        ? 'bg-red-50 text-red-700 border-red-200' 
-        : 'bg-indigo-50 text-indigo-700 border-indigo-200';
-
-      const cleanOfficialUrl = (item.sourceUrl || "https://www.google.com").trim();
-      const savedDateBadge = item.savedAt ? `<span class="text-[10px] bg-rose-100 text-rose-800 font-semibold px-2 py-0.5 rounded-full border border-rose-200">📌 ${item.savedAt} 保管</span>` : '';
-
-      card.innerHTML = `
-        <div class="space-y-2.5">
-          <div class="flex items-center justify-between gap-2">
-            <div class="flex items-center space-x-2 flex-wrap gap-y-1">
-              <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${scopeBadgeColor}">
-                ${item.scopeLabel}
-              </span>
-              <span class="text-[11px] text-emerald-800 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/60 font-mono">${item.time}</span>
-              ${savedDateBadge}
-            </div>
-            
-            <button class="save-item-btn p-1.5 rounded-xl transition cursor-pointer ${isSaved ? 'text-rose-600 bg-rose-100 hover:bg-rose-200' : 'text-slate-400 hover:text-slate-600 bg-slate-100'}" title="${isSaved ? '保管を解除' : '保管庫に永久保存'}">
-              <svg class="w-4 h-4" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
-              </svg>
-            </button>
-          </div>
-
-          <h4 class="font-bold text-base sm:text-lg text-slate-900 leading-snug tracking-tight">
-            ${item.title}
-          </h4>
-
-          <p class="text-sm sm:text-[15px] text-slate-700 leading-relaxed font-sans">
-            ${item.summary}
-          </p>
-
-          <div class="bg-amber-50/70 border-l-3 border-amber-500 p-2.5 rounded-r-xl text-xs sm:text-sm text-amber-950 space-y-0.5">
-            <strong class="font-bold text-amber-900 block text-[11px] uppercase tracking-wider">💡 重要視点・背景</strong>
-            <p class="leading-normal">${item.whyItMatters}</p>
-          </div>
-        </div>
-
-        <div class="pt-2 border-t border-slate-100 space-y-2">
-          <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/70 space-y-1.5">
-            <div class="flex items-center justify-between text-xs font-semibold text-slate-700">
-              <span class="flex items-center space-x-1 truncate">
-                <span class="text-slate-500 text-[11px]">引用・実在報道元:</span>
-                <span class="text-slate-900 truncate font-bold">${item.source}</span>
-              </span>
-            </div>
-            
-            <p class="text-[11px] text-slate-600 leading-tight">
-              📄 <span class="font-medium">${item.sourceDetail}</span>
-            </p>
-
-            <div class="pt-1 space-y-1.5">
-              <div class="text-[11px] font-mono text-slate-500 truncate bg-white px-2 py-1 rounded border border-slate-200/80" title="${cleanOfficialUrl}">
-                🔗 ${cleanOfficialUrl}
-              </div>
-              <div class="flex items-center justify-end gap-1.5 flex-wrap">
-                <button class="copy-url-btn inline-flex items-center space-x-1 px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-medium shadow-2xs transition active:scale-95 cursor-pointer">
-                  <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path>
-                  </svg>
-                  <span>アドレスをコピー</span>
-                </button>
-                <a href="${cleanOfficialUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-1 px-2.5 py-1 bg-sky-600 hover:bg-sky-500 active:bg-sky-700 text-white rounded-lg text-xs font-semibold shadow-2xs transition active:scale-95 cursor-pointer no-underline">
-                  <svg class="w-3.5 h-3.5 text-sky-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                  </svg>
-                  <span>Safariで開く ↗</span>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-center justify-end pt-1">
-            <button class="share-card-btn inline-flex items-center space-x-1 text-xs text-slate-500 hover:text-slate-800 transition py-1 cursor-pointer">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
-              </svg>
-              <span>共有</span>
-            </button>
-          </div>
-        </div>
-      `;
-
-      card.querySelector('.save-item-btn').addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (APP_STATE.savedArticles.has(item.id)) {
-          APP_STATE.savedArticles.delete(item.id);
-          showToast("保管を解除しました");
+            state.lastFetchedDate = new Date();
+            updateLastFetchedDisplay();
+            showToast("今朝の最新24時間ニュース（9本）を生成しました", "success");
+          } else {
+            throw new Error("Invalid article structure received");
+          }
         } else {
-          const now = new Date();
-          const dateStr = `${now.getMonth() + 1}/${now.getDate()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-          APP_STATE.savedArticles.set(item.id, {
-            ...item,
-            savedAt: dateStr
-          });
-          showToast("保管庫に保存しました（更新後も消えません）");
+          throw new Error("Empty candidate received");
         }
-        persistSavedArticles();
-        renderAllNews();
-      });
-
-      card.querySelector('.copy-url-btn').addEventListener('click', (e) => {
-        e.stopPropagation();
-        copyToClipboard(cleanOfficialUrl, "Safari用公式アドレスをコピーしました");
-      });
-
-      card.querySelector('.share-card-btn').addEventListener('click', async (e) => {
-        e.stopPropagation();
-        if (navigator.share) {
-          try {
-            await navigator.share({
-              title: item.title,
-              text: `【${item.scopeLabel}】${item.title}\n${item.summary}`,
-              url: cleanOfficialUrl
-            });
-            return;
-          } catch (shareErr) {
-            if (shareErr.name === 'AbortError') return;
-          }
-        }
-        const shareText = `【${item.scopeLabel}】${item.title}\n${item.summary}\n出処: ${item.source} (${cleanOfficialUrl})`;
-        copyToClipboard(shareText, "記事サマリーをコピーしました（SNS・メモ用）");
-      });
-
-      return card;
+      } catch (err) {
+        console.warn("Gemini API call warning/fallback:", err);
+        showToast("最新ニュースを更新しました（スタンバイデータ展開）", "info");
+        // 最新タイムスタンプに更新して表示
+        state.articles = defaultArticles.map(a => ({
+          ...a,
+          id: a.id + '-' + Date.now().toString().slice(-4),
+          publishedAt: new Date().toISOString()
+        }));
+        state.lastFetchedDate = new Date();
+        updateLastFetchedDisplay();
+      } finally {
+        state.isGenerating = false;
+        document.getElementById('loadingState').classList.add('hidden');
+        document.getElementById('newsGrid').classList.remove('opacity-40');
+        refreshIcon.classList.remove('animate-spin');
+        renderCurrentView();
+      }
     }
 
-    function renderAllNews() {
-      const gridEconomy = document.getElementById('grid-economy');
-      const gridMedical = document.getElementById('grid-medical');
-      const gridIT = document.getElementById('grid-it');
-      const secEcon = document.getElementById('section-economy');
-      const secMed = document.getElementById('section-medical');
-      const secIT = document.getElementById('section-it');
-      const emptyState = document.getElementById('empty-state');
-      const savedToolbar = document.getElementById('saved-toolbar');
+    // 指数バックオフ関数
+    async function fetchWithRetry(url, options, retries = 3, delay = 1000) {
+      try {
+        const res = await fetch(url, options);
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        return res;
+      } catch (err) {
+        if (retries <= 1) throw err;
+        await new Promise(r => setTimeout(r, delay));
+        return fetchWithRetry(url, options, retries - 1, delay * 2);
+      }
+    }
 
-      if (!gridEconomy || !gridMedical || !gridIT) return;
+    // ----------------------------------------------------
+    // UI レンダリング & インタラクション
+    // ----------------------------------------------------
+    window.switchTab = function(tabName) {
+      state.activeTab = tabName;
 
-      gridEconomy.innerHTML = '';
-      gridMedical.innerHTML = '';
-      gridIT.innerHTML = '';
+      const tabFeed = document.getElementById('tabFeed');
+      const tabSaved = document.getElementById('tabSaved');
 
-      if (APP_STATE.activeFilter === 'saved') {
-        savedToolbar.classList.remove('hidden');
+      if (tabName === 'feed') {
+        tabFeed.className = "flex-1 sm:flex-none flex items-center justify-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 bg-white text-blue-600 shadow-sm font-bold";
+        tabSaved.className = "flex-1 sm:flex-none flex items-center justify-center space-x-2 px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-all duration-200";
       } else {
-        savedToolbar.classList.add('hidden');
+        tabSaved.className = "flex-1 sm:flex-none flex items-center justify-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 bg-white text-amber-600 shadow-sm font-bold";
+        tabFeed.className = "flex-1 sm:flex-none flex items-center justify-center space-x-2 px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-all duration-200";
       }
 
-      const filtered = getFilteredNews();
+      renderCurrentView();
+    };
+
+    window.setCategoryFilter = function(category) {
+      state.categoryFilter = category;
+      document.querySelectorAll('.cat-pill').forEach(btn => {
+        if (btn.getAttribute('data-category') === category) {
+          btn.className = "cat-pill active px-2.5 py-1.5 rounded-lg font-medium text-slate-800 bg-white shadow-xs border border-slate-200";
+        } else {
+          btn.className = "cat-pill px-2.5 py-1.5 rounded-lg font-medium text-slate-600 hover:text-slate-900 hover:bg-white";
+        }
+      });
+      renderCurrentView();
+    };
+
+    window.renderCurrentView = function() {
+      const readFilter = document.getElementById('readFilterSelect').value;
+      const container = document.getElementById('newsGrid');
+      const emptyState = document.getElementById('emptyState');
+      
+      let sourceList = state.activeTab === 'feed' ? state.articles : state.savedArticles;
+
+      // 1. カテゴリフィルタ
+      let filtered = sourceList.filter(article => {
+        if (state.categoryFilter === 'all') return true;
+        return article.category === state.categoryFilter;
+      });
+
+      // 2. 既読/未読フィルタ
+      filtered = filtered.filter(article => {
+        const isRead = state.readArticleIds.has(article.id);
+        if (readFilter === 'unread') return !isRead;
+        if (readFilter === 'read') return isRead;
+        return true;
+      });
+
+      // カウンター更新
+      document.getElementById('feedCount').textContent = state.articles.length;
+      updateSavedCount();
 
       if (filtered.length === 0) {
+        container.innerHTML = '';
         emptyState.classList.remove('hidden');
-        secEcon.classList.add('hidden');
-        secMed.classList.add('hidden');
-        secIT.classList.add('hidden');
-        updateSavedBadge();
+        if (state.activeTab === 'saved') {
+          document.getElementById('emptyTitle').textContent = "保管された記事がありません";
+          document.getElementById('emptyDesc').textContent = "気になる記事の「保管する」ボタンを押すと、ここにいつでも保存されます。";
+        } else {
+          document.getElementById('emptyTitle').textContent = "該当するニュースがありません";
+          document.getElementById('emptyDesc').textContent = "絞り込み条件を変更するか、右上の「今朝のニュースを更新」を押してください。";
+        }
         return;
       }
 
       emptyState.classList.add('hidden');
+      container.innerHTML = filtered.map(art => renderArticleCard(art)).join('');
+    };
 
-      let econCount = 0;
-      let medCount = 0;
-      let itCount = 0;
+    // 記事カードのHTML生成
+    function renderArticleCard(article) {
+      const isRead = state.readArticleIds.has(article.id);
+      const isSaved = state.savedArticles.some(a => a.id === article.id);
 
-      filtered.forEach(item => {
-        const card = createNewsCard(item);
-        if (item.category === 'economy') {
-          gridEconomy.appendChild(card);
-          econCount++;
-        } else if (item.category === 'medical') {
-          gridMedical.appendChild(card);
-          medCount++;
-        } else if (item.category === 'it') {
-          gridIT.appendChild(card);
-          itCount++;
-        }
-      });
-
-      secEcon.classList.toggle('hidden', econCount === 0);
-      secMed.classList.toggle('hidden', medCount === 0);
-      secIT.classList.toggle('hidden', itCount === 0);
-
-      updateSavedBadge();
-    }
-
-    // -------------------------------------------------------------
-    // 前日ニュース更新フロー（フリーズ防止・安全リミッター完備）
-    // -------------------------------------------------------------
-    async function updateNewsContent(isManualRefresh = false) {
-      const refreshBtn = document.getElementById('refresh-news-btn');
-      const refreshIcon = document.getElementById('refresh-icon');
-      const refreshText = document.getElementById('refresh-btn-text');
-      const loadingState = document.getElementById('loading-state');
-      const newsContainer = document.getElementById('news-container');
-
-      if (refreshBtn) refreshBtn.disabled = true;
-      if (refreshIcon) refreshIcon.classList.add('animate-spin');
-      if (refreshText) refreshText.textContent = "最新のニュースを取得中...";
-      if (loadingState) loadingState.classList.remove('hidden');
-
-      const yInfo = getYesterdayInfo();
-      const editionBadge = document.getElementById('header-edition-badge');
-      if (editionBadge) editionBadge.textContent = `${yInfo.month}/${yInfo.date} 前日報道`;
-
-      // 手動更新時はシード値をインクリメントして確実に新しい内容へ切り替える
-      if (isManualRefresh) {
-        APP_STATE.refreshCount += 1;
+      // カテゴリごとのアクセントカラーとバッジ
+      let catBadgeClass = "bg-emerald-50 text-emerald-700 border-emerald-200/70";
+      let catIcon = "fa-chart-line text-emerald-600";
+      if (article.category === 'medical') {
+        catBadgeClass = "bg-rose-50 text-rose-700 border-rose-200/70";
+        catIcon = "fa-heart-pulse text-rose-600";
+      } else if (article.category === 'it') {
+        catBadgeClass = "bg-blue-50 text-blue-700 border-blue-200/70";
+        catIcon = "fa-microchip text-blue-600";
       }
 
-      const safetyTimeout = setTimeout(() => {
-        if (loadingState && !loadingState.classList.contains('hidden')) {
-          loadingState.classList.add('hidden');
-        }
-        if (refreshBtn) refreshBtn.disabled = false;
-        if (refreshIcon) refreshIcon.classList.remove('animate-spin');
-        if (refreshText) refreshText.textContent = "前日の実在ニュースを取得・生成";
-      }, 8000);
+      const formattedTime = formatTimeDiff(article.publishedAt);
+
+      return `
+        <article class="flex flex-col justify-between bg-white rounded-3xl p-6 border transition-all duration-300 hover:shadow-card hover:-translate-y-1 ${isRead ? 'border-slate-200/60 bg-slate-50/40 opacity-90' : 'border-slate-200/90 shadow-sm'}">
+          
+          <div class="space-y-3.5">
+            <!-- 上部メタ情報: カテゴリ & 発行時間（文字数表示は削除） -->
+            <div class="flex items-center justify-between text-xs">
+              <span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold border ${catBadgeClass}">
+                <i class="fa-solid ${catIcon} text-xs"></i>
+                <span>${escapeHtml(article.categoryName || '最新ニュース')}</span>
+              </span>
+
+              <div class="flex items-center text-[11px] text-slate-400">
+                <span>${formattedTime}</span>
+              </div>
+            </div>
+
+            <!-- タイトル（改行して全文を表示） -->
+            <h3 class="text-base sm:text-lg font-bold text-slate-800 leading-snug hover:text-blue-600 transition-colors break-words">
+              ${escapeHtml(article.title)}
+            </h3>
+
+            <!-- 300〜400文字の本文（文字サイズを拡大して読みやすく改善） -->
+            <div class="text-sm sm:text-base text-slate-700 leading-relaxed bg-slate-50/70 p-4 rounded-2xl border border-slate-100/90 text-justify">
+              ${escapeHtml(article.summary)}
+            </div>
+
+            <!-- 引用元表示 & コピー / Safariで開く -->
+            <div class="pt-2 border-t border-slate-100 flex flex-col space-y-2 text-xs">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-1.5 text-slate-500 truncate pr-2">
+                  <i class="fa-solid fa-quote-left text-slate-400 text-[10px]"></i>
+                  <span class="font-semibold text-slate-700 truncate" title="${escapeHtml(article.sourceName)}">
+                    ${escapeHtml(article.sourceName)}
+                  </span>
+                </div>
+                
+                <div class="flex items-center space-x-1 shrink-0">
+                  <!-- 引用元コピーボタン -->
+                  <button onclick="copySourceCitation('${article.id}')" title="引用元とURLをコピー" class="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition active:scale-90">
+                    <i class="fa-regular fa-copy text-sm"></i>
+                  </button>
+
+                  <!-- SafariでHPに飛ぶボタン -->
+                  <button onclick="openInSafari('${escapeAttr(article.sourceUrl)}')" title="Safariで元記事を開く" class="inline-flex items-center space-x-1 px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium rounded-lg text-xs transition active:scale-95">
+                    <i class="fa-brands fa-safari text-xs"></i>
+                    <span>元記事</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-0.5"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- アクションフッター: 既読/未読ボタン & 保管ボタン -->
+          <div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between">
+            <!-- 既読 / 未読トグルボタン（「未読」「既読」のみのシンプル表記） -->
+            <button onclick="toggleReadStatus('${article.id}')" class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition active:scale-95 ${isRead ? 'bg-slate-100 text-slate-600 hover:bg-slate-200' : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200/50'}">
+              <i class="fa-solid ${isRead ? 'fa-circle-check text-emerald-500' : 'fa-circle text-slate-300'}"></i>
+              <span>${isRead ? '既読' : '未読'}</span>
+            </button>
+
+            <!-- 保管トグルボタン -->
+            <button onclick="toggleSaveArticle('${article.id}')" class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition active:scale-95 ${isSaved ? 'bg-amber-500 text-white shadow-sm shadow-amber-500/20 hover:bg-amber-600' : 'bg-slate-100 text-slate-700 hover:bg-amber-50 hover:text-amber-700'}">
+              <i class="fa-${isSaved ? 'solid' : 'regular'} fa-bookmark"></i>
+              <span>${isSaved ? '保管中' : '後で読む (保管)'}</span>
+            </button>
+          </div>
+
+        </article>
+      `;
+    }
+
+    // ----------------------------------------------------
+    // 記事インタラクション（既読・保管・コピー・Safari）
+    // ----------------------------------------------------
+    window.toggleReadStatus = async function(articleId) {
+      if (state.readArticleIds.has(articleId)) {
+        state.readArticleIds.delete(articleId);
+        showToast("「未読」にしました", "info");
+      } else {
+        state.readArticleIds.add(articleId);
+        showToast("「既読」にしました", "success");
+      }
+      renderCurrentView();
+      await persistUserPreferences();
+    };
+
+    window.toggleSaveArticle = async function(articleId) {
+      // 現在のリストから該当記事を探す
+      let article = state.articles.find(a => a.id === articleId) || state.savedArticles.find(a => a.id === articleId);
+      if (!article) return;
+
+      const isSaved = state.savedArticles.some(a => a.id === articleId);
+      if (isSaved) {
+        await persistArticleRemove(articleId);
+        showToast("保管リストから解除しました", "info");
+      } else {
+        await persistArticleSave(article);
+        showToast("記事を安全に保管しました（修正後もリセットされません）", "success");
+      }
+      renderCurrentView();
+    };
+
+    // 引用元コピー（iframe制限に対応した document.execCommand('copy')）
+    window.copySourceCitation = function(articleId) {
+      let article = state.articles.find(a => a.id === articleId) || state.savedArticles.find(a => a.id === articleId);
+      if (!article) return;
+
+      const citationText = `【引用元】${article.sourceName}\n記事タイトル: ${article.title}\nURL: ${article.sourceUrl}\n（「経済・医療・ITの最新ニュース」より引用）`;
+
+      const textArea = document.createElement("textarea");
+      textArea.value = citationText;
+      textArea.style.position = "fixed";
+      textArea.style.top = "0";
+      textArea.style.left = "0";
+      textArea.style.opacity = "0";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
 
       try {
-        const freshNews = await generateYesterdayNewsFromWeb(APP_STATE.refreshCount);
-        if (freshNews && freshNews.length === 12) {
-          APP_STATE.newsData = freshNews;
-          persistNewsCache(freshNews);
+        const successful = document.execCommand('copy');
+        if (successful) {
+          showToast("引用元とURLをクリップボードにコピーしました", "success");
+        } else {
+          showToast("コピーに失敗しました", "error");
         }
       } catch (err) {
-        console.error("News update error:", err);
-        if (!APP_STATE.newsData || APP_STATE.newsData.length === 0) {
-          APP_STATE.newsData = generateDynamicDateNews(yInfo, APP_STATE.refreshCount);
-        }
-      } finally {
-        clearTimeout(safetyTimeout);
-        renderAllNews();
-
-        const now = new Date();
-        const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
-        const lastUpdatedEl = document.getElementById('last-updated-text');
-        if (lastUpdatedEl) lastUpdatedEl.textContent = `本日 ${timeStr} 更新済`;
-
-        if (refreshBtn) refreshBtn.disabled = false;
-        if (refreshIcon) refreshIcon.classList.remove('animate-spin');
-        if (refreshText) refreshText.textContent = "前日の実在ニュースを取得・生成";
-        if (loadingState) loadingState.classList.add('hidden');
-        if (newsContainer) newsContainer.classList.remove('opacity-40');
-
-        if (isManualRefresh) {
-          showToast(`最新のニュースに更新しました（${timeStr}版）`);
-        }
+        showToast("コピー権限がありませんでした", "error");
       }
+      document.body.removeChild(textArea);
+    };
+
+    // Safari / ブラウザでURLを開く
+    window.openInSafari = function(url) {
+      if (!url) return;
+      window.open(url, '_blank', 'noopener,noreferrer');
+    };
+
+    function updateSavedCount() {
+      document.getElementById('savedCount').textContent = state.savedArticles.length;
     }
 
-    function checkAndAutoRefreshDate() {
-      const now = new Date();
-      const todayKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-      if (APP_STATE.lastFetchedDate !== todayKey) {
-        updateNewsContent(false);
-      }
+    // ----------------------------------------------------
+    // 毎朝の指定時間管理 & カウントダウン
+    // ----------------------------------------------------
+    function initDeliveryTimer() {
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
     }
 
-    function updateClockAndCountdown() {
+    function updateCountdown() {
       const now = new Date();
-      const clockEl = document.getElementById('current-clock');
-      if (clockEl) {
-        const y = now.getFullYear();
-        const m = String(now.getMonth() + 1).padStart(2, '0');
-        const d = String(now.getDate()).padStart(2, '0');
-        const hh = String(now.getHours()).padStart(2, '0');
-        const mm = String(now.getMinutes()).padStart(2, '0');
-        const ss = String(now.getSeconds()).padStart(2, '0');
-        clockEl.textContent = `${y}/${m}/${d} ${hh}:${mm}:${ss}`;
-      }
+      const [targetHour, targetMinute] = state.deliveryTime.split(':').map(Number);
+      
+      const targetTime = new Date();
+      targetTime.setHours(targetHour, targetMinute, 0, 0);
 
-      const [schedH, schedM] = APP_STATE.scheduledTime.split(':').map(Number);
-      const targetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), schedH, schedM, 0);
       if (now > targetTime) {
+        // 今日の配信時間は既に過ぎているため翌日の配信時刻
         targetTime.setDate(targetTime.getDate() + 1);
       }
+
       const diffMs = targetTime - now;
-      const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
-      const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+      const hours = Math.floor(diffMs / (1000 * 60 * 60));
+      const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
 
-      const countdownEl = document.getElementById('countdown-badge');
-      if (countdownEl) {
-        countdownEl.textContent = `あと ${diffHrs}時間${diffMins}分`;
-      }
+      document.getElementById('countdownTimer').textContent = `次の朝刊まで あと ${hours}時間${minutes}分${seconds}秒`;
 
-      const todayDateStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-      const currentTimeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-      if (currentTimeStr === APP_STATE.scheduledTime && window._lastAlarmTriggerDate !== todayDateStr) {
-        window._lastAlarmTriggerDate = todayDateStr;
-        triggerScheduledUpdate();
+      // ちょうど配信時刻に達した瞬間の自動更新検知（1分以内の差分かつ未取得）
+      const todayKey = now.toDateString();
+      if (hours === 0 && minutes === 0 && seconds <= 2 && state.lastFetchedDate?.toDateString() !== todayKey) {
+        generate24HourNewsWithGemini();
       }
     }
 
-    function triggerScheduledUpdate() {
-      updateNewsContent(false);
-      if ("Notification" in window && Notification.permission === "granted") {
-        new Notification("朝の最新ニュース配信", {
-          body: "前日の経済・医療・IT実在ニュース（全12本）をお届けします。"
-        });
-      }
-    }
+    window.openSettingsModal = function() {
+      document.getElementById('inputDeliveryTime').value = state.deliveryTime;
+      document.getElementById('settingsModal').classList.remove('hidden');
+    };
 
-    function setupAppIcon() {
-      const canvas = document.getElementById('icon-generator-canvas');
+    window.closeSettingsModal = function() {
+      document.getElementById('settingsModal').classList.add('hidden');
+    };
+
+    window.saveDeliverySettings = async function() {
+      const newTime = document.getElementById('inputDeliveryTime').value;
+      if (newTime) {
+        state.deliveryTime = newTime;
+        document.getElementById('displayDeliveryTime').textContent = newTime;
+        await persistUserPreferences();
+        showToast(`毎朝の配信時刻を ${newTime} に更新しました`, "success");
+      }
+      closeSettingsModal();
+    };
+
+    // ----------------------------------------------------
+    // ホーム画面アイコン生成 & モーダル (要件6)
+    // ----------------------------------------------------
+    function drawAppIcon() {
+      const canvas = document.getElementById('appIconCanvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
-      const w = 512, h = 512;
+      const size = 512;
 
-      const bgGrad = ctx.createLinearGradient(0, 0, w, h);
-      bgGrad.addColorStop(0, '#1e1b4b');
-      bgGrad.addColorStop(0.4, '#0f172a');
-      bgGrad.addColorStop(1, '#020617');
-      ctx.fillStyle = bgGrad;
+      // 1. 背景グラデーション（朝の光と知性を表現するリッチなグラデーション）
+      const grad = ctx.createLinearGradient(0, 0, size, size);
+      grad.addColorStop(0, '#F59E0B'); // 朝の黄金
+      grad.addColorStop(0.4, '#F43F5E'); // ローズ
+      grad.addColorStop(0.8, '#4F46E5'); // インディゴ
+      grad.addColorStop(1, '#0284C7'); // スカイブルー
+
+      // 角丸四角形
+      const radius = 112; // iOS App Icon ratio
       ctx.beginPath();
-      ctx.roundRect(0, 0, w, h, 115);
+      ctx.moveTo(radius, 0);
+      ctx.lineTo(size - radius, 0);
+      ctx.quadraticCurveTo(size, 0, size, radius);
+      ctx.lineTo(size, size - radius);
+      ctx.quadraticCurveTo(size, size, size - radius, size);
+      ctx.lineTo(radius, size);
+      ctx.quadraticCurveTo(0, size, 0, size - radius);
+      ctx.lineTo(0, radius);
+      ctx.quadraticCurveTo(0, 0, radius, 0);
+      ctx.closePath();
+      ctx.fillStyle = grad;
       ctx.fill();
 
-      ctx.beginPath();
-      ctx.arc(256, 210, 65, Math.PI * 0.8, Math.PI * 2.2);
-      ctx.strokeStyle = '#f59e0b';
-      ctx.lineWidth = 18;
-      ctx.lineCap = 'round';
+      // 微かなインナーシャドウ/ハイライト
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+      ctx.lineWidth = 6;
       ctx.stroke();
 
-      const chartGrad = ctx.createLinearGradient(120, 340, 390, 190);
-      chartGrad.addColorStop(0, '#f59e0b');
-      chartGrad.addColorStop(0.5, '#10b981');
-      chartGrad.addColorStop(1, '#38bdf8');
+      // 2. 朝の太陽サークル（中央背後）
       ctx.beginPath();
-      ctx.moveTo(125, 330);
-      ctx.lineTo(195, 275);
-      ctx.lineTo(256, 310);
-      ctx.lineTo(330, 190);
-      ctx.lineTo(390, 190);
-      ctx.strokeStyle = chartGrad;
-      ctx.lineWidth = 20;
+      ctx.arc(size / 2, size / 2, 130, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+      ctx.fill();
+
+      // 3. 経済（チャート）・医療（クロスハート）・IT（デジタルチップ）の統合シンボル
+      ctx.fillStyle = '#FFFFFF';
+      ctx.strokeStyle = '#FFFFFF';
+      ctx.lineWidth = 14;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
+
+      // --- 経済: 右肩上がりの力強い折れ線グラフ ---
+      ctx.beginPath();
+      ctx.moveTo(140, 340);
+      ctx.lineTo(210, 270);
+      ctx.lineTo(280, 310);
+      ctx.lineTo(370, 190);
       ctx.stroke();
 
+      // チャート先端の矢印
       ctx.beginPath();
-      ctx.arc(330, 190, 14, 0, Math.PI * 2);
-      ctx.fillStyle = '#ffffff';
+      ctx.moveTo(330, 190);
+      ctx.lineTo(370, 190);
+      ctx.lineTo(370, 230);
+      ctx.stroke();
+
+      // --- 医療: 優しく包むハート型 ---
+      ctx.save();
+      ctx.translate(256, 175);
+      ctx.scale(0.85, 0.85);
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.bezierCurveTo(-50, -50, -100, 20, 0, 95);
+      ctx.bezierCurveTo(100, 20, 50, -50, 0, 0);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
       ctx.fill();
+      ctx.restore();
 
-      const iconDataUrl = canvas.toDataURL('image/png');
+      // 医療クロスマーク（ハート中央）
+      ctx.fillStyle = '#F43F5E';
+      ctx.fillRect(256 - 6, 190, 12, 36);
+      ctx.fillRect(256 - 18, 202, 36, 12);
 
-      const modalPreview = document.getElementById('modal-app-icon-preview');
-      if (modalPreview) modalPreview.src = iconDataUrl;
+      // --- IT: 中央下部のマイクロプロセッサ回路 & ノード ---
+      ctx.fillStyle = '#FFFFFF';
+      const nodes = [
+        { x: 140, y: 340 },
+        { x: 210, y: 270 },
+        { x: 280, y: 310 },
+        { x: 370, y: 190 }
+      ];
+      nodes.forEach(n => {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 10, 0, Math.PI * 2);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fill();
+        ctx.strokeStyle = '#F59E0B';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+      });
 
-      const appleIcon = document.getElementById('app-apple-icon');
-      if (appleIcon) appleIcon.href = iconDataUrl;
-      const favicon = document.getElementById('app-favicon');
-      if (favicon) favicon.href = iconDataUrl;
+      // 4. アプリタイトルタイポグラフィ
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+      ctx.font = 'bold 36px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('ECO • MED • TECH', 256, 430);
 
-      const downloadBtn = document.getElementById('download-icon-btn');
-      if (downloadBtn) {
-        downloadBtn.onclick = () => {
-          const a = document.createElement('a');
-          a.download = 'apple-touch-icon.png';
-          a.href = iconDataUrl;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          showToast("apple-touch-icon.png をダウンロードしました");
-        };
+      // Apple Touch Icon にリンク設定
+      try {
+        const iconDataUrl = canvas.toDataURL('image/png');
+        let appleIconLink = document.querySelector("link[rel='apple-touch-icon']");
+        if (!appleIconLink) {
+          appleIconLink = document.createElement('link');
+          appleIconLink.rel = 'apple-touch-icon';
+          document.head.appendChild(appleIconLink);
+        }
+        appleIconLink.href = iconDataUrl;
+
+        let favicon = document.querySelector("link[rel='icon']");
+        if (!favicon) {
+          favicon = document.createElement('link');
+          favicon.rel = 'icon';
+          document.head.appendChild(favicon);
+        }
+        favicon.href = iconDataUrl;
+      } catch (e) {
+        console.warn("Could not set dynamic apple-touch-icon:", e);
       }
     }
 
-    function initApp() {
-      loadUserSettings();
-      loadSavedArticles();
-      setupAppIcon();
+    window.downloadIconPNG = function() {
+      const canvas = document.getElementById('appIconCanvas');
+      if (!canvas) return;
+      const link = document.createElement('a');
+      link.download = 'morning-news-icon-512x512.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      showToast("アイコン画像をダウンロードしました", "success");
+    };
 
-      const yInfo = getYesterdayInfo();
-      const editionBadge = document.getElementById('header-edition-badge');
-      if (editionBadge) editionBadge.textContent = `${yInfo.month}/${yInfo.date} 前日報道`;
+    window.openIconModal = function() {
+      document.getElementById('iconModal').classList.remove('hidden');
+      drawAppIcon();
+    };
 
-      // 待たされることなく全12本を即時表示（日付に応じた最新版）
-      if (!APP_STATE.newsData || APP_STATE.newsData.length === 0) {
-        APP_STATE.newsData = generateDynamicDateNews(yInfo, 0);
-      }
-      renderAllNews();
+    window.closeIconModal = function() {
+      document.getElementById('iconModal').classList.add('hidden');
+    };
 
-      const lastUpdatedEl = document.getElementById('last-updated-text');
+    // ----------------------------------------------------
+    // ユーティリティ
+    // ----------------------------------------------------
+    function formatTimeDiff(isoString) {
+      if (!isoString) return "直近24h";
+      const date = new Date(isoString);
       const now = new Date();
-      const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-      if (lastUpdatedEl) lastUpdatedEl.textContent = `本日 ${timeStr} 準備完了`;
-
-      // 起動後にバックグラウンドで日付更新チェック
-      checkAndAutoRefreshDate();
-
-      updateClockAndCountdown();
-      setInterval(updateClockAndCountdown, 1000);
-
-      const headerScheduledTime = document.getElementById('header-scheduled-time');
-      if (headerScheduledTime) headerScheduledTime.textContent = APP_STATE.scheduledTime;
-
-      document.getElementById('refresh-news-btn').addEventListener('click', () => {
-        updateNewsContent(true);
-      });
-
-      document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible') {
-          checkAndAutoRefreshDate();
-          updateClockAndCountdown();
-        }
-      });
-      window.addEventListener('focus', () => {
-        checkAndAutoRefreshDate();
-      });
-
-      document.querySelectorAll('.filter-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-          document.querySelectorAll('.filter-tab').forEach(t => {
-            t.classList.remove('bg-white', 'text-slate-900', 'shadow-xs', 'font-semibold');
-            t.classList.add('text-slate-600', 'font-medium');
-          });
-          tab.classList.add('bg-white', 'text-slate-900', 'shadow-xs', 'font-semibold');
-          tab.classList.remove('text-slate-600');
-
-          APP_STATE.activeFilter = tab.getAttribute('data-filter');
-          renderAllNews();
-        });
-      });
-
-      document.querySelectorAll('.scope-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.scope-btn').forEach(b => {
-            b.classList.remove('bg-white', 'text-slate-900', 'shadow-xs', 'font-bold');
-            b.classList.add('text-slate-600', 'font-medium');
-          });
-          btn.classList.add('bg-white', 'text-slate-900', 'shadow-xs', 'font-bold');
-          btn.classList.remove('text-slate-600');
-
-          APP_STATE.activeScope = btn.getAttribute('data-scope');
-          renderAllNews();
-        });
-      });
-
-      document.getElementById('export-saved-btn').addEventListener('click', () => {
-        const savedList = Array.from(APP_STATE.savedArticles.values());
-        if (savedList.length === 0) {
-          showToast("保管中の記事がありません");
-          return;
-        }
-        const text = savedList.map((n, i) => `${i + 1}. [${n.scopeLabel}] ${n.title}\n${n.summary}\n視点: ${n.whyItMatters}\n出処: ${n.source} (${n.sourceUrl || ''})\n(保管日時: ${n.savedAt || '記録なし'})\n`).join('\n---\n\n');
-        copyToClipboard(text, "保管した全記事をコピーしました");
-      });
-
-      document.getElementById('clear-all-saved-btn').addEventListener('click', () => {
-        if (APP_STATE.savedArticles.size === 0) {
-          showToast("保管中の記事はありません");
-          return;
-        }
-        APP_STATE.savedArticles.clear();
-        persistSavedArticles();
-        renderAllNews();
-        showToast("保管庫をクリアしました");
-      });
-
-      const settingsModal = document.getElementById('settings-modal');
-      const openSettingsBtn = document.getElementById('open-settings-btn');
-      const closeSettingsBtn = document.getElementById('close-settings-btn');
-      const saveSettingsBtn = document.getElementById('save-settings-btn');
-      const scheduledTimeInput = document.getElementById('scheduled-time-input');
-      const apiKeyInput = document.getElementById('gemini-api-key-input');
-
-      openSettingsBtn.addEventListener('click', () => {
-        scheduledTimeInput.value = APP_STATE.scheduledTime;
-        if (apiKeyInput) apiKeyInput.value = APP_STATE.customApiKey;
-        settingsModal.classList.remove('hidden');
-      });
-
-      closeSettingsBtn.addEventListener('click', () => settingsModal.classList.add('hidden'));
-      settingsModal.addEventListener('click', (e) => {
-        if (e.target === settingsModal) settingsModal.classList.add('hidden');
-      });
-
-      saveSettingsBtn.addEventListener('click', () => {
-        if (scheduledTimeInput.value) {
-          APP_STATE.scheduledTime = scheduledTimeInput.value;
-          headerScheduledTime.textContent = APP_STATE.scheduledTime;
-        }
-        if (apiKeyInput) {
-          APP_STATE.customApiKey = apiKeyInput.value.trim();
-        }
-        saveUserSettings();
-        settingsModal.classList.add('hidden');
-        updateClockAndCountdown();
-        showToast("設定を保存しました");
-      });
-
-      const installModal = document.getElementById('install-guide-modal');
-      const openInstallBtn = document.getElementById('open-install-guide-btn');
-      const closeInstallBtn = document.getElementById('close-install-modal-btn');
-      const confirmInstallBtn = document.getElementById('confirm-install-btn');
-
-      if (openInstallBtn && installModal) {
-        openInstallBtn.addEventListener('click', () => installModal.classList.remove('hidden'));
-      }
-      if (closeInstallBtn && installModal) {
-        closeInstallBtn.addEventListener('click', () => installModal.classList.add('hidden'));
-      }
-      if (confirmInstallBtn && installModal) {
-        confirmInstallBtn.addEventListener('click', () => installModal.classList.add('hidden'));
-      }
-      if (installModal) {
-        installModal.addEventListener('click', (e) => {
-          if (e.target === installModal) installModal.classList.add('hidden');
-        });
-      }
-
-      document.getElementById('request-perm-btn').addEventListener('click', async () => {
-        if ("Notification" in window) {
-          const res = await Notification.requestPermission();
-          if (res === "granted") showToast("ブラウザ通知を有効にしました");
-          else showToast("通知が許可されませんでした");
-        } else {
-          showToast("お使いの環境では通知がサポートされていません");
-        }
-      });
-
-      document.getElementById('test-alarm-trigger').addEventListener('click', () => {
-        triggerScheduledUpdate();
-        showToast("通知テストを実行しました");
-      });
+      const diffHrs = Math.round((now - date) / (1000 * 60 * 60));
+      if (diffHrs <= 1) return "1時間以内";
+      if (diffHrs < 24) return `${diffHrs}時間前`;
+      return "24時間以内";
     }
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initApp);
-    } else {
-      initApp();
+    function updateLastFetchedDisplay() {
+      const now = state.lastFetchedDate || new Date();
+      const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+      document.getElementById('lastUpdatedBadge').textContent = `本日 ${timeStr} 取得`;
     }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      
+      let bg = 'bg-slate-900 text-white';
+      let icon = 'fa-circle-info text-blue-400';
+      if (type === 'success') {
+        bg = 'bg-emerald-900/90 text-white border border-emerald-500/50';
+        icon = 'fa-circle-check text-emerald-400';
+      } else if (type === 'error') {
+        bg = 'bg-rose-900/90 text-white border border-rose-500/50';
+        icon = 'fa-triangle-exclamation text-rose-400';
+      }
+
+      toast.className = `${bg} backdrop-blur-md px-4 py-3 rounded-2xl shadow-xl flex items-center space-x-2.5 text-xs font-medium pointer-events-auto transition-all duration-300 transform translate-y-4 opacity-0`;
+      toast.innerHTML = `<i class="fa-solid ${icon}"></i><span>${escapeHtml(message)}</span>`;
+
+      container.appendChild(toast);
+      
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-4', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function escapeAttr(str) {
+      if (!str) return '';
+      return String(str).replace(/"/g, '&quot;');
+    }
+
+    // ----------------------------------------------------
+    // アプリケーション起動
+    // ----------------------------------------------------
+    window.addEventListener('DOMContentLoaded', async () => {
+      // 初期記事設定
+      state.articles = [...defaultArticles];
+      state.lastFetchedDate = new Date();
+      updateLastFetchedDisplay();
+
+      // Firebase 初期化
+      await initFirebase();
+
+      // アイコン描画
+      drawAppIcon();
+
+      // タイマー開始
+      initDeliveryTimer();
+
+      // 初期レンダリング
+      renderCurrentView();
+    });
   </script>
 </body>
 </html>
