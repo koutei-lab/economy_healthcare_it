@@ -204,8 +204,8 @@
         <!-- 既読・未読絞り込みセレクタ -->
         <div class="relative">
           <select id="readFilterSelect" onchange="renderCurrentView()" class="bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 cursor-pointer">
+            <option value="all" selected>すべて表示</option>
             <option value="unread">未読のみ</option>
-            <option value="all">すべて表示</option>
             <option value="read">既読のみ</option>
           </select>
         </div>
@@ -294,6 +294,13 @@
           <p>• 経済・医療・IT 各3本（合計9本）</p>
           <p>• 本文 300〜400文字程度（詳細な背景・影響の解説）</p>
           <p>• 引用元メディアと正確なURLの明記</p>
+        </div>
+
+        <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
+          <span class="text-[11px] text-slate-500">既読状態を最初に戻す:</span>
+          <button onclick="resetReadHistory()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 text-xs font-medium transition">
+            <i class="fa-solid fa-rotate-left mr-1"></i>既読履歴をリセット
+          </button>
         </div>
       </div>
 
@@ -480,7 +487,7 @@
       auth: null,
       activeTab: 'feed', // 'feed' | 'saved'
       categoryFilter: 'all', // 'all' | 'economy' | 'medical' | 'it'
-      readFilter: 'all', // 'all' | 'unread' | 'read'
+      readFilter: 'all', // デフォルトですべて表示
       deliveryTime: '07:00', // デフォルト朝7時
       lastFetchedDate: new Date(),
       articles: [...defaultArticles], // 初期データで本文が即座に表示されるよう設定
@@ -500,19 +507,16 @@
 
     function isArticleAlreadyRead(article) {
       if (!article) return false;
-      // 1. IDでの一致判定
+      // 1. 記事IDによる完全一致
       if (state.readArticleIds.has(article.id)) return true;
 
-      // 2. タイトル文字列の類似・重複判定（同じ事件・トピックの再表示を防止）
+      // 2. タイトルの完全一致判定（部分一致バグを撤廃し誤判定を防止）
       const normTitle = normalizeText(article.title);
+      if (!normTitle) return false;
       for (const readTitle of state.readArticleTitles) {
         const normRead = normalizeText(readTitle);
-        if (normTitle === normRead) return true;
-        // 主要キーワードの重複度が極めて高い場合（部分一致）
-        if (normTitle.length > 8 && normRead.length > 8) {
-          if (normTitle.includes(normRead) || normRead.includes(normTitle)) {
-            return true;
-          }
+        if (normRead && normTitle === normRead) {
+          return true;
         }
       }
       return false;
@@ -824,7 +828,7 @@ JSON出力フォーマット:
 
     window.renderCurrentView = function() {
       const readFilterSelect = document.getElementById('readFilterSelect');
-      const readFilter = readFilterSelect ? readFilterSelect.value : 'unread';
+      const readFilter = readFilterSelect ? readFilterSelect.value : 'all';
       const container = document.getElementById('newsGrid');
       const emptyState = document.getElementById('emptyState');
       if (!container) return;
@@ -837,23 +841,13 @@ JSON出力フォーマット:
         return article.category === state.categoryFilter;
       });
 
-      // 2. 既読判定・除外ロジック（要件：既読にした内容と同じ記事は表示されない）
-      if (state.activeTab === 'feed') {
-        if (readFilter === 'unread' || readFilter === 'all') {
-          // 「今朝のニュース」タブでは、既読にした記事（および既読タイトルと一致するもの）を完全除外
-          filtered = filtered.filter(article => !isArticleAlreadyRead(article));
-        } else if (readFilter === 'read') {
-          // 既読のみ明示的に選んだ場合のみ表示
-          filtered = filtered.filter(article => isArticleAlreadyRead(article));
-        }
-      } else {
-        // 「保管した記事」タブ
-        if (readFilter === 'unread') {
-          filtered = filtered.filter(article => !isArticleAlreadyRead(article));
-        } else if (readFilter === 'read') {
-          filtered = filtered.filter(article => isArticleAlreadyRead(article));
-        }
+      // 2. 既読・未読絞り込み
+      if (readFilter === 'unread') {
+        filtered = filtered.filter(article => !isArticleAlreadyRead(article));
+      } else if (readFilter === 'read') {
+        filtered = filtered.filter(article => isArticleAlreadyRead(article));
       }
+      // 'all' の場合は未読・既読ともに表示（ボタンで状態を明示）
 
       // 未読件数のカウント更新
       const unreadFeedCount = state.articles.filter(a => !isArticleAlreadyRead(a)).length;
@@ -871,8 +865,8 @@ JSON出力フォーマット:
             if (emptyTitle) emptyTitle.textContent = "保管された記事がありません";
             if (emptyDesc) emptyDesc.textContent = "気になる記事の「後で読む (保管)」を押すと、ここに安全に保管されます。";
           } else {
-            if (emptyTitle) emptyTitle.textContent = "新着の未読ニュースはありません";
-            if (emptyDesc) emptyDesc.textContent = "本日のニュースはすべて既読になりました。右上の更新ボタンを押すと、既読と重複しない別の新しいニュースを取得できます。";
+            if (emptyTitle) emptyTitle.textContent = "表示できるニュースがありません";
+            if (emptyDesc) emptyDesc.textContent = "フィルター条件に一致する記事がありません。「すべて表示」にするか、右上の更新ボタンを押してください。";
           }
         }
         return;
@@ -900,28 +894,29 @@ JSON出力フォーマット:
       const formattedTime = formatTimeDiff(article.publishedAt);
 
       return `
-        <article class="flex flex-col justify-between bg-white rounded-3xl p-6 border transition-all duration-300 hover:shadow-card hover:-translate-y-1 ${isRead ? 'border-slate-200/60 bg-slate-50/40 opacity-80' : 'border-slate-200/90 shadow-sm'}">
+        <article class="flex flex-col justify-between bg-white rounded-3xl p-6 border transition-all duration-300 hover:shadow-card hover:-translate-y-1 ${isRead ? 'border-slate-200/70 bg-slate-50/60' : 'border-slate-200/90 shadow-sm'}">
           
           <div class="space-y-3.5">
-            <!-- 上部メタ情報: カテゴリ & 発行時間 -->
+            <!-- 上部メタ情報: カテゴリ & 発行時間 & 既読バッジ -->
             <div class="flex items-center justify-between text-xs">
               <span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold border ${catBadgeClass}">
                 <i class="fa-solid ${catIcon} text-xs"></i>
                 <span>${escapeHtml(article.categoryName || '最新ニュース')}</span>
               </span>
 
-              <div class="flex items-center text-[11px] text-slate-400">
-                <span>${formattedTime}</span>
+              <div class="flex items-center space-x-2 text-[11px]">
+                ${isRead ? '<span class="text-slate-400 font-medium bg-slate-100 px-2 py-0.5 rounded-full">既読済</span>' : '<span class="text-emerald-700 font-medium bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full">新着</span>'}
+                <span class="text-slate-400">${formattedTime}</span>
               </div>
             </div>
 
             <!-- タイトル（読点のところでスマートに改行） -->
-            <h3 class="text-base sm:text-lg font-bold text-slate-800 leading-snug hover:text-blue-600 transition-colors break-words">
+            <h3 class="text-base sm:text-lg font-bold ${isRead ? 'text-slate-600' : 'text-slate-800'} leading-snug hover:text-blue-600 transition-colors break-words">
               ${formatSmartTitle(article.title)}
             </h3>
 
             <!-- 300〜400文字の本文（文字サイズ拡大） -->
-            <div class="text-sm sm:text-base text-slate-700 leading-relaxed bg-slate-50/70 p-4 rounded-2xl border border-slate-100/90 text-justify">
+            <div class="text-sm sm:text-base ${isRead ? 'text-slate-600 bg-white/70' : 'text-slate-700 bg-slate-50/70'} leading-relaxed p-4 rounded-2xl border border-slate-100/90 text-justify">
               ${escapeHtml(article.summary)}
             </div>
 
@@ -954,9 +949,9 @@ JSON出力フォーマット:
 
           <!-- アクションフッター: 既読/未読ボタン & 保管ボタン -->
           <div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between">
-            <!-- 既読 / 未読トグルボタン -->
-            <button onclick="toggleReadStatus('${article.id}')" class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition active:scale-95 ${isRead ? 'bg-slate-100 text-slate-600 hover:bg-slate-200' : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200/50'}">
-              <i class="fa-solid ${isRead ? 'fa-circle-check text-emerald-500' : 'fa-circle text-slate-300'}"></i>
+            <!-- 既読 / 未読トグルボタン（未読時：上品で優しい薄緑色） -->
+            <button onclick="toggleReadStatus('${article.id}')" class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition active:scale-95 ${isRead ? 'bg-slate-200 text-slate-700 hover:bg-slate-300' : 'bg-emerald-100 hover:bg-emerald-200 text-emerald-800 border border-emerald-300/80 shadow-xs'}">
+              <i class="fa-solid ${isRead ? 'fa-check text-slate-600' : 'fa-circle text-emerald-600 text-[8px]'}"></i>
               <span>${isRead ? '既読' : '未読'}</span>
             </button>
 
@@ -976,22 +971,34 @@ JSON出力フォーマット:
     // ----------------------------------------------------
     window.toggleReadStatus = async function(articleId) {
       let article = state.articles.find(a => a.id === articleId) || state.savedArticles.find(a => a.id === articleId);
-      const title = article ? article.title : '';
+      if (!article) return;
+      const title = article.title;
 
-      if (state.readArticleIds.has(articleId) || (title && state.readArticleTitles.has(title))) {
-        // 既読解除
+      const currentlyRead = isArticleAlreadyRead(article);
+
+      if (currentlyRead) {
+        // 既読解除 -> 未読へ
         state.readArticleIds.delete(articleId);
         if (title) state.readArticleTitles.delete(title);
-        showToast("「未読」に戻しました", "info");
+        showToast("「未読」に設定しました", "info");
       } else {
-        // 既読化（フィードから自動的に消去され、次回以降の生成でも除外）
+        // 未読 -> 既読へ
         state.readArticleIds.add(articleId);
         if (title) state.readArticleTitles.add(title);
-        showToast("既読にしました（フィードから非表示になります）", "success");
+        showToast("「既読」に設定しました", "success");
       }
 
       renderCurrentView();
       await persistUserPreferences();
+    };
+
+    window.resetReadHistory = async function() {
+      state.readArticleIds.clear();
+      state.readArticleTitles.clear();
+      renderCurrentView();
+      await persistUserPreferences();
+      closeSettingsModal();
+      showToast("すべての既読履歴をリセットしました（全件表示）", "success");
     };
 
     window.toggleSaveArticle = async function(articleId) {
