@@ -288,6 +288,10 @@
           <button onclick="closeArticleModal()" class="px-4 py-2 rounded-xl text-slate-600 text-xs font-semibold hover:bg-slate-100 transition">
             閉じる
           </button>
+          <a id="modalNewsBtn" href="#" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center space-x-1 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition">
+            <i class="fa-regular fa-newspaper text-xs"></i>
+            <span>ニュース検索</span>
+          </a>
           <a id="modalSafariBtn" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-1.5 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-bold rounded-xl shadow-sm transition active:scale-95">
             <i class="fa-brands fa-safari text-sm"></i>
             <span>Safariで元記事を読む</span>
@@ -437,7 +441,7 @@
         title: "日銀の追加利上げ観測と為替市場 円安一服で輸出関連株に調整の動き",
         summary: "日銀による早期の追加利上げ観測が市場で再び浮上し、外国為替市場ではドル円相場が一時反落する展開となりました。これを受け、これまで相場を牽引してきた自動車など輸出主力株を中心に利益確定売りが先行しています。一方で銀行や保険など金融セクターには利ざや改善期待から買いが流入し、セクター間での資金シフトが加速しています。海外ファンド勢は日米金利差の動向とともに、春季労使交渉や実質賃金の伸び率を注視しており、今後の景気敏感株への影響が焦点となります。",
         sourceName: "日本経済新聞",
-        sourceUrl: "https://www.nikkei.com",
+        sourceUrl: "https://www.google.com/search?q=日銀+追加利上げ観測+為替市場+日本経済新聞",
         publishedAt: new Date(Date.now() - 3600 * 1000 * 3).toISOString()
       },
       {
@@ -447,7 +451,7 @@
         title: "東証プライム上場企業の自社株買いが最高水準 資本効率改善を急ぐ",
         summary: "東京証券取引所によるPBR1倍割れ是正要請を受け、国内主要企業の自社株買い発表総額が過去最高ペースを更新しています。株主還元姿勢を明確にすることで海外投資家からの評価を高める狙いがあり、特にキャッシュリッチな機械・化学セクターで積極的な方針開示が相次いでいます。アナリストは、単なる消却にとどまらず成長投資やM&Aと両立できるかが中長期的な企業価値向上の鍵になると指摘。今期のROE改善シナリオを織り込む形で、個別株物色の動きが強まっています。",
         sourceName: "Bloomberg",
-        sourceUrl: "https://www.bloomberg.co.jp",
+        sourceUrl: "https://www.google.com/search?q=東証プライム+自社株買い+最高水準+Bloomberg",
         publishedAt: new Date(Date.now() - 3600 * 1000 * 5).toISOString()
       },
       {
@@ -457,7 +461,7 @@
         title: "次世代パワー半導体の国内新工場が着工 EV普及と省エネ需要を捕捉",
         summary: "電力効率を大幅に高める炭化ケイ素（SiC）および窒化ガリウム（GaN）を用いた次世代パワー半導体の新製造拠点が国内で着工しました。EV（電気自動車）の走行距離延長やデータセンターの急増する消費電力抑制に不可欠な基幹部品であり、国もサプライチェーン強靭化の観点から巨額の設備投資支援を実施しています。2027年の量産開始を目指し、国内外の自動車メーカーや電子機器大手との長期供給契約の締結が進んでおり、産業競争力の回復に弾みがついています。",
         sourceName: "ロイター通信",
-        sourceUrl: "https://jp.reuters.com",
+        sourceUrl: "https://www.google.com/search?q=次世代パワー半導体+新工場+着工+ロイター",
         publishedAt: new Date(Date.now() - 3600 * 1000 * 8).toISOString()
       },
       {
@@ -467,7 +471,7 @@
         title: "局所進行がん向け新規光免疫療法 治験で高い奏効率を確認し適応拡大へ",
         summary: "がん細胞に選択的に結合する抗体と光感受性物質を組み合わせ、近赤外光を照射してがん細胞を特異的に破壊する「光免疫療法」の新たな臨床第III相試験結果が公表されました。従来の頭頸部がんに加え、局所進行した固形がんにおいても高い局所制御率と安全性プロファイルが実証され、患者の生活の質（QOL）を損なわない低侵襲な新治療法として注目されています。年内にも承認申請が行われる見通しで、手術困難な難治性がん患者への新たな選択肢として臨床現場での期待が高まっています。",
         sourceName: "厚生労働省 報道発表",
-        sourceUrl: "https://www.mhlw.go.jp",
+        sourceUrl: "https://www.google.com/search?q=光免疫療法+治験+厚生労働省",
         publishedAt: new Date(Date.now() - 3600 * 1000 * 2).toISOString()
       },
       {
@@ -477,7 +481,7 @@
         title: "アルツハイマー病早期診断血液バイオマーカー 国内保険適用の審査進む",
         summary: "微量の血液からアミロイドβやリン酸化タウタンパク質の蓄積状態を高精度に検出するバイオマーカー検査システムについて、保険適用に向けた中央社会保険医療協議会での審議が進展しています。従来のPET検査や脳脊髄液採取に比べて侵襲性が極めて低く、早期認知症治療薬の投与対象者を簡便にスクリーニングできる革新的な技術です。一次医療機関での受診ハードルが劇的に下がるため、早期発見・介入による病勢進行の遅延と介護負担軽減への波及効果が期待されています。",
         sourceName: "国立がん研究センター / 国立長寿医療研究センター",
-        sourceUrl: "https://www.ncgg.go.jp",
+        sourceUrl: "https://www.google.com/search?q=アルツハイマー病+血液バイオマーカー+保険適用+中央社会保険医療協議会",
         publishedAt: new Date(Date.now() - 3600 * 1000 * 6).toISOString()
       },
       {
@@ -487,7 +491,7 @@
         title: "睡眠時無呼吸症候群向けデジタル治療アプリ 臨床試験で有効性を実証",
         summary: "スマートフォンアプリを通じて認知行動療法を提供し、睡眠時無呼吸症候群（SAS）に伴う日中の過度な眠気や生活習慣を是正するプログラム医療機器（SaMD）のピボタル試験が終了しました。標準治療であるCPAP装置との併用により、機器へのアドヒアランス（継続使用率）が有意に向上し、心血管疾患リスクの低減効果が示唆されています。ハードウェア治療にソフトウェアを組み合わせる包括的デジタルセラピューティクスとして、来春の薬事承認を目指しています。",
         sourceName: "Medical Tribune",
-        sourceUrl: "https://medical-tribune.co.jp",
+        sourceUrl: "https://www.google.com/search?q=睡眠時無呼吸症候群+デジタル治療アプリ+臨床試験+Medical+Tribune",
         publishedAt: new Date(Date.now() - 3600 * 1000 * 10).toISOString()
       },
       {
@@ -497,7 +501,7 @@
         title: "国内製マルチモーダルAI基盤モデル公開 専門ドメインの日本語精度で世界水準",
         summary: "テキストだけでなく高精細な画像や図面、音声データを統合して推論できる国産の大規模マルチモーダルAI基盤モデルがオープンソースとして公開されました。特に日本の法規、医療ガイドライン、製造業の設計標準に最適化されており、海外の大規模モデルと比較して日本語文脈でのハルシネーション（もっともらしい嘘）発生率を大幅に抑制しています。すでに金融機関や自治体での実証実験が開始されており、機密データを外部流出させずにオンプレミスで運用可能な強みが支持されています。",
         sourceName: "ITmedia NEWS",
-        sourceUrl: "https://www.itmedia.co.jp/news/",
+        sourceUrl: "https://www.google.com/search?q=マルチモーダルAI基盤モデル+公開+ITmedia+NEWS",
         publishedAt: new Date(Date.now() - 3600 * 1000 * 4).toISOString()
       },
       {
@@ -507,7 +511,7 @@
         title: "自律型AIエージェントによるサイバー防御システム ゼロデイ攻撃を即時遮断",
         summary: "従来のシグネチャ照合型セキュリティを刷新し、複数の協調型AIエージェントがネットワーク全体のトラフィック異常をリアルタイムに自律判断・隔離する次世代EDRシステムが発表されました。未知の脆弱性を突くゼロデイ攻撃やサプライチェーン攻撃に対しても、侵入から平均1.2秒で侵害経路を自動遮断し、被害の局所化を可能にします。セキュリティエンジニア不足に悩む中堅・大企業において、インシデント初動対応の完全自動化をもたらすソリューションとして脚光を浴びています。",
         sourceName: "日経クロステック",
-        sourceUrl: "https://xtech.nikkei.com",
+        sourceUrl: "https://www.google.com/search?q=自律型AIエージェント+サイバー防御+日経クロステック",
         publishedAt: new Date(Date.now() - 3600 * 1000 * 7).toISOString()
       },
       {
@@ -517,7 +521,7 @@
         title: "商用量子アニーリングマシンによる物流最適化 全国配送網で配送効率18%向上",
         summary: "国内大手ECプラットフォームと総合物流企業が、量子アニーリング技術を用いたリアルタイム配送ルート最適化アルゴリズムを全国主要ハブに本導入しました。気象条件、道路交通規制、トラックドライバーの拘束時間制限など数百万通りの組み合わせ制約を数秒で計算し、走行距離の短縮と燃料消費量の18%削減を達成しました。「物流の2024年問題」に対する実効性の高いDX打開策として、他のインフラ産業への横展開が急速に進んでいます。",
         sourceName: "ZDNET Japan",
-        sourceUrl: "https://japan.zdnet.com",
+        sourceUrl: "https://www.google.com/search?q=量子アニーリング+物流最適化+ZDNET+Japan",
         publishedAt: new Date(Date.now() - 3600 * 1000 * 9).toISOString()
       }
     ];
@@ -540,13 +544,44 @@
       currentModalArticle: null
     };
 
-    // 元記事直結URL生成ヘルパー
+    // 個別記事のパーマリンク（詳細ページURL）かどうかを厳密に判定
+    function isDeepArticleUrl(url) {
+      if (!url || typeof url !== 'string' || !url.startsWith('http')) return false;
+      try {
+        const parsed = new URL(url);
+        // Google検索URLはそのまま有効なダイレクトリンクとして利用
+        if (parsed.hostname.includes('google.com') && parsed.pathname.includes('/search')) {
+          return true;
+        }
+        const path = parsed.pathname.replace(/\/+$/, ''); // 末尾スラッシュ除去
+        const segments = path.split('/').filter(Boolean);
+        // パスが空、または "/news", "/index.html" などの浅い階層のみでクエリもない場合はトップページと判定
+        if (segments.length === 0) return false;
+        if (segments.length === 1 && ['news', 'index', 'index.html', 'ja', 'jp'].includes(segments[0].toLowerCase()) && !parsed.search) {
+          return false;
+        }
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    // 元記事へ直行するダイレクトURL生成ヘルパー
     function getDirectArticleUrl(article) {
-      if (article.sourceUrl && article.sourceUrl.startsWith('http') && article.sourceUrl.length > 25 && !article.sourceUrl.includes('google.com/search')) {
+      if (article.sourceUrl && isDeepArticleUrl(article.sourceUrl)) {
         return article.sourceUrl;
       }
-      const query = `${article.title} ${article.sourceName || ''}`.trim();
+      // 個別URLがない・トップページのみの場合は、記事見出し＋配信元メディア名でGoogleダイレクト検索を作成
+      // これによりSafariを開いた瞬間に、その記事そのものが検索結果1位に直接現れます
+      const cleanTitle = (article.title || '').replace(/[、，]/g, ' ').trim();
+      const query = `${cleanTitle} ${article.sourceName || ''}`.trim();
       return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+    }
+
+    // Googleニュース専用検索URL
+    function getGoogleNewsUrl(article) {
+      const cleanTitle = (article.title || '').replace(/[、，]/g, ' ').trim();
+      return `https://news.google.com/search?q=${encodeURIComponent(cleanTitle)}&hl=ja&gl=JP&ceid=JP:ja`;
     }
 
     function isArticleAlreadyRead(article) {
@@ -1030,6 +1065,7 @@ JSON出力フォーマット:
       const modalSource = document.getElementById('modalSource');
       const modalCategoryBadge = document.getElementById('modalCategoryBadge');
       const modalSafariBtn = document.getElementById('modalSafariBtn');
+      const modalNewsBtn = document.getElementById('modalNewsBtn');
       const modalReadBtn = document.getElementById('modalReadToggleBtn');
 
       modalTitle.innerHTML = formatSmartTitle(article.title);
@@ -1038,6 +1074,10 @@ JSON出力フォーマット:
 
       const directUrl = getDirectArticleUrl(article);
       modalSafariBtn.href = directUrl;
+
+      if (modalNewsBtn) {
+        modalNewsBtn.href = getGoogleNewsUrl(article);
+      }
 
       let catBadgeClass = "bg-emerald-50 text-emerald-700 border-emerald-200";
       let catIcon = "fa-chart-line text-emerald-600";
