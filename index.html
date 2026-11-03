@@ -58,15 +58,6 @@
     ::-webkit-scrollbar-thumb:hover {
       background: #94A3B8;
     }
-
-    /* アニメーション */
-    @keyframes pulse-subtle {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.85; transform: scale(1.02); }
-    }
-    .pulse-glow {
-      animation: pulse-subtle 3s infinite ease-in-out;
-    }
   </style>
 </head>
 <body class="bg-[#F8FAFC] text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-blue-100 selection:text-blue-800">
@@ -75,7 +66,7 @@
   <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-sm transition-all duration-300">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
       
-      <!-- ロゴ & アプリ名（改行を防止し1行で表示） -->
+      <!-- ロゴ & アプリ名（改行なしで1行表示） -->
       <div class="flex items-center space-x-2.5 sm:space-x-3 cursor-pointer shrink-0" onclick="switchTab('feed')">
         <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-amber-400 via-rose-400 to-blue-500 flex items-center justify-center text-white shadow-md shadow-orange-500/20 shrink-0">
           <i class="fa-solid fa-sun text-base sm:text-lg"></i>
@@ -88,9 +79,9 @@
         </div>
       </div>
 
-      <!-- 右側アクション & ナビゲーション -->
+      <!-- 右側アクション（更新・共有・設定） -->
       <div class="flex items-center space-x-2 sm:space-x-3">
-        <!-- 朝刊更新ボタン（文字をなくし、記号アイコンのみに刷新） -->
+        <!-- ニュース更新ボタン（記号アイコンのみ） -->
         <button id="btnFetchNews" onclick="fetchLatestNewsManual()" title="ニュースを更新" class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl shadow-sm hover:shadow transition-all duration-200 active:scale-95">
           <i class="fa-solid fa-arrows-rotate text-sm sm:text-base" id="refreshIcon"></i>
         </button>
@@ -107,7 +98,7 @@
       </div>
     </div>
 
-    <!-- サブバー: 毎朝タイマー & ステータス -->
+    <!-- サブバー: 毎朝タイマー & クラウド同期ステータス -->
     <div class="bg-gradient-to-r from-blue-50/80 via-white to-amber-50/80 border-t border-slate-100/80 px-4 py-2">
       <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between text-xs text-slate-600 gap-2">
         <div class="flex items-center space-x-2">
@@ -121,7 +112,7 @@
             <i class="fa-solid fa-cloud-arrow-up mr-1 text-[10px]"></i> クラウド同期中
           </span>
           <span id="lastUpdatedBadge" class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-slate-100 text-slate-600 border border-slate-200">
-            <i class="fa-regular fa-clock mr-1 text-[10px] text-blue-500"></i>本日 取得済
+            <i class="fa-regular fa-clock mr-1 text-[10px] text-emerald-600"></i>本日 取得済
           </span>
         </div>
       </div>
@@ -131,51 +122,50 @@
   <!-- ==================== メインコンテンツ ==================== -->
   <main class="flex-grow max-w-6xl mx-auto w-full px-4 sm:px-6 py-6 space-y-6">
 
-    <!-- トップバナー: モーニングサマリー（二重表示を解消し、読点のない2行見出しに整理） -->
-    <section class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-800 via-indigo-950 to-slate-900 text-white p-6 sm:p-8 shadow-md">
-      <!-- 装飾バックグラウンド -->
-      <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
-      <div class="absolute right-12 top-6 text-white/5 text-8xl pointer-events-none select-none">
-        <i class="fa-regular fa-newspaper"></i>
-      </div>
+    <!-- トップバナー: 元の上質で落ち着いたダークインディゴ調デザイン -->
+    <section id="topBannerSection" class="relative overflow-hidden rounded-3xl border shadow-md p-5 sm:p-6 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 border-indigo-900/50 text-white">
+      
+      <!-- 光彩装飾レイヤー -->
+      <div class="absolute -top-12 -left-12 w-64 h-64 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-14 -right-10 w-64 h-64 bg-blue-500/15 rounded-full blur-3xl pointer-events-none"></div>
 
-      <div class="relative z-10 max-w-2xl space-y-3">
-        <div class="inline-flex items-center space-x-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-xs font-medium text-slate-200 tracking-wide border border-white/10">
-          <i class="fa-solid fa-bolt text-amber-300"></i>
+      <div class="relative z-10 w-full space-y-3.5">
+        <div class="inline-flex items-center space-x-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-xs font-semibold text-slate-200 tracking-wide border border-white/10">
+          <i class="fa-solid fa-bolt text-amber-400"></i>
           <span>直近24時間以内をリアルタイム検索</span>
         </div>
         
-        <h2 class="text-xl sm:text-3xl font-extrabold tracking-tight leading-snug">
-          <span class="block">朝の意思決定を加速する</span>
+        <!-- 読点なし・2行でスマートに改行した見出し -->
+        <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight leading-snug">
+          <span class="block text-white drop-shadow-sm">朝の意思決定を加速する</span>
           <span class="block text-slate-100">厳選9本の重要ブリーフィング</span>
         </h2>
-        
-        <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
-          プールされた過去データではなく、その場で直近24時間の最新動向から各カテゴリ3本・300〜400字で凝縮生成。気になるニュースは保管して何度でも読み返せます。
-        </p>
 
-        <!-- カテゴリミニ統計チップ -->
-        <div class="pt-2 flex flex-wrap gap-2 text-xs">
-          <span class="inline-flex items-center px-3 py-1.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/10 text-slate-200">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2"></span> 経済: 3本
-          </span>
-          <span class="inline-flex items-center px-3 py-1.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/10 text-slate-200">
-            <span class="w-2 h-2 rounded-full bg-rose-400 mr-2"></span> 医療: 3本
-          </span>
-          <span class="inline-flex items-center px-3 py-1.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/10 text-slate-200">
-            <span class="w-2 h-2 rounded-full bg-blue-400 mr-2"></span> IT: 3本
-          </span>
+        <!-- カテゴリミニ統計チップ（薄型・3等分均等配置で右の余白なし） -->
+        <div class="pt-0.5 grid grid-cols-3 gap-2 sm:gap-3 w-full text-[11px] sm:text-xs">
+          <div class="flex items-center justify-center py-1 px-2 rounded-lg bg-white/10 backdrop-blur-md border border-white/10 text-slate-200 font-semibold shadow-xs">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 shrink-0"></span>
+            <span class="truncate">経済: 3本</span>
+          </div>
+          <div class="flex items-center justify-center py-1 px-2 rounded-lg bg-white/10 backdrop-blur-md border border-white/10 text-slate-200 font-semibold shadow-xs">
+            <span class="w-1.5 h-1.5 rounded-full bg-rose-400 mr-1.5 shrink-0"></span>
+            <span class="truncate">医療: 3本</span>
+          </div>
+          <div class="flex items-center justify-center py-1 px-2 rounded-lg bg-white/10 backdrop-blur-md border border-white/10 text-slate-200 font-semibold shadow-xs">
+            <span class="w-1.5 h-1.5 rounded-full bg-blue-400 mr-1.5 shrink-0"></span>
+            <span class="truncate">IT: 3本</span>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- ナビゲーションバー: タブ切り替え & フィルター -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-2.5 rounded-2xl shadow-sm border border-slate-100">
-      <!-- タブ切り替え（今朝のニュース vs 保管した記事） -->
+      <!-- タブ切り替え（最新のニュース vs 保管した記事） -->
       <div class="flex items-center space-x-1 bg-slate-100/80 p-1 rounded-xl text-xs sm:text-sm">
         <button id="tabFeed" onclick="switchTab('feed')" class="flex-1 sm:flex-none flex items-center justify-center space-x-1.5 px-3 sm:px-4 py-2 rounded-lg transition-all duration-200 bg-white text-blue-600 shadow-sm font-bold whitespace-nowrap">
           <i class="fa-solid fa-bolt-lightning text-xs shrink-0"></i>
-          <span class="whitespace-nowrap">今朝のニュース</span>
+          <span class="whitespace-nowrap">最新のニュース</span>
           <span id="feedCount" class="ml-1 min-w-[20px] h-5 px-1.5 inline-flex items-center justify-center bg-blue-100 text-blue-700 text-[11px] rounded-full font-bold whitespace-nowrap shrink-0">9</span>
         </button>
         <button id="tabSaved" onclick="switchTab('saved')" class="flex-1 sm:flex-none flex items-center justify-center space-x-1.5 px-3 sm:px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-all duration-200 whitespace-nowrap">
@@ -185,10 +175,10 @@
         </button>
       </div>
 
-      <!-- フィルター群: カテゴリ & 既読状態 -->
-      <div class="flex flex-wrap items-center gap-2">
+      <!-- フィルター群: カテゴリ & 既読状態（左右両端に均等配置） -->
+      <div class="w-full sm:w-auto flex items-center justify-between sm:justify-end gap-2">
         <!-- カテゴリピル -->
-        <div class="flex items-center bg-slate-100/70 p-1 rounded-xl text-xs space-x-0.5">
+        <div class="flex items-center bg-slate-100/70 p-1 rounded-xl text-xs space-x-0.5 shrink-0">
           <button onclick="setCategoryFilter('all')" data-category="all" class="cat-pill active px-2.5 py-1.5 rounded-lg font-medium text-slate-800 bg-white shadow-xs border border-slate-200">
             すべて
           </button>
@@ -204,8 +194,8 @@
         </div>
 
         <!-- 既読・未読絞り込みセレクタ -->
-        <div class="relative">
-          <select id="readFilterSelect" onchange="renderCurrentView()" class="bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 cursor-pointer">
+        <div class="relative shrink-0">
+          <select id="readFilterSelect" onchange="renderCurrentView()" class="bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 cursor-pointer shadow-xs">
             <option value="all" selected>すべて表示</option>
             <option value="unread">未読のみ</option>
             <option value="read">既読のみ</option>
@@ -235,7 +225,7 @@
       </div>
       <h3 class="text-base font-semibold text-slate-700" id="emptyTitle">表示できるニュースがありません</h3>
       <p class="text-xs text-slate-500 max-w-sm mx-auto" id="emptyDesc">
-        条件に合致する記事がありません。フィルターを解除するか、「今朝のニュースを更新」を押してください。
+        条件に合致する記事がありません。フィルターを解除するか、右上の更新ボタンを押してください。
       </p>
     </div>
 
@@ -253,10 +243,61 @@
       </div>
       <p class="font-medium text-slate-600">経済・医療・ITの最新ニュース Briefing Studio</p>
       <p class="text-[11px] text-slate-400">
-        毎朝の最新ファクトチェック & AIアナリティクス要約 • 引用元メディアの著作権を尊重し正確な元記事リンクを提供します。
+        毎朝の最新ファクトチェック & AIアナリティクス要約 • 引用元メディアの正確な元記事リンクを提供します。
       </p>
     </div>
   </footer>
+
+  <!-- ==================== 記事詳細モーダル（即座に読めるクイックリーダー） ==================== -->
+  <div id="articleModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-7 shadow-2xl border border-slate-100 space-y-5 animate-in fade-in duration-150 max-h-[90vh] flex flex-col justify-between">
+      
+      <div class="space-y-4 overflow-y-auto pr-1">
+        <!-- 上部ヘッダー -->
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+          <div class="flex items-center space-x-2" id="modalCategoryBadge"></div>
+          <button onclick="closeArticleModal()" class="w-8 h-8 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center transition">
+            <i class="fa-solid fa-xmark text-base"></i>
+          </button>
+        </div>
+
+        <!-- タイトル -->
+        <h3 id="modalTitle" class="text-lg sm:text-xl font-bold text-slate-900 leading-snug"></h3>
+
+        <!-- 300〜400文字の詳細本文 -->
+        <div class="bg-slate-50/80 p-4 sm:p-5 rounded-2xl border border-slate-200/80 text-sm sm:text-base text-slate-700 leading-relaxed text-justify space-y-2" id="modalSummary"></div>
+
+        <!-- 引用元 & 信頼性表示 -->
+        <div class="bg-blue-50/60 p-3.5 rounded-2xl border border-blue-100/80 flex items-center justify-between text-xs">
+          <div class="flex items-center space-x-2 text-slate-600">
+            <i class="fa-solid fa-building-columns text-blue-600"></i>
+            <span>報道・配信元:</span>
+            <span id="modalSource" class="font-bold text-slate-800"></span>
+          </div>
+          <button onclick="copyCurrentModalCitation()" class="px-2.5 py-1 bg-white hover:bg-blue-100 text-blue-700 rounded-lg border border-blue-200 font-medium transition active:scale-95">
+            <i class="fa-regular fa-copy mr-1"></i>引用コピー
+          </button>
+        </div>
+      </div>
+
+      <!-- アクションフッター -->
+      <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+        <button id="modalReadToggleBtn" class="px-4 py-2 rounded-xl text-xs font-bold transition"></button>
+        
+        <div class="flex items-center space-x-2">
+          <button onclick="closeArticleModal()" class="px-4 py-2 rounded-xl text-slate-600 text-xs font-semibold hover:bg-slate-100 transition">
+            閉じる
+          </button>
+          <a id="modalSafariBtn" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-1.5 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-bold rounded-xl shadow-sm transition active:scale-95">
+            <i class="fa-brands fa-safari text-sm"></i>
+            <span>Safariで元記事を読む</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-0.5"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
   <!-- ==================== 設定モーダル ==================== -->
   <div id="settingsModal" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 hidden">
@@ -335,7 +376,6 @@
 
       <!-- アイコンプレビューとダウンロード -->
       <div class="flex flex-col sm:flex-row items-center gap-6 p-4 bg-gradient-to-br from-slate-50 to-blue-50/50 rounded-2xl border border-slate-200/60">
-        <!-- Canvasアイコン（512x512） -->
         <div class="relative group">
           <canvas id="appIconCanvas" width="512" height="512" class="w-28 h-28 rounded-3xl shadow-lg border border-white transition-transform group-hover:scale-105 duration-300"></canvas>
           <div class="absolute -bottom-2 -right-2 bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow">
@@ -383,8 +423,8 @@
   <!-- ==================== FIREBASE & SCRIPT ==================== -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc, getDocs, collection, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, collection, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     // ----------------------------------------------------
     // アプリステート
@@ -489,81 +529,65 @@
       auth: null,
       activeTab: 'feed', // 'feed' | 'saved'
       categoryFilter: 'all', // 'all' | 'economy' | 'medical' | 'it'
-      readFilter: 'all', // デフォルトですべて表示
-      deliveryTime: '07:00', // デフォルト朝7時
+      readFilter: 'all',
+      deliveryTime: '07:00',
       lastFetchedDate: new Date(),
-      articles: [...defaultArticles], // 初期データで本文が即座に表示されるよう設定
-      savedArticles: [], // 保管された記事
-      readArticleIds: new Set(), // 既読記事IDのセット
-      readArticleTitles: new Set(), // 既読記事タイトルのセット（重複排除・AI除外用）
-      isGenerating: false
+      articles: [...defaultArticles],
+      savedArticles: [],
+      readArticleIds: new Set(),
+      readArticleTitles: new Set(),
+      isGenerating: false,
+      currentModalArticle: null
     };
 
-    // ----------------------------------------------------
-    // 既読・重複判定ヘルパー関数
-    // ----------------------------------------------------
-    function normalizeText(text) {
-      if (!text) return '';
-      return text.replace(/[\s\u3000、。・「」『』【】()（）-]/g, '').toLowerCase();
+    // 元記事直結URL生成ヘルパー
+    function getDirectArticleUrl(article) {
+      if (article.sourceUrl && article.sourceUrl.startsWith('http') && article.sourceUrl.length > 25 && !article.sourceUrl.includes('google.com/search')) {
+        return article.sourceUrl;
+      }
+      const query = `${article.title} ${article.sourceName || ''}`.trim();
+      return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
     }
 
     function isArticleAlreadyRead(article) {
       if (!article) return false;
-      // 1. 記事IDによる完全一致
       if (state.readArticleIds.has(article.id)) return true;
-
-      // 2. タイトルの完全一致判定（部分一致バグを撤廃し誤判定を防止）
-      const normTitle = normalizeText(article.title);
-      if (!normTitle) return false;
-      for (const readTitle of state.readArticleTitles) {
-        const normRead = normalizeText(readTitle);
-        if (normRead && normTitle === normRead) {
-          return true;
-        }
-      }
+      if (article.title && state.readArticleTitles.has(article.title)) return true;
       return false;
     }
 
     // ----------------------------------------------------
-    // Firebase初期化 & 認証 (RULE 1, 2, 3 厳守)
+    // Firebase初期化 & クラウド同期
     // ----------------------------------------------------
     async function initFirebase() {
       try {
-        let firebaseConfig = null;
         if (typeof __firebase_config !== 'undefined' && __firebase_config) {
-          firebaseConfig = JSON.parse(__firebase_config);
-        }
-
-        if (firebaseConfig) {
-          const app = initializeApp(firebaseConfig);
+          const config = JSON.parse(__firebase_config);
+          const app = initializeApp(config);
           state.auth = getAuth(app);
           state.db = getFirestore(app);
 
-          // RULE 3: signInWithCustomToken or signInAnonymously FIRST
           if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
             await signInWithCustomToken(state.auth, __initial_auth_token);
           } else {
             await signInAnonymously(state.auth);
           }
 
-          state.userId = state.auth.currentUser?.uid || 'user-default';
+          state.userId = state.auth.currentUser ? state.auth.currentUser.uid : 'anon-user';
           setupFirestoreSync();
         } else {
-          state.userId = 'local-user';
           loadLocalFallbackData();
         }
       } catch (err) {
-        console.warn("Firestore init fallback:", err);
-        state.userId = 'local-user';
+        console.warn("Firebase init error:", err);
         loadLocalFallbackData();
       }
     }
 
-    // Firestore リアルタイム同期 (RULE 1 & 2 厳守)
     function setupFirestoreSync() {
       if (!state.db || !state.userId) return;
 
-      // 保管記事の購読
+      // 保管記事の同期
       const savedColRef = collection(state.db, 'artifacts', state.appId, 'users', state.userId, 'saved_articles');
       onSnapshot(savedColRef, (snapshot) => {
         const savedList = [];
@@ -578,7 +602,7 @@
         console.error("Firestore saved articles error:", error);
       });
 
-      // 既読状態 & タイトル履歴 & 配信時刻の同期
+      // 既読状態 & 配信時刻の同期
       const prefDocRef = doc(state.db, 'artifacts', state.appId, 'users', state.userId, 'settings', 'user_pref');
       onSnapshot(prefDocRef, (snap) => {
         if (snap.exists()) {
@@ -601,7 +625,6 @@
       });
     }
 
-    // 保管記事をFirestoreに保存
     async function persistArticleSave(article) {
       if (!state.db || !state.userId) {
         const idx = state.savedArticles.findIndex(a => a.id === article.id);
@@ -624,7 +647,6 @@
       }
     }
 
-    // 保管記事をFirestoreから削除
     async function persistArticleRemove(articleId) {
       if (!state.db || !state.userId) {
         state.savedArticles = state.savedArticles.filter(a => a.id !== articleId);
@@ -641,7 +663,6 @@
       }
     }
 
-    // 既読状態・既読タイトルの同期
     async function persistUserPreferences() {
       if (!state.db || !state.userId) return;
       try {
@@ -683,16 +704,15 @@
       updateLastFetchedDisplay("最新を取得中...");
       showToast("最新24時間のニュースを検索・作成中...", "info");
 
-      const apiKey = ""; // Canvas環境で自動付与
+      const apiKey = "";
       const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
 
-      // 既読タイトルの除外指示を作成（既読と同じ内容の再生成を防止）
       const readList = Array.from(state.readArticleTitles).slice(-25);
       let exclusionPrompt = "";
       if (readList.length > 0) {
-        exclusionPrompt = `\n【最重要：重複排除・既読記事の厳格な除外】
-ユーザーは以下のニュース記事をすでに既読にしています。以下のリストに記載されたトピック、事件、発表と同一または類似する内容は【絶対に選定しないでください】。
-必ずこれらとは異なる、直近24時間以内のまったく新しい別の重要ニュースを各分野3本ずつ選定してください。
+        exclusionPrompt = `\n【最重要：重複排除・既読記事の除外】
+ユーザーは以下のニュース記事をすでに既読にしています。以下のリストに記載されたトピックと同一・類似の内容は【絶対に選定しないでください】。
+必ずこれらとは異なる、直近24時間以内の新しい重要ニュースを各分野3本ずつ選定してください。
 既読トピック除外リスト:
 ` + readList.map(t => `- ${t}`).join('\n');
       }
@@ -702,7 +722,7 @@
 
 【厳格な要件】
 1. カテゴリは「経済」「医療」「IT」の3項目で、それぞれ必ず3本ずつ（合計9本）作成すること。
-2. 記事タイトル (title) は、読点（、）を使用せず、またはスペース区切りで状況と要点が端的に伝わるスマートな見出しにすること（例: 「米ハイテク株続伸 円安加速で輸出関連に買い先行」）。
+2. 記事タイトル (title) は、読点（、）を使用せず、またはスペース区切りで状況と要点が端的に伝わるスマートな見出しにすること。
 3. それぞれの記事本文 (summary) は、背景・経緯・今後の展望や影響を含め、日本語で【300文字〜400文字程度】で詳しく解説すること。
 4. 引用元メディア名 (sourceName) と、その記事または公式メディアの正確なURL (sourceUrl) を実在する正確なリンクとして付与すること。
 5. 出力は以下のJSON形式のみとし、Markdownのコードブロックや余分な挨拶文は一切含めないこと。${exclusionPrompt}`;
@@ -752,19 +772,38 @@ JSON出力フォーマット:
 
           const parsedArticles = JSON.parse(cleanJson);
           if (Array.isArray(parsedArticles) && parsedArticles.length > 0) {
-            // 新規記事の生成と既読重複のダブルチェックフィルタリング
+            const groundingSources = [];
+            const chunks = candidate?.groundingMetadata?.groundingChunks;
+            if (chunks && Array.isArray(chunks)) {
+              chunks.forEach(c => {
+                if (c.web?.uri) groundingSources.push({ uri: c.web.uri, title: c.web.title });
+              });
+            }
+
             const newFreshArticles = parsedArticles
-              .map((art, index) => ({
-                id: `news-${Date.now()}-${index}`,
-                category: art.category || (index < 3 ? 'economy' : index < 6 ? 'medical' : 'it'),
-                categoryName: art.categoryName || (index < 3 ? '経済' : index < 6 ? '医療' : 'IT'),
-                title: art.title || "最新ニュース",
-                summary: art.summary || "",
-                sourceName: art.sourceName || "公式報道メディア",
-                sourceUrl: art.sourceUrl || "https://news.google.com",
-                publishedAt: art.publishedAt || new Date().toISOString()
-              }))
-              .filter(art => !isArticleAlreadyRead(art)); // 既読済みのものは完全に弾く
+              .map((art, index) => {
+                let matchedUrl = art.sourceUrl;
+                if (!matchedUrl || matchedUrl.length < 30) {
+                  const foundChunk = groundingSources.find(g => g.title && art.title && (g.title.includes(art.title.slice(0, 10)) || art.title.includes(g.title.slice(0, 10))));
+                  if (foundChunk?.uri) {
+                    matchedUrl = foundChunk.uri;
+                  } else {
+                    matchedUrl = `https://www.google.com/search?q=${encodeURIComponent(art.title + ' ' + (art.sourceName || ''))}`;
+                  }
+                }
+
+                return {
+                  id: `news-${Date.now()}-${index}`,
+                  category: art.category || (index < 3 ? 'economy' : index < 6 ? 'medical' : 'it'),
+                  categoryName: art.categoryName || (index < 3 ? '経済' : index < 6 ? '医療' : 'IT'),
+                  title: art.title || "最新ニュース",
+                  summary: art.summary || "",
+                  sourceName: art.sourceName || "公式報道メディア",
+                  sourceUrl: matchedUrl,
+                  publishedAt: art.publishedAt || new Date().toISOString()
+                };
+              })
+              .filter(art => !isArticleAlreadyRead(art));
 
             if (newFreshArticles.length > 0) {
               state.articles = newFreshArticles;
@@ -839,21 +878,17 @@ JSON出力フォーマット:
       
       let sourceList = state.activeTab === 'feed' ? state.articles : state.savedArticles;
 
-      // 1. カテゴリフィルタ
       let filtered = sourceList.filter(article => {
         if (state.categoryFilter === 'all') return true;
         return article.category === state.categoryFilter;
       });
 
-      // 2. 既読・未読絞り込み
       if (readFilter === 'unread') {
         filtered = filtered.filter(article => !isArticleAlreadyRead(article));
       } else if (readFilter === 'read') {
         filtered = filtered.filter(article => isArticleAlreadyRead(article));
       }
-      // 'all' の場合は未読・既読ともに表示（ボタンで状態を明示）
 
-      // タブ件数バッジの更新（長文による不自然な折り返しを防止し、数字単体でスマートに収める）
       const totalFeedCount = state.articles.length;
       const unreadFeedCount = state.articles.filter(a => !isArticleAlreadyRead(a)).length;
       const feedCountEl = document.getElementById('feedCount');
@@ -891,10 +926,10 @@ JSON出力フォーマット:
       container.innerHTML = filtered.map(art => renderArticleCard(art)).join('');
     };
 
-    // 記事カードのHTML生成
     function renderArticleCard(article) {
       const isRead = isArticleAlreadyRead(article);
       const isSaved = state.savedArticles.some(a => a.id === article.id);
+      const directUrl = getDirectArticleUrl(article);
 
       let catBadgeClass = "bg-emerald-50 text-emerald-700 border-emerald-200/70";
       let catIcon = "fa-chart-line text-emerald-600";
@@ -925,17 +960,17 @@ JSON出力フォーマット:
               </div>
             </div>
 
-            <!-- タイトル（読点のところでスマートに改行） -->
-            <h3 class="text-base sm:text-lg font-bold ${isRead ? 'text-slate-600' : 'text-slate-800'} leading-snug hover:text-blue-600 transition-colors break-words">
+            <!-- タイトル（クリックで即時詳細リーダー表示） -->
+            <h3 onclick="openArticleModal('${article.id}')" class="text-base sm:text-lg font-bold ${isRead ? 'text-slate-600' : 'text-slate-800'} leading-snug hover:text-blue-600 transition-colors break-words cursor-pointer" title="タップして即座に記事詳細を展開">
               ${formatSmartTitle(article.title)}
             </h3>
 
-            <!-- 300〜400文字の本文（文字サイズ拡大） -->
-            <div class="text-sm sm:text-base ${isRead ? 'text-slate-600 bg-white/70' : 'text-slate-700 bg-slate-50/70'} leading-relaxed p-4 rounded-2xl border border-slate-100/90 text-justify">
+            <!-- 300〜400文字の本文（大きめ文字） -->
+            <div onclick="openArticleModal('${article.id}')" class="text-sm sm:text-base ${isRead ? 'text-slate-600 bg-white/70' : 'text-slate-700 bg-slate-50/70'} leading-relaxed p-4 rounded-2xl border border-slate-100/90 text-justify cursor-pointer hover:border-blue-200 transition">
               ${escapeHtml(article.summary)}
             </div>
 
-            <!-- 引用元表示 & コピー / Safariで開く -->
+            <!-- 引用元表示 & コピー / Safariで開く（確実なダイレクトリンク） -->
             <div class="pt-2 border-t border-slate-100 flex flex-col space-y-2 text-xs">
               <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-1.5 text-slate-500 truncate pr-2">
@@ -945,18 +980,18 @@ JSON出力フォーマット:
                   </span>
                 </div>
                 
-                <div class="flex items-center space-x-1 shrink-0">
+                <div class="flex items-center space-x-1.5 shrink-0">
                   <!-- 引用元コピーボタン -->
                   <button onclick="copySourceCitation('${article.id}')" title="引用元とURLをコピー" class="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition active:scale-90">
                     <i class="fa-regular fa-copy text-sm"></i>
                   </button>
 
                   <!-- SafariでHPに飛ぶボタン -->
-                  <button onclick="openInSafari('${escapeAttr(article.sourceUrl)}')" title="Safariで元記事を開く" class="inline-flex items-center space-x-1 px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium rounded-lg text-xs transition active:scale-95">
-                    <i class="fa-brands fa-safari text-xs"></i>
+                  <a href="${escapeAttr(directUrl)}" target="_blank" rel="noopener noreferrer" title="Safariで元記事を開く" class="inline-flex items-center space-x-1 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold rounded-xl text-xs transition active:scale-95 border border-blue-200/60 shadow-xs">
+                    <i class="fa-brands fa-safari text-xs text-blue-600"></i>
                     <span>元記事</span>
                     <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-0.5"></i>
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -982,8 +1017,69 @@ JSON出力フォーマット:
     }
 
     // ----------------------------------------------------
-    // 記事インタラクション（既読・保管・コピー・Safari）
+    // 記事インタラクション
     // ----------------------------------------------------
+    window.openArticleModal = function(articleId) {
+      let article = state.articles.find(a => a.id === articleId) || state.savedArticles.find(a => a.id === articleId);
+      if (!article) return;
+      state.currentModalArticle = article;
+
+      const modal = document.getElementById('articleModal');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalSummary = document.getElementById('modalSummary');
+      const modalSource = document.getElementById('modalSource');
+      const modalCategoryBadge = document.getElementById('modalCategoryBadge');
+      const modalSafariBtn = document.getElementById('modalSafariBtn');
+      const modalReadBtn = document.getElementById('modalReadToggleBtn');
+
+      modalTitle.innerHTML = formatSmartTitle(article.title);
+      modalSummary.textContent = article.summary;
+      modalSource.textContent = article.sourceName;
+
+      const directUrl = getDirectArticleUrl(article);
+      modalSafariBtn.href = directUrl;
+
+      let catBadgeClass = "bg-emerald-50 text-emerald-700 border-emerald-200";
+      let catIcon = "fa-chart-line text-emerald-600";
+      if (article.category === 'medical') {
+        catBadgeClass = "bg-rose-50 text-rose-700 border-rose-200";
+        catIcon = "fa-heart-pulse text-rose-600";
+      } else if (article.category === 'it') {
+        catBadgeClass = "bg-blue-50 text-blue-700 border-blue-200";
+        catIcon = "fa-microchip text-blue-600";
+      }
+      modalCategoryBadge.innerHTML = `
+        <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-xl text-xs font-semibold border ${catBadgeClass}">
+          <i class="fa-solid ${catIcon} text-xs"></i>
+          <span>${escapeHtml(article.categoryName)}</span>
+        </span>
+      `;
+
+      const isRead = isArticleAlreadyRead(article);
+      modalReadBtn.className = `px-4 py-2 rounded-xl text-xs font-bold transition ${isRead ? 'bg-slate-200 text-slate-700' : 'bg-emerald-100 text-emerald-800 border border-emerald-300'}`;
+      modalReadBtn.innerHTML = `<i class="fa-solid ${isRead ? 'fa-check mr-1.5' : 'fa-circle mr-1.5 text-[8px] text-emerald-600'}"></i>${isRead ? '既読' : '未読'}`;
+      modalReadBtn.onclick = () => {
+        toggleReadStatus(article.id);
+        const nowRead = isArticleAlreadyRead(article);
+        modalReadBtn.className = `px-4 py-2 rounded-xl text-xs font-bold transition ${nowRead ? 'bg-slate-200 text-slate-700' : 'bg-emerald-100 text-emerald-800 border border-emerald-300'}`;
+        modalReadBtn.innerHTML = `<i class="fa-solid ${nowRead ? 'fa-check mr-1.5' : 'fa-circle mr-1.5 text-[8px] text-emerald-600'}"></i>${nowRead ? '既読' : '未読'}`;
+      };
+
+      modal.classList.remove('hidden');
+    };
+
+    window.closeArticleModal = function() {
+      const modal = document.getElementById('articleModal');
+      if (modal) modal.classList.add('hidden');
+      state.currentModalArticle = null;
+    };
+
+    window.copyCurrentModalCitation = function() {
+      if (state.currentModalArticle) {
+        copySourceCitation(state.currentModalArticle.id);
+      }
+    };
+
     window.toggleReadStatus = async function(articleId) {
       let article = state.articles.find(a => a.id === articleId) || state.savedArticles.find(a => a.id === articleId);
       if (!article) return;
@@ -992,12 +1088,10 @@ JSON出力フォーマット:
       const currentlyRead = isArticleAlreadyRead(article);
 
       if (currentlyRead) {
-        // 既読解除 -> 未読へ
         state.readArticleIds.delete(articleId);
         if (title) state.readArticleTitles.delete(title);
         showToast("「未読」に設定しました", "info");
       } else {
-        // 未読 -> 既読へ
         state.readArticleIds.add(articleId);
         if (title) state.readArticleTitles.add(title);
         showToast("「既読」に設定しました", "success");
@@ -1031,12 +1125,12 @@ JSON出力フォーマット:
       renderCurrentView();
     };
 
-    // 引用元コピー（iframe制限に対応した document.execCommand('copy')）
     window.copySourceCitation = function(articleId) {
       let article = state.articles.find(a => a.id === articleId) || state.savedArticles.find(a => a.id === articleId);
       if (!article) return;
 
-      const citationText = `【引用元】${article.sourceName}\n記事タイトル: ${article.title}\nURL: ${article.sourceUrl}\n（「経済・医療・ITの最新ニュース」より引用）`;
+      const directUrl = getDirectArticleUrl(article);
+      const citationText = `【引用元】${article.sourceName}\n記事タイトル: ${article.title}\n元記事URL: ${directUrl}\n（「経済・医療・ITの最新ニュース」より引用）`;
 
       const textArea = document.createElement("textarea");
       textArea.value = citationText;
@@ -1051,7 +1145,7 @@ JSON出力フォーマット:
       try {
         const successful = document.execCommand('copy');
         if (successful) {
-          showToast("引用元とURLをクリップボードにコピーしました", "success");
+          showToast("元記事URLと引用元をクリップボードにコピーしました", "success");
         } else {
           showToast("コピーに失敗しました", "error");
         }
@@ -1059,12 +1153,6 @@ JSON出力フォーマット:
         showToast("コピー権限がありませんでした", "error");
       }
       document.body.removeChild(textArea);
-    };
-
-    // Safari / ブラウザでURLを開く
-    window.openInSafari = function(url) {
-      if (!url) return;
-      window.open(url, '_blank', 'noopener,noreferrer');
     };
 
     function updateSavedCount() {
@@ -1095,7 +1183,7 @@ JSON出力フォーマット:
       const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
 
-      document.getElementById('countdownTimer').textContent = `次の朝刊まで あと ${hours}時間${minutes}分${seconds}秒`;
+      document.getElementById('countdownTimer').textContent = `次の配信まで あと ${hours}時間${minutes}分${seconds}秒`;
 
       const todayKey = now.toDateString();
       if (hours === 0 && minutes === 0 && seconds <= 2 && state.lastFetchedDate?.toDateString() !== todayKey) {
@@ -1274,11 +1362,10 @@ JSON出力フォーマット:
       if (diffHrs < 24) return `${diffHrs}時間前`;
       return "24時間以内";
     }
-    // タイトル内の読点（「、」や「，」）を削除し、スマートに2段見出しとして改行する
+
     function formatSmartTitle(rawTitle) {
       if (!rawTitle) return '';
       const escaped = escapeHtml(rawTitle);
-      // 読点「、」「，」を完全に削除して改行タグに置き換え
       return escaped.replace(/[、，]\s*/g, '<br class="my-0.5">');
     }
 
@@ -1346,22 +1433,11 @@ JSON出力フォーマット:
     // アプリケーション起動
     // ----------------------------------------------------
     window.addEventListener('DOMContentLoaded', async () => {
-      // 1. アイコン描画
       drawAppIcon();
-
-      // 2. タイマー開始
       initDeliveryTimer();
-
-      // 3. 取得ステータスを即座に「取得済」として初期化表示（「未取得」を残さない）
       updateLastFetchedDisplay();
-
-      // 4. 初期画面を即座に描画（本文カードが表示される）
       renderCurrentView();
-
-      // 5. Firebase初期化 & クラウド既読・設定の読み込み
       await initFirebase();
-
-      // 6. 直近24時間の最新未読ニュースをバックグラウンドでフェッチ
       await generate24HourNewsWithGemini();
     });
   </script>
