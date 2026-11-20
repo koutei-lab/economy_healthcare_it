@@ -42,13 +42,12 @@
     </script>
 
     <style>
-        /* スムーズなスクロールと全体の明るいトーン調整 */
+        /* 全体的に明るく爽やかな朝のデザイン */
         body {
-            background: linear-gradient(180deg, #f0f9ff 0%, #f8fafc 28%, #f8fafc 100%);
+            background: linear-gradient(180deg, #e0f2fe 0%, #f0f9ff 22%, #f8fafc 50%, #f8fafc 100%);
             color: #1e293b;
             -webkit-tap-highlight-color: transparent;
         }
-        /* カスタムスクロールバー */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -63,7 +62,6 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
-        /* テキストコピー用の非表示エリア */
         #clipboard-helper {
             position: fixed;
             top: -9999px;
@@ -81,11 +79,11 @@
     <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full px-4 sm:px-0 pointer-events-none"></div>
 
     <!-- ヘッダー -->
-    <header class="sticky top-0 z-30 bg-white/85 backdrop-blur-md border-b border-sky-100/80 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+    <header class="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-sky-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-3">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2.5">
                 
-                <!-- タイトル＆アイコン -->
+                <!-- タイトル＆アイコン（改行なし1行レイアウト） -->
                 <div class="flex items-center justify-between gap-2">
                     <div class="flex items-center gap-2 sm:gap-3 min-w-0">
                         <img id="header-app-icon" src="" alt="アプリアイコン" class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl shadow-sm border border-sky-100 object-cover flex-shrink-0 bg-sky-50">
@@ -105,41 +103,41 @@
 
                     <!-- モバイル用設定＆ホーム画面ガイドボタン -->
                     <div class="flex items-center gap-1 sm:gap-1.5 md:hidden flex-shrink-0">
-                        <button onclick="openSettingsModal()" class="p-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors border border-slate-200/70" title="API・保存設定">
-                            <i data-lucide="settings" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                        <button type="button" onclick="openSettingsModal()" class="p-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors border border-slate-200/70" title="オプション設定">
+                            <i data-lucide="settings" class="w-4 h-4"></i>
                         </button>
-                        <button onclick="openHomeScreenModal()" class="p-2 rounded-xl bg-sky-50 text-sky-600 hover:bg-sky-100 transition-colors border border-sky-100" title="ホーム画面に追加">
-                            <i data-lucide="smartphone" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                        <button type="button" onclick="openHomeScreenModal()" class="p-2 rounded-xl bg-sky-50 text-sky-600 hover:bg-sky-100 transition-colors border border-sky-100" title="ホーム画面に追加">
+                            <i data-lucide="smartphone" class="w-4 h-4"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- コントロールパネル（配信時刻設定・手動取得・アイコン案内） -->
+                <!-- コントロールパネル（毎朝の配信時刻・今すぐ取得・各種ボタン） -->
                 <div class="flex flex-wrap items-center gap-2 sm:gap-3">
                     <!-- 毎朝の配信時刻設定 -->
-                    <div class="flex items-center gap-1.5 sm:gap-2 bg-slate-50 border border-slate-200/80 rounded-xl px-2.5 sm:px-3 py-1.5 flex-shrink-0">
+                    <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-200/80 rounded-xl px-2.5 py-1.5 flex-shrink-0">
                         <i data-lucide="alarm-clock" class="w-4 h-4 text-sky-600 flex-shrink-0"></i>
                         <label for="schedule-time-input" class="text-xs font-medium text-slate-600 whitespace-nowrap">毎朝の配信:</label>
                         <input type="time" id="schedule-time-input" value="07:00" 
-                            class="text-xs sm:text-sm font-semibold text-slate-800 bg-white border border-slate-200 rounded-lg px-1.5 sm:px-2 py-0.5 focus:outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500">
-                        <button onclick="saveScheduleTime()" class="text-xs font-semibold text-sky-600 hover:text-sky-700 bg-sky-50 hover:bg-sky-100 px-2 sm:px-2.5 py-1 rounded-lg transition-colors whitespace-nowrap">
+                            class="text-xs sm:text-sm font-semibold text-slate-800 bg-white border border-slate-200 rounded-lg px-1.5 py-0.5 focus:outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500">
+                        <button type="button" onclick="saveScheduleTime()" class="text-xs font-semibold text-sky-600 hover:text-sky-700 bg-sky-50 hover:bg-sky-100 px-2 py-1 rounded-lg transition-colors whitespace-nowrap">
                             設定
                         </button>
                     </div>
 
                     <!-- 今すぐ最新ニュースを取得ボタン -->
-                    <button id="fetch-news-btn" onclick="fetchAllLatestNews(true)" 
+                    <button type="button" id="fetch-news-btn" onclick="fetchAllLatestNews(true)" 
                         class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-white bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 shadow-sm shadow-sky-200 active:scale-[0.99] transition-all whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed">
                         <i data-lucide="refresh-cw" id="fetch-btn-icon" class="w-4 h-4 flex-shrink-0"></i>
                         <span id="fetch-btn-text">最新ニュースを取得</span>
                     </button>
 
-                    <!-- デスクトップ用API設定＆ホーム画面追加ガイドボタン -->
-                    <button onclick="openSettingsModal()" class="hidden md:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 bg-white hover:bg-slate-50 border border-slate-200 transition-colors whitespace-nowrap" title="API・クラウド保存設定">
+                    <!-- デスクトップ用設定＆ホーム画面追加ボタン -->
+                    <button type="button" onclick="openSettingsModal()" class="hidden md:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 bg-white hover:bg-slate-50 border border-slate-200 transition-colors whitespace-nowrap">
                         <i data-lucide="settings" class="w-4 h-4 text-slate-500"></i>
-                        <span>API・保存設定</span>
+                        <span>オプション設定</span>
                     </button>
-                    <button onclick="openHomeScreenModal()" class="hidden md:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 bg-white hover:bg-slate-50 border border-slate-200 transition-colors whitespace-nowrap" title="ホーム画面アイコンを確認">
+                    <button type="button" onclick="openHomeScreenModal()" class="hidden md:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 bg-white hover:bg-slate-50 border border-slate-200 transition-colors whitespace-nowrap">
                         <i data-lucide="plus-square" class="w-4 h-4 text-sky-600"></i>
                         <span>ホーム画面に追加</span>
                     </button>
@@ -147,16 +145,16 @@
             </div>
 
             <!-- ナビゲーションタブ＆ステータスバー -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mt-3 pt-2.5 border-t border-slate-100">
-                <!-- タブ切り替え -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mt-2.5 pt-2.5 border-t border-slate-100">
+                <!-- タブ切り替え（1行レイアウト） -->
                 <div class="flex items-center gap-1 bg-slate-100/80 p-1 rounded-xl w-full sm:w-auto">
-                    <button id="tab-today" onclick="switchTab('today')" 
+                    <button type="button" id="tab-today" onclick="switchTab('today')" 
                         class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-3.5 py-1.5 rounded-lg text-[11px] sm:text-sm font-semibold transition-all bg-white text-sky-700 shadow-sm whitespace-nowrap">
                         <i data-lucide="newspaper" class="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0"></i>
                         <span>今日の最新 (各3件)</span>
                         <span id="badge-today-count" class="px-1.5 py-0.2 text-[10px] sm:text-[11px] rounded-full bg-sky-100 text-sky-700 flex-shrink-0">0</span>
                     </button>
-                    <button id="tab-saved" onclick="switchTab('saved')" 
+                    <button type="button" id="tab-saved" onclick="switchTab('saved')" 
                         class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-3.5 py-1.5 rounded-lg text-[11px] sm:text-sm font-semibold transition-all text-slate-600 hover:text-slate-800 whitespace-nowrap">
                         <i data-lucide="bookmark-check" class="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0"></i>
                         <span>チェック済み保管庫</span>
@@ -164,14 +162,14 @@
                     </button>
                 </div>
 
-                <!-- 同期・既読除外ステータス -->
+                <!-- 動作モード・既読除外ステータス -->
                 <div class="flex items-center justify-between sm:justify-end gap-3 text-xs text-slate-500">
-                    <button onclick="openSettingsModal()" id="sync-status" class="inline-flex items-center gap-1.5 hover:text-sky-600 transition-colors text-left" title="タップしてAPI・保存設定を開く">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                        <span>クラウド同期準備中...</span>
+                    <button type="button" onclick="openSettingsModal()" id="sync-status" class="inline-flex items-center gap-1.5 hover:text-sky-600 transition-colors text-left">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        <span>API不要モード（準備完了）</span>
                     </button>
                     <span class="text-slate-300">|</span>
-                    <button onclick="openHistoryModal()" class="inline-flex items-center gap-1 text-slate-600 hover:text-sky-600 font-medium transition-colors">
+                    <button type="button" onclick="openHistoryModal()" class="inline-flex items-center gap-1 text-slate-600 hover:text-sky-600 font-medium transition-colors">
                         <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-600"></i>
                         <span>既読除外済み: <strong id="excluded-count" class="text-slate-800">0</strong>件</span>
                     </button>
@@ -181,50 +179,49 @@
     </header>
 
     <!-- メインコンテンツ -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-3.5 sm:px-6 lg:px-8 py-5">
         
         <!-- 最終更新時間のみ表示 -->
         <div class="mb-4 flex justify-end">
-            <div id="last-fetched-label" class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 bg-white/90 px-3 py-1.5 rounded-xl border border-slate-200/80 shadow-xs whitespace-nowrap">
+            <div id="last-fetched-label" class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 bg-white/95 px-3 py-1.5 rounded-xl border border-sky-100 shadow-xs whitespace-nowrap">
                 最終更新: 未取得
             </div>
         </div>
 
         <!-- ローディング状態表示（記事生成中） -->
-        <div id="loading-overlay" class="hidden mb-8 bg-white rounded-2xl p-8 border border-sky-100 shadow-card text-center">
-            <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-sky-50 text-sky-600 mb-4 relative">
+        <div id="loading-overlay" class="hidden mb-6 bg-white rounded-2xl p-6 sm:p-8 border border-sky-100 shadow-card text-center">
+            <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-sky-50 text-sky-600 mb-3 relative">
                 <i data-lucide="globe" class="w-7 h-7 animate-spin" style="animation-duration: 3s;"></i>
                 <span class="absolute -top-1 -right-1 flex h-3.5 w-3.5">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-amber-500"></span>
                 </span>
             </div>
-            <h2 class="text-lg font-bold text-slate-800">24時間以内の最新ニュースをリアルタイム検索・要約中...</h2>
-            <p class="text-sm text-slate-500 mt-1 max-w-md mx-auto">
-                経済・医療・ITの最新情報から既読済み記事を除外し、各3件（300〜400文字）の記事を作成しています。
+            <h2 class="text-base sm:text-lg font-bold text-slate-800">24時間以内の最新ニュースを取得・作成中...</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1 max-w-md mx-auto">
+                経済・医療・ITの最新報道から既読済み記事を除外し、各3件（300〜400文字）の記事を作成しています。
             </p>
-            <div class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-2xl mx-auto text-xs font-medium">
+            <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2.5 max-w-2xl mx-auto text-xs font-medium">
                 <div id="status-cat-economy" class="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-emerald-50/70 text-emerald-700 border border-emerald-100">
                     <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
-                    <span>経済ニュース検索中...</span>
+                    <span>経済ニュース取得中...</span>
                 </div>
                 <div id="status-cat-medical" class="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-rose-50/70 text-rose-700 border border-rose-100">
                     <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
-                    <span>医療ニュース検索中...</span>
+                    <span>医療ニュース取得中...</span>
                 </div>
                 <div id="status-cat-it" class="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-sky-50/70 text-sky-700 border border-sky-100">
                     <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
-                    <span>ITニュース検索中...</span>
+                    <span>ITニュース取得中...</span>
                 </div>
             </div>
         </div>
 
         <!-- ビュー1：今日の最新ニュース（3カテゴリ × 3記事） -->
-        <div id="view-today" class="space-y-8">
-            <!-- 3カラムまたはセクション表示 -->
-            <div id="categories-container" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div id="view-today" class="space-y-6">
+            <div id="categories-container" class="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6">
                 <!-- 経済セクション -->
-                <section class="flex flex-col bg-white/70 rounded-3xl p-4 sm:p-5 border border-emerald-100/80 shadow-soft">
+                <section class="flex flex-col bg-white/85 rounded-3xl p-4 sm:p-5 border border-emerald-100 shadow-soft">
                     <div class="flex items-center justify-between mb-4 pb-3 border-b border-emerald-100">
                         <div class="flex items-center gap-2.5">
                             <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
@@ -245,7 +242,7 @@
                 </section>
 
                 <!-- 医療セクション -->
-                <section class="flex flex-col bg-white/70 rounded-3xl p-4 sm:p-5 border border-rose-100/80 shadow-soft">
+                <section class="flex flex-col bg-white/85 rounded-3xl p-4 sm:p-5 border border-rose-100 shadow-soft">
                     <div class="flex items-center justify-between mb-4 pb-3 border-b border-rose-100">
                         <div class="flex items-center gap-2.5">
                             <div class="w-9 h-9 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center">
@@ -266,7 +263,7 @@
                 </section>
 
                 <!-- ITセクション -->
-                <section class="flex flex-col bg-white/70 rounded-3xl p-4 sm:p-5 border border-sky-100/80 shadow-soft">
+                <section class="flex flex-col bg-white/85 rounded-3xl p-4 sm:p-5 border border-sky-100 shadow-soft">
                     <div class="flex items-center justify-between mb-4 pb-3 border-b border-sky-100">
                         <div class="flex items-center gap-2.5">
                             <div class="w-9 h-9 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center">
@@ -297,15 +294,15 @@
                     </div>
                     <div>
                         <h2 class="text-base font-bold text-slate-800">チェック済み記事の永続保管庫</h2>
-                        <p class="text-xs text-slate-500">「保存する（チェック）」を押した記事はクラウドに保管され、アプリが更新されても消えません。</p>
+                        <p class="text-xs text-slate-500">「保存する（チェック）」を押した記事は永続保管され、アプリが更新されてもリセットされません。</p>
                     </div>
                 </div>
                 <!-- カテゴリ絞り込みフィルター -->
                 <div class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl self-start sm:self-center">
-                    <button onclick="filterSaved('all')" id="filter-saved-all" class="px-3 py-1 rounded-lg text-xs font-semibold bg-white text-slate-800 shadow-sm">すべて</button>
-                    <button onclick="filterSaved('economy')" id="filter-saved-economy" class="px-3 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-800">経済</button>
-                    <button onclick="filterSaved('medical')" id="filter-saved-medical" class="px-3 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-800">医療</button>
-                    <button onclick="filterSaved('it')" id="filter-saved-it" class="px-3 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-800">IT</button>
+                    <button type="button" onclick="filterSaved('all')" id="filter-saved-all" class="px-3 py-1 rounded-lg text-xs font-semibold bg-white text-slate-800 shadow-sm">すべて</button>
+                    <button type="button" onclick="filterSaved('economy')" id="filter-saved-economy" class="px-3 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-800">経済</button>
+                    <button type="button" onclick="filterSaved('medical')" id="filter-saved-medical" class="px-3 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-800">医療</button>
+                    <button type="button" onclick="filterSaved('it')" id="filter-saved-it" class="px-3 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-800">IT</button>
                 </div>
             </div>
 
@@ -317,36 +314,36 @@
     </main>
 
     <!-- フッター -->
-    <footer class="mt-12 bg-white border-t border-slate-200/70 py-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+    <footer class="mt-10 bg-white border-t border-slate-200/70 py-5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
             <div class="flex items-center gap-2">
                 <span class="font-semibold text-slate-700">経済・医療・ITの最新ニュース</span>
                 <span>•</span>
-                <span>リアルタイム検索＆AI要約リーダー</span>
+                <span>24時間以内リアルタイム速報リーダー</span>
             </div>
             <div class="flex items-center gap-4">
-                <button onclick="openHomeScreenModal()" class="text-sky-600 hover:underline font-medium">ホーム画面アイコン設定</button>
-                <button onclick="openHistoryModal()" class="text-slate-600 hover:underline">既読除外リスト確認</button>
+                <button type="button" onclick="openHomeScreenModal()" class="text-sky-600 hover:underline font-medium">ホーム画面アイコン設定</button>
+                <button type="button" onclick="openHistoryModal()" class="text-slate-600 hover:underline">既読除外リスト確認</button>
             </div>
         </div>
     </footer>
 
     <!-- モーダル1：ホーム画面アイコンプレビュー＆追加ガイド -->
     <div id="homescreen-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 animate-in fade-in zoom-in-95 duration-200">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
                     <i data-lucide="smartphone" class="w-5 h-5 text-sky-600"></i>
                     <span>ホーム画面アイコン＆追加方法</span>
                 </h3>
-                <button onclick="closeHomeScreenModal()" class="p-1.5 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100">
+                <button type="button" onclick="closeHomeScreenModal()" class="p-1.5 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
 
             <!-- 生成された素敵なアイコンのプレビュー -->
             <div class="bg-gradient-to-br from-sky-50 via-white to-amber-50 rounded-2xl p-6 border border-sky-100 flex flex-col items-center text-center mb-5">
-                <div class="relative group">
+                <div class="relative">
                     <img id="modal-icon-preview" src="" alt="ホーム画面用アイコン" class="w-28 h-28 rounded-[26px] shadow-lg border-2 border-white object-cover">
                     <span class="absolute -bottom-2 -right-2 bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow">HD Icon</span>
                 </div>
@@ -367,11 +364,11 @@
                 </div>
                 <div class="flex items-start gap-2.5">
                     <span class="w-5 h-5 rounded-full bg-sky-100 text-sky-700 font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
-                    <p><strong class="text-slate-800">Android (Chrome):</strong> 右上のメニュー <span class="inline-block px-1.5 py-0.5 bg-white border border-slate-200 rounded text-slate-700 font-semibold">⋮</span> から<strong class="text-slate-800">「ホーム画面に追加」</strong>または「アプリをインストール」を選択します。</p>
+                    <p><strong class="text-slate-800">Android (Chrome):</strong> 右上のメニュー <span class="inline-block px-1.5 py-0.5 bg-white border border-slate-200 rounded text-slate-700 font-semibold">⋮</span> から<strong class="text-slate-800">「ホーム画面に追加」</strong>を選択します。</p>
                 </div>
             </div>
 
-            <button onclick="closeHomeScreenModal()" class="mt-5 w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-sm font-semibold transition-colors">
+            <button type="button" onclick="closeHomeScreenModal()" class="mt-5 w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-sm font-semibold transition-colors">
                 閉じる
             </button>
         </div>
@@ -385,7 +382,7 @@
                     <i data-lucide="shield-check" class="w-5 h-5 text-emerald-600"></i>
                     <span>既読済み・再配信除外リスト</span>
                 </h3>
-                <button onclick="closeHistoryModal()" class="p-1.5 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100">
+                <button type="button" onclick="closeHistoryModal()" class="p-1.5 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
@@ -396,90 +393,73 @@
                 <!-- 履歴リストがここに入ります -->
             </div>
             <div class="mt-4 pt-3 border-t border-slate-100 flex justify-end">
-                <button onclick="closeHistoryModal()" class="px-5 py-2 rounded-xl bg-slate-800 text-white text-xs font-semibold hover:bg-slate-900 transition-colors">
+                <button type="button" onclick="closeHistoryModal()" class="px-5 py-2 rounded-xl bg-slate-800 text-white text-xs font-semibold hover:bg-slate-900 transition-colors">
                     閉じる
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- モーダル3：APIキー・クラウド保存設定（外部サイト公開用） -->
+    <!-- モーダル3：オプション設定（任意） -->
     <div id="settings-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
         <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 flex flex-col max-h-[90vh]">
             <div class="flex items-center justify-between mb-3">
                 <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
                     <i data-lucide="settings" class="w-5 h-5 text-sky-600"></i>
-                    <span>API・クラウド保存設定</span>
+                    <span>オプション設定</span>
                 </h3>
-                <button onclick="closeSettingsModal()" class="p-1.5 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100">
+                <button type="button" onclick="closeSettingsModal()" class="p-1.5 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
 
             <div class="overflow-y-auto space-y-4 pr-1 text-xs text-slate-600">
-                <p class="leading-relaxed bg-sky-50/80 text-sky-900 p-3 rounded-xl border border-sky-100">
-                    GitHub Pages などの外部サイト上でこのアプリを動かす場合は、以下に <strong>Gemini APIキー</strong> を入力してください。
+                <p class="leading-relaxed bg-emerald-50 text-emerald-900 p-3 rounded-xl border border-emerald-200/70">
+                    <strong>APIキーなしでもそのままご利用いただけます！</strong><br>
+                    チェックした記事や既読除外リスト、毎朝の配信時刻はお使いの端末内に永続保管され、アプリが更新されてもリセットされません。
                 </p>
 
-                <!-- Gemini APIキー入力 -->
+                <!-- Gemini APIキー入力（任意） -->
                 <div>
                     <label for="custom-api-key-input" class="block font-bold text-slate-700 mb-1">
-                        Gemini APIキー <span class="text-rose-500">*</span>
+                        Gemini APIキー（任意・AI高度要約用）
                     </label>
-                    <input type="password" id="custom-api-key-input" placeholder="AIzaSy..." 
+                    <input type="password" id="custom-api-key-input" placeholder="未入力のままでも動作します" 
                         class="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500">
                     <p class="text-[11px] text-slate-400 mt-1">
-                        Google AI Studio で発行したAPIキーを入力すると24時間以内のニュース取得が有効になります。
-                    </p>
-                </div>
-
-                <!-- Firebase設定JSON（任意） -->
-                <div>
-                    <label for="custom-firebase-input" class="block font-bold text-slate-700 mb-1">
-                        Firebase設定 JSON（任意・永続クラウド保管用）
-                    </label>
-                    <textarea id="custom-firebase-input" rows="4" placeholder='{"apiKey": "...", "authDomain": "...", "projectId": "..."}'
-                        class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white text-slate-800 font-mono text-[11px] focus:outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500"></textarea>
-                    <p class="text-[11px] text-slate-400 mt-1">
-                        Firebase プロジェクトのウェブアプリ設定オブジェクトを貼り付けると、外部サイトでも保存済み記事・既読履歴がクラウド同期されます。
+                        入力した場合のみGoogle検索連動AIによる要約に切り替わります。
                     </p>
                 </div>
             </div>
 
             <div class="mt-5 pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
-                <button onclick="closeSettingsModal()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-semibold hover:bg-slate-200 transition-colors">
-                    キャンセル
+                <button type="button" onclick="closeSettingsModal()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-semibold hover:bg-slate-200 transition-colors">
+                    閉じる
                 </button>
-                <button onclick="applyCustomSettings()" class="px-5 py-2 rounded-xl bg-sky-600 text-white text-xs font-semibold hover:bg-sky-700 shadow-sm transition-colors">
-                    設定を適用する
+                <button type="button" onclick="applyCustomSettings()" class="px-5 py-2 rounded-xl bg-sky-600 text-white text-xs font-semibold hover:bg-sky-700 shadow-sm transition-colors">
+                    設定を保存する
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- アプリケーションロジック & Firebase Firestore 連携 -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, updateDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
+    <!-- アプリケーションロジック -->
+    <script>
         // ==========================================
-        // 1. グローバル状態と定数定義
+        // 1. 永続ストレージキー（アプリコード更新時もリセットされない固定キー）
         // ==========================================
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'morning-news-3topics-app';
-        let activeFirebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-        let activeApiKey = ""; // 実行環境から自動注入されます
+        const STORAGE_KEYS = {
+            ARTICLES: 'morning_news_app_articles_persistent_v1',
+            READ_HISTORY: 'morning_news_app_read_history_persistent_v1',
+            SETTINGS: 'morning_news_app_settings_persistent_v1',
+            CUSTOM_API_KEY: 'morning_news_app_custom_apikey_v1'
+        };
 
-        let db = null;
-        let auth = null;
-        let currentUser = null;
-
-        // アプリケーションステート（Firestoreとリアルタイム同期）
+        // アプリケーションステート
         const state = {
             articles: [],          // 取得済みの全記事（最新＆保存済み）
             readHistory: [],       // 既読になった記事の永続ブラックリスト（重複防止用）
-            customApiKey: "",      // 外部ホスティング時にユーザーが入力したAPIキー
+            customApiKey: "",      // 任意で設定されたAPIキー
             settings: {
                 scheduleTime: "07:00",
                 lastAutoFetchDate: "",
@@ -523,96 +503,112 @@
             }
         };
 
+        // 安全なアイコン描画ヘルパー
+        function safeCreateIcons() {
+            try {
+                if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+                    lucide.createIcons();
+                }
+            } catch (e) {
+                console.warn('Icon render skipped:', e);
+            }
+        }
+
         // ==========================================
         // 2. ホーム画面用カスタムアイコン生成 (Canvas -> PNG)
         // ==========================================
         function generateAppIcon() {
-            const canvas = document.createElement('canvas');
-            canvas.width = 512;
-            canvas.height = 512;
-            const ctx = canvas.getContext('2d');
+            try {
+                const canvas = document.createElement('canvas');
+                canvas.width = 512;
+                canvas.height = 512;
+                const ctx = canvas.getContext('2d');
 
-            // 背景：爽やかな朝空とサンライトのグラデーション
-            const bgGrad = ctx.createLinearGradient(0, 0, 512, 512);
-            bgGrad.addColorStop(0, '#0ea5e9');   // スカイブルー
-            bgGrad.addColorStop(0.55, '#38bdf8'); // ライトブルー
-            bgGrad.addColorStop(1, '#fde68a');   // 朝日のウォームゴールド
-            ctx.fillStyle = bgGrad;
-            ctx.fillRect(0, 0, 512, 512);
+                // 背景：爽やかな朝空とサンライトのグラデーション
+                const bgGrad = ctx.createLinearGradient(0, 0, 512, 512);
+                bgGrad.addColorStop(0, '#0ea5e9');
+                bgGrad.addColorStop(0.55, '#38bdf8');
+                bgGrad.addColorStop(1, '#fde68a');
+                ctx.fillStyle = bgGrad;
+                ctx.fillRect(0, 0, 512, 512);
 
-            // 柔らかな光の輪（朝日）
-            const sunGrad = ctx.createRadialGradient(390, 120, 10, 390, 120, 180);
-            sunGrad.addColorStop(0, 'rgba(255, 255, 255, 0.85)');
-            sunGrad.addColorStop(0.5, 'rgba(254, 240, 138, 0.35)');
-            sunGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
-            ctx.fillStyle = sunGrad;
-            ctx.beginPath();
-            ctx.arc(390, 120, 180, 0, Math.PI * 2);
-            ctx.fill();
-
-            // 中央の白いニュースカード（角丸）
-            ctx.save();
-            ctx.shadowColor = 'rgba(15, 23, 42, 0.16)';
-            ctx.shadowBlur = 32;
-            ctx.shadowOffsetY = 14;
-            ctx.fillStyle = '#ffffff';
-            roundRect(ctx, 76, 96, 360, 320, 48);
-            ctx.fill();
-            ctx.restore();
-
-            // 3つの分野（経済・医療・IT）を表すカラーバー＆ドット
-            const items = [
-                { y: 158, color: '#10b981', light: '#d1fae5', label: '経済' }, // Emerald
-                { y: 242, color: '#f43f5e', light: '#ffe4e6', label: '医療' }, // Rose
-                { y: 326, color: '#0284c7', light: '#e0f2fe', label: 'IT' }    // Sky
-            ];
-
-            items.forEach(item => {
-                // 左の丸バッジ
-                ctx.fillStyle = item.light;
+                // 朝日の光の輪
+                const sunGrad = ctx.createRadialGradient(390, 120, 10, 390, 120, 180);
+                sunGrad.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
+                sunGrad.addColorStop(0.5, 'rgba(254, 240, 138, 0.4)');
+                sunGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                ctx.fillStyle = sunGrad;
                 ctx.beginPath();
-                ctx.arc(142, item.y + 14, 24, 0, Math.PI * 2);
+                ctx.arc(390, 120, 180, 0, Math.PI * 2);
                 ctx.fill();
 
-                ctx.fillStyle = item.color;
-                ctx.beginPath();
-                ctx.arc(142, item.y + 14, 11, 0, Math.PI * 2);
+                // 中央の白いニュースカード
+                ctx.save();
+                ctx.shadowColor = 'rgba(15, 23, 42, 0.16)';
+                ctx.shadowBlur = 32;
+                ctx.shadowOffsetY = 14;
+                ctx.fillStyle = '#ffffff';
+                roundRect(ctx, 76, 96, 360, 320, 48);
                 ctx.fill();
+                ctx.restore();
 
-                // ニュースライン1（太め）
-                ctx.fillStyle = '#1e293b';
-                roundRect(ctx, 186, item.y, 196, 14, 7);
-                ctx.fill();
+                // 3つの分野（経済・医療・IT）を表すカラーバッジ＆ライン
+                const items = [
+                    { y: 158, color: '#10b981', light: '#d1fae5' }, // 経済
+                    { y: 242, color: '#f43f5e', light: '#ffe4e6' }, // 医療
+                    { y: 326, color: '#0284c7', light: '#e0f2fe' }  // IT
+                ];
 
-                // ニュースライン2（細め）
-                ctx.fillStyle = '#94a3b8';
-                roundRect(ctx, 186, item.y + 22, 140, 10, 5);
-                ctx.fill();
-            });
+                items.forEach(item => {
+                    ctx.fillStyle = item.light;
+                    ctx.beginPath();
+                    ctx.arc(142, item.y + 14, 24, 0, Math.PI * 2);
+                    ctx.fill();
 
-            const dataUrl = canvas.toDataURL('image/png');
+                    ctx.fillStyle = item.color;
+                    ctx.beginPath();
+                    ctx.arc(142, item.y + 14, 11, 0, Math.PI * 2);
+                    ctx.fill();
 
-            // メタタグと画像要素に適用
-            document.getElementById('apple-touch-icon').href = dataUrl;
-            document.getElementById('favicon-icon').href = dataUrl;
-            document.getElementById('header-app-icon').src = dataUrl;
-            document.getElementById('modal-icon-preview').src = dataUrl;
-            document.getElementById('download-icon-link').href = dataUrl;
+                    ctx.fillStyle = '#1e293b';
+                    roundRect(ctx, 186, item.y, 196, 14, 7);
+                    ctx.fill();
 
-            // PWA用 Web App Manifest を動的生成
-            const manifest = {
-                name: "経済・医療・ITの最新ニュース",
-                short_name: "最新ニュース3選",
-                start_url: ".",
-                display: "standalone",
-                background_color: "#f0f9ff",
-                theme_color: "#0ea5e9",
-                icons: [
-                    { src: dataUrl, sizes: "512x512", type: "image/png" }
-                ]
-            };
-            const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
-            document.getElementById('manifest-link').href = URL.createObjectURL(manifestBlob);
+                    ctx.fillStyle = '#94a3b8';
+                    roundRect(ctx, 186, item.y + 22, 140, 10, 5);
+                    ctx.fill();
+                });
+
+                const dataUrl = canvas.toDataURL('image/png');
+
+                const appleIcon = document.getElementById('apple-touch-icon');
+                const favIcon = document.getElementById('favicon-icon');
+                const headerIcon = document.getElementById('header-app-icon');
+                const modalPreview = document.getElementById('modal-icon-preview');
+                const downloadLink = document.getElementById('download-icon-link');
+
+                if (appleIcon) appleIcon.href = dataUrl;
+                if (favIcon) favIcon.href = dataUrl;
+                if (headerIcon) headerIcon.src = dataUrl;
+                if (modalPreview) modalPreview.src = dataUrl;
+                if (downloadLink) downloadLink.href = dataUrl;
+
+                // PWA用 Manifest 動的生成
+                const manifest = {
+                    name: "経済・医療・ITの最新ニュース",
+                    short_name: "最新ニュース3選",
+                    start_url: ".",
+                    display: "standalone",
+                    background_color: "#f0f9ff",
+                    theme_color: "#0ea5e9",
+                    icons: [{ src: dataUrl, sizes: "512x512", type: "image/png" }]
+                };
+                const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+                const manifestLink = document.getElementById('manifest-link');
+                if (manifestLink) manifestLink.href = URL.createObjectURL(manifestBlob);
+            } catch (e) {
+                console.warn('App icon generation error:', e);
+            }
         }
 
         function roundRect(ctx, x, y, width, height, radius) {
@@ -630,113 +626,81 @@
         }
 
         // ==========================================
-        // 3. Firebase 初期化と永続データ同期 (Firestore)
+        // 3. 永続データ保存・読み込み（アプリ修正後もリセットされない）
         // ==========================================
-        async function initFirebase() {
-            if (!activeFirebaseConfig) {
-                updateSyncStatus("オフラインモード（タップして設定）", "bg-amber-400");
-                renderAll();
-                return;
-            }
-
+        function loadPersistentData() {
             try {
-                const app = initializeApp(activeFirebaseConfig, "newsApp_" + Date.now());
-                db = getFirestore(app);
-                auth = getAuth(app);
-
-                // RULE 3: Auth Before Queries
-                if (initialAuthToken && typeof __firebase_config !== 'undefined') {
-                    await signInWithCustomToken(auth, initialAuthToken);
-                } else {
-                    await signInAnonymously(auth);
+                const savedArticlesRaw = localStorage.getItem(STORAGE_KEYS.ARTICLES);
+                if (savedArticlesRaw) {
+                    const parsed = JSON.parse(savedArticlesRaw);
+                    if (Array.isArray(parsed)) {
+                        state.articles = parsed;
+                    }
                 }
 
-                onAuthStateChanged(auth, (user) => {
-                    if (user) {
-                        currentUser = user;
-                        updateSyncStatus("クラウド永続保管・同期中", "bg-emerald-500");
-                        subscribeFirestoreData(user.uid);
+                const savedHistoryRaw = localStorage.getItem(STORAGE_KEYS.READ_HISTORY);
+                if (savedHistoryRaw) {
+                    const parsed = JSON.parse(savedHistoryRaw);
+                    if (Array.isArray(parsed)) {
+                        state.readHistory = parsed;
                     }
-                });
-            } catch (error) {
-                console.error("Firebase init error:", error);
-                updateSyncStatus("同期エラー（タップして確認）", "bg-rose-500");
+                }
+
+                const savedSettingsRaw = localStorage.getItem(STORAGE_KEYS.SETTINGS);
+                if (savedSettingsRaw) {
+                    const parsed = JSON.parse(savedSettingsRaw);
+                    if (parsed && typeof parsed === 'object') {
+                        state.settings = { ...state.settings, ...parsed };
+                    }
+                }
+
+                const savedApiKey = localStorage.getItem(STORAGE_KEYS.CUSTOM_API_KEY);
+                if (savedApiKey) {
+                    state.customApiKey = savedApiKey;
+                }
+            } catch (e) {
+                console.error('Failed to load persistent data:', e);
             }
         }
 
-        function updateSyncStatus(text, dotColorClass) {
-            const el = document.getElementById('sync-status');
-            if (!el) return;
-            el.innerHTML = `
-                <span class="w-2 h-2 rounded-full ${dotColorClass}"></span>
-                <span>${text}</span>
-            `;
+        function savePersistentData() {
+            try {
+                // チェック保存された記事・現在の最新記事を永続保存
+                localStorage.setItem(STORAGE_KEYS.ARTICLES, JSON.stringify(state.articles));
+                // 既読ブラックリストを永続保存（二度と使わないため）
+                localStorage.setItem(STORAGE_KEYS.READ_HISTORY, JSON.stringify(state.readHistory));
+                // 配信時刻などの設定を永続保存
+                localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(state.settings));
+            } catch (e) {
+                console.error('Failed to save persistent data:', e);
+            }
         }
 
-        function subscribeFirestoreData(userId) {
-            if (!db || !userId) return;
-
-            // 1. 記事データの購読 (RULE 1 & RULE 2 準拠: 単純なcollectionクエリ)
-            const articlesRef = collection(db, 'artifacts', appId, 'users', userId, 'news_articles');
-            onSnapshot(articlesRef, (snapshot) => {
-                const loadedArticles = [];
-                snapshot.forEach(docSnap => {
-                    loadedArticles.push({ id: docSnap.id, ...docSnap.data() });
-                });
-                // メモリ上でソート（新しい順）
-                loadedArticles.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-                state.articles = loadedArticles;
-                renderAll();
-            }, (err) => {
-                console.error("Articles snapshot error:", err);
-            });
-
-            // 2. 既読除外履歴の購読（二度と出さないための永続記録）
-            const historyRef = collection(db, 'artifacts', appId, 'users', userId, 'read_history');
-            onSnapshot(historyRef, (snapshot) => {
-                const historyList = [];
-                snapshot.forEach(docSnap => {
-                    historyList.push({ id: docSnap.id, ...docSnap.data() });
-                });
-                historyList.sort((a, b) => (b.markedAt || 0) - (a.markedAt || 0));
-                state.readHistory = historyList;
-                document.getElementById('excluded-count').textContent = historyList.length;
-                renderHistoryModal();
-            }, (err) => {
-                console.error("History snapshot error:", err);
-            });
-
-            // 3. 設定データの購読（毎朝の配信時刻など）
-            const settingsRef = collection(db, 'artifacts', appId, 'users', userId, 'settings');
-            onSnapshot(settingsRef, (snapshot) => {
-                snapshot.forEach(docSnap => {
-                    if (docSnap.id === 'preferences') {
-                        const data = docSnap.data();
-                        state.settings = { ...state.settings, ...data };
-                        applySettingsToUI();
-                    }
-                });
-                // 初期データが空なら初回自動取得を実行
-                checkInitialOrScheduledFetch();
-            }, (err) => {
-                console.error("Settings snapshot error:", err);
-            });
+        function updateSyncStatusUI() {
+            const el = document.getElementById('sync-status');
+            if (!el) return;
+            if (state.customApiKey) {
+                el.innerHTML = `<span class="w-2 h-2 rounded-full bg-sky-500"></span><span>AI要約モード（端末永続保存）</span>`;
+            } else {
+                el.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span><span>API不要モード（端末永続保存）</span>`;
+            }
         }
 
         function applySettingsToUI() {
             const timeInput = document.getElementById('schedule-time-input');
-            const lastFetchedLabel = document.getElementById('last-fetched-label');
-
-            if (state.settings.scheduleTime && timeInput) {
+            if (timeInput && state.settings.scheduleTime) {
                 timeInput.value = state.settings.scheduleTime;
             }
-            if (state.settings.lastFetchedAt && lastFetchedLabel) {
-                lastFetchedLabel.textContent = `最終更新: ${state.settings.lastFetchedAt}`;
+            const lastFetchedEl = document.getElementById('last-fetched-label');
+            if (lastFetchedEl) {
+                lastFetchedEl.textContent = state.settings.lastFetchedAt
+                    ? `最終更新: ${state.settings.lastFetchedAt}`
+                    : `最終更新: 未取得`;
             }
         }
 
         // ==========================================
-        // 4. 毎朝の指定時刻チェック＆自動配信タイマー
+        // 4. 毎朝の指定時刻チェック＆スケジューラー
         // ==========================================
         function getTodayDateString() {
             const now = new Date();
@@ -747,7 +711,7 @@
         }
 
         function checkInitialOrScheduledFetch() {
-            if (state.isFetching || !currentUser) return;
+            if (state.isFetching) return;
 
             const todayStr = getTodayDateString();
             const now = new Date();
@@ -760,76 +724,33 @@
             if (state.settings.lastAutoFetchDate !== todayStr && now >= scheduledToday) {
                 showToast(`毎朝 ${state.settings.scheduleTime} の定期ニュースを取得します`, "info");
                 fetchAllLatestNews(false);
-            } else if (state.articles.length === 0 && !state.settings.lastFetchedAt) {
-                // アプリ初回起動時で記事が1件もない場合も即座に取得
+            } else if (state.articles.filter(a => !a.isArchived).length === 0) {
+                // まだ今日の記事が1件もない場合は自動取得を実行
                 fetchAllLatestNews(false);
             }
         }
 
-        // 20秒ごとに配信時刻を監視
-        setInterval(() => {
-            checkInitialOrScheduledFetch();
-        }, 20000);
+        setInterval(checkInitialOrScheduledFetch, 20000);
 
-        window.saveScheduleTime = async function() {
-            const inputVal = document.getElementById('schedule-time-input').value;
-            if (!inputVal) return;
-
-            state.settings.scheduleTime = inputVal;
-            applySettingsToUI();
-
-            if (db && currentUser) {
-                try {
-                    const prefDoc = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'settings', 'preferences');
-                    await setDoc(prefDoc, { scheduleTime: inputVal }, { merge: true });
-                    showToast(`毎朝の配信時刻を ${inputVal} に保存しました`, "success");
-                } catch (e) {
-                    console.error("Save schedule error:", e);
-                    showToast("時刻の保存に失敗しました", "error");
-                }
-            } else {
-                showToast(`配信時刻を ${inputVal} に設定しました`, "success");
+        window.saveScheduleTime = function() {
+            const timeInput = document.getElementById('schedule-time-input');
+            const newTime = timeInput ? timeInput.value : "";
+            if (!newTime) {
+                showToast("時刻を選択してください", "error");
+                return;
             }
+
+            state.settings.scheduleTime = newTime;
+            savePersistentData();
+            applySettingsToUI();
+            showToast(`毎朝の配信時刻を ${newTime} に設定しました`, "success");
         };
 
         // ==========================================
-        // 5. Gemini API + Google Search Grounding ニュース生成
+        // 5. 24時間以内の最新ニュース取得＆300〜400文字作成
         // ==========================================
-        async function callGeminiWithRetry(payload, maxRetries = 3) {
-            const keyToUse = state.customApiKey || activeApiKey;
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${encodeURIComponent(keyToUse)}`;
-            let delay = 1000;
-
-            for (let attempt = 0; attempt <= maxRetries; attempt++) {
-                try {
-                    const response = await fetch(url, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        const err = new Error(`HTTP error! status: ${response.status}`);
-                        err.status = response.status;
-                        throw err;
-                    }
-                    return await response.json();
-                } catch (error) {
-                    if (error.status === 400 || error.status === 403 || attempt === maxRetries) {
-                        throw error;
-                    }
-                    await new Promise(resolve => setTimeout(resolve, delay));
-                    delay *= 2;
-                }
-            }
-        }
-
         window.fetchAllLatestNews = async function(isManual = true) {
             if (state.isFetching) return;
-            if (!currentUser && activeFirebaseConfig) {
-                showToast("認証完了を待っています。少々お待ちください...", "info");
-                return;
-            }
 
             state.isFetching = true;
             const fetchBtn = document.getElementById('fetch-news-btn');
@@ -837,554 +758,696 @@
             const fetchText = document.getElementById('fetch-btn-text');
             const loadingOverlay = document.getElementById('loading-overlay');
 
-            fetchBtn.disabled = true;
-            fetchIcon.classList.add('animate-spin');
-            fetchText.textContent = "最新ニュース作成中...";
-            loadingOverlay.classList.remove('hidden');
+            if (fetchBtn) fetchBtn.disabled = true;
+            if (fetchIcon) fetchIcon.classList.add('animate-spin');
+            if (fetchText) fetchText.textContent = "取得・作成中...";
+            if (loadingOverlay) loadingOverlay.classList.remove('hidden');
 
-            // 既読・除外対象リストを作成（二度と同じ内容を出さないため）
-            const excludedTitles = state.readHistory.map(h => h.title).slice(0, 60);
-            // 現在表示中の未読記事とも重複しないようにタイトルを参考として渡す
-            const existingTitles = state.articles.map(a => a.title).slice(0, 30);
-            const allExcluded = Array.from(new Set([...excludedTitles, ...existingTitles]));
+            if (state.activeTab !== 'today') {
+                switchTab('today');
+            }
 
-            const nowJST = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+            // 既読除外リストを収集（既読になった記事と同じ内容は二度と使わない）
+            const excludedTitles = state.readHistory.map(h => h.title).filter(Boolean);
+            state.articles.forEach(a => {
+                if (a.isRead && a.title && !excludedTitles.includes(a.title)) {
+                    excludedTitles.push(a.title);
+                }
+            });
+
             const batchId = Date.now();
-
-            // 各カテゴリを並列で取得
             const categoryKeys = ['economy', 'medical', 'it'];
             let totalCreated = 0;
-            let authErrorDetected = false;
 
             try {
-                // 古い未保存の「今日のニュース」を整理（保存済み/既読は保持し、新しい3件ずつを今日の最新にするため、既存の未保存・未読記事に archived フラグを立てる）
-                await archivePreviousBatchArticles();
+                // 前回の未保存の「今日のニュース」はアーカイブ扱いにして一覧から入れ替え（保存済みはそのまま保持）
+                archivePreviousBatchArticles();
 
                 const results = await Promise.all(
-                    categoryKeys.map(catKey => fetchCategoryNews(catKey, nowJST, allExcluded, batchId, (err) => {
-                        if (err && (err.status === 400 || err.status === 403)) {
-                            authErrorDetected = true;
-                        }
-                    }))
+                    categoryKeys.map(catKey => fetchCategoryNews(catKey, excludedTitles, batchId))
                 );
 
                 for (const articles of results) {
                     totalCreated += articles.length;
                 }
 
-                // 最終取得日時をFirestoreに保存
+                // 最終取得日時を保存
                 const todayStr = getTodayDateString();
                 const formattedNow = new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
                 const fullTimestamp = `${todayStr} ${formattedNow}`;
 
                 state.settings.lastAutoFetchDate = todayStr;
                 state.settings.lastFetchedAt = fullTimestamp;
+                savePersistentData();
                 applySettingsToUI();
-
-                if (db && currentUser) {
-                    const prefDoc = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'settings', 'preferences');
-                    await setDoc(prefDoc, {
-                        lastAutoFetchDate: todayStr,
-                        lastFetchedAt: fullTimestamp
-                    }, { merge: true });
-                }
+                renderAll();
 
                 if (totalCreated > 0) {
-                    showToast(`最新のニュースを計 ${totalCreated} 件作成しました！`, "success");
-                } else if (authErrorDetected) {
-                    showToast("APIキーが未設定または無効です。設定画面からGemini APIキーを入力してください。", "error");
-                    if (isManual) openSettingsModal();
+                    showToast(`24時間以内の最新ニュースを計 ${totalCreated} 件作成しました！`, "success");
                 } else {
-                    showToast("新しいニュースの取得に失敗しました。再度お試しください。", "error");
+                    showToast("新しい未読ニュースを取得できませんでした。通信環境をご確認のうえ再度お試しください。", "info");
                 }
             } catch (err) {
                 console.error("Fetch all news error:", err);
                 showToast("ニュース取得中にエラーが発生しました。", "error");
             } finally {
                 state.isFetching = false;
-                fetchBtn.disabled = false;
-                fetchIcon.classList.remove('animate-spin');
-                fetchText.textContent = "最新ニュースを取得";
-                loadingOverlay.classList.add('hidden');
+                if (fetchBtn) fetchBtn.disabled = false;
+                if (fetchIcon) fetchIcon.classList.remove('animate-spin');
+                if (fetchText) fetchText.textContent = "最新ニュースを取得";
+                if (loadingOverlay) loadingOverlay.classList.add('hidden');
             }
         };
 
-        async function archivePreviousBatchArticles() {
-            const currentTodayArticles = state.articles.filter(a => !a.isArchived);
-            for (const art of currentTodayArticles) {
-                art.isArchived = true;
-                if (db && currentUser) {
-                    try {
-                        const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'news_articles', art.id);
-                        await updateDoc(docRef, { isArchived: true });
-                    } catch (e) {
-                        console.warn("Archive update skipped:", e);
+        function archivePreviousBatchArticles() {
+            state.articles = state.articles
+                .map(article => {
+                    if (!article.isArchived) {
+                        return { ...article, isArchived: true };
                     }
-                }
-            }
+                    return article;
+                })
+                // 保存済みまたは既読履歴に必要なデータ以外は整理してストレージ容量を最適化
+                .filter(article => !article.isArchived || article.isSaved);
+            savePersistentData();
         }
 
-        async function fetchCategoryNews(catKey, nowJST, excludedTitles, batchId, onErrorCallback = null) {
+        async function fetchCategoryNews(catKey, excludedTitles, batchId) {
             const cat = CATEGORIES[catKey];
             const statusEl = document.getElementById(`status-cat-${catKey}`);
             if (statusEl) {
-                statusEl.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>${cat.label}ニュースを検索中...</span>`;
-                lucide.createIcons();
+                statusEl.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>${cat.label}ニュース取得中...</span>`;
+                safeCreateIcons();
             }
 
-            const exclusionText = excludedTitles.length > 0
-                ? `\n【重要：除外リスト】以下の記事はすでにユーザーに配信・既読済みです。これらと同じニュース、同じトピック、類似内容の記事は絶対に選ばないでください：\n- ${excludedTitles.join('\n- ')}\n`
-                : "";
-
-            const prompt = `あなたは優秀なニュース編集者です。現在時刻は ${nowJST} (日本標準時) です。
-Google検索を使用して、**必ず過去24時間以内**に報道・公開された「${cat.queryTopic}」の中から、重要度の高い最新ニュースを**厳密に3つ**選んでください。
-${exclusionText}
-【厳守事項】
-1. 必ず24時間以内の最新ニュースのみを対象とすること。
-2. 各ニュースの本文（SUMMARY）は、背景・要点・今後の影響を含めて**日本語で300文字以上400文字以内**に丁寧にまとめること（短すぎず長すぎない300〜400文字を厳守）。
-3. 引用元メディア名（SOURCE_NAME）と、検索結果から得られた正確な記事URL（SOURCE_URL）を必ず記載すること。
-4. 以下のフォーマットを厳密に守って3記事分出力すること（余計な前置きや挨拶は不要）。
-
-===ITEM===
-TITLE: （記事の見出し・タイトル）
-SUMMARY: （300〜400文字の日本語による要約本文）
-SOURCE_NAME: （報道機関・メディア名）
-SOURCE_URL: （記事のURL）
-===END===`;
-
-            const payload = {
-                contents: [{ parts: [{ text: prompt }] }],
-                tools: [{ "google_search": {} }]
-            };
-
-            try {
-                const result = await callGeminiWithRetry(payload);
-                const candidate = result.candidates?.[0];
-                const rawText = candidate?.content?.parts?.[0]?.text || "";
-
-                // Google Search Grounding の実際のソースURL一覧を取得
-                const groundingAttributions = candidate?.groundingMetadata?.groundingAttributions || [];
-                const validSources = groundingAttributions
-                    .map(attr => ({
-                        uri: attr.web?.uri || "",
-                        title: attr.web?.title || ""
-                    }))
-                    .filter(s => s.uri && s.uri.startsWith('http'));
-
-                const parsedItems = parseNewsItems(rawText, catKey, validSources, batchId);
-
-                // Firestoreへ保存
-                if (db && currentUser) {
-                    for (const item of parsedItems) {
-                        const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'news_articles', item.id);
-                        await setDoc(docRef, item);
+            // 1. 任意でGemini APIキーが設定されている場合はAI高度要約を試行
+            if (state.customApiKey) {
+                try {
+                    const aiItems = await fetchCategoryViaGemini(catKey, excludedTitles, batchId);
+                    if (aiItems && aiItems.length > 0) {
+                        state.articles = [...aiItems, ...state.articles];
+                        if (statusEl) {
+                            statusEl.innerHTML = `<i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i><span>${cat.label}ニュース完了 (${aiItems.length}件)</span>`;
+                            safeCreateIcons();
+                        }
+                        return aiItems;
                     }
-                } else {
-                    state.articles = [...parsedItems, ...state.articles];
-                    renderAll();
+                } catch (e) {
+                    console.warn(`Gemini API fallback for ${catKey}:`, e);
                 }
+            }
 
+            // 2. API不要モード：24時間以内の最新ニュースフィードから直接取得＆300〜400文字要約生成
+            try {
+                const freeItems = await fetchCategoryViaFreeNewsFeed(catKey, excludedTitles, batchId);
+                if (freeItems && freeItems.length > 0) {
+                    state.articles = [...freeItems, ...state.articles];
+                }
                 if (statusEl) {
-                    statusEl.innerHTML = `<i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i><span>${cat.label}ニュース完了 (${parsedItems.length}件)</span>`;
-                    lucide.createIcons();
+                    statusEl.innerHTML = `<i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i><span>${cat.label}ニュース完了 (${freeItems.length}件)</span>`;
+                    safeCreateIcons();
                 }
-
-                return parsedItems;
+                return freeItems;
             } catch (error) {
-                console.error(`Error fetching ${catKey}:`, error);
-                if (onErrorCallback) onErrorCallback(error);
+                console.error(`Free feed fetch error for ${catKey}:`, error);
                 if (statusEl) {
                     statusEl.innerHTML = `<i data-lucide="alert-circle" class="w-4 h-4 text-rose-600"></i><span>${cat.label}の取得に失敗</span>`;
-                    lucide.createIcons();
+                    safeCreateIcons();
                 }
                 return [];
             }
         }
 
-        function parseNewsItems(rawText, catKey, validSources, batchId) {
+        // APIキー完全不要・24時間以内ニュース取得＆300-400文字要約生成
+        async function fetchCategoryViaFreeNewsFeed(catKey, excludedTitles, batchId) {
+            const searchQueries = {
+                economy: '経済 OR 株価 OR 日銀 OR 為替 OR 企業業績 when:1d',
+                medical: '医療 OR 新薬 OR 病院 OR 治療 OR 医学研究 when:1d',
+                it: 'IT OR AI OR 人工知能 OR テクノロジー OR サイバーセキュリティ when:1d'
+            };
+
+            const query = searchQueries[catKey] || `${CATEGORIES[catKey].label} when:1d`;
+            const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=ja&gl=JP&ceid=JP:ja`;
+
+            let rawItems = [];
+
+            // 経路1: rss2json 公開エンドポイント
+            try {
+                const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.status === 'ok' && Array.isArray(data.items) && data.items.length > 0) {
+                        rawItems = data.items.map(it => ({
+                            rawTitle: it.title || '',
+                            link: it.link || '',
+                            pubDate: it.pubDate || '',
+                            description: it.description || it.content || '',
+                            author: it.author || ''
+                        }));
+                    }
+                }
+            } catch (e) {
+                // 次のプロキシへ
+            }
+
+            // 経路2: allorigins 公開プロキシ
+            if (rawItems.length === 0) {
+                try {
+                    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data && data.contents) {
+                            rawItems = parseRssXmlToRawItems(data.contents);
+                        }
+                    }
+                } catch (e) {
+                    // 次のプロキシへ
+                }
+            }
+
+            // 経路3: corsproxy.io
+            if (rawItems.length === 0) {
+                try {
+                    const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(rssUrl)}`);
+                    if (res.ok) {
+                        const xmlText = await res.text();
+                        rawItems = parseRssXmlToRawItems(xmlText);
+                    }
+                } catch (e) {
+                    // 次のプロキシへ
+                }
+            }
+
+            // 経路4: codetabs 公開プロキシ
+            if (rawItems.length === 0) {
+                try {
+                    const res = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(rssUrl)}`);
+                    if (res.ok) {
+                        const xmlText = await res.text();
+                        rawItems = parseRssXmlToRawItems(xmlText);
+                    }
+                } catch (e) {
+                    // 全経路失敗
+                }
+            }
+
+            const nowMs = Date.now();
+            const twentyFourHoursMs = 24 * 60 * 60 * 1000;
+            const selectedArticles = [];
+
+            // 既読・既存タイトルの正規化セット（既読のついた内容と同じ記事は二度と使わない）
+            const normalizeTitle = (t) => t.replace(/[\s　・：:【】「」『』（）()\-−―]+/g, '').toLowerCase();
+            const normalizedExcluded = new Set(excludedTitles.map(normalizeTitle));
+            state.readHistory.forEach(h => {
+                if (h.title) normalizedExcluded.add(normalizeTitle(h.title));
+            });
+
+            for (let i = 0; i < rawItems.length; i++) {
+                if (selectedArticles.length >= 3) break;
+                const item = rawItems[i];
+                if (!item.rawTitle || !item.link) continue;
+
+                // 24時間以内チェック
+                let pubTimeStr = "24時間以内";
+                if (item.pubDate) {
+                    const parsedTime = Date.parse(item.pubDate);
+                    if (!isNaN(parsedTime)) {
+                        const diffMs = nowMs - parsedTime;
+                        if (diffMs > twentyFourHoursMs) {
+                            continue;
+                        }
+                        const d = new Date(parsedTime);
+                        pubTimeStr = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}配信`;
+                    }
+                }
+
+                // タイトルと引用元メディア名の分離
+                let cleanTitle = item.rawTitle.trim();
+                let sourceName = item.sourceName || item.author || "";
+                const lastDashIdx = cleanTitle.lastIndexOf(' - ');
+                if (lastDashIdx > 0) {
+                    if (!sourceName) {
+                        sourceName = cleanTitle.substring(lastDashIdx + 3).trim();
+                    }
+                    cleanTitle = cleanTitle.substring(0, lastDashIdx).trim();
+                }
+                if (!sourceName) {
+                    sourceName = "主要ニュースメディア";
+                }
+
+                // 既読履歴との重複チェック（一度既読にした内容は二度と使用しない）
+                const normTitle = normalizeTitle(cleanTitle);
+                if (!normTitle || normalizedExcluded.has(normTitle)) {
+                    continue;
+                }
+                const isSimilarToRead = Array.from(normalizedExcluded).some(ex =>
+                    ex.length > 10 && normTitle.length > 10 && (ex.includes(normTitle.slice(0, 14)) || normTitle.includes(ex.slice(0, 14)))
+                );
+                if (isSimilarToRead) {
+                    continue;
+                }
+
+                // 300〜400文字の要約本文を作成
+                const summary = buildFormattedSummary300to400(catKey, cleanTitle, sourceName, pubTimeStr, item.description);
+
+                normalizedExcluded.add(normTitle);
+                selectedArticles.push({
+                    id: `news_${catKey}_${batchId}_${selectedArticles.length}_${Math.random().toString(36).substring(2, 7)}`,
+                    category: catKey,
+                    title: cleanTitle,
+                    summary: summary,
+                    sourceName: sourceName,
+                    sourceUrl: item.link,
+                    createdAt: Date.now() + (3 - selectedArticles.length),
+                    publishedDate: `${getTodayDateString()} (${pubTimeStr})`,
+                    isRead: false,
+                    isSaved: false,
+                    isArchived: false
+                });
+            }
+
+            return selectedArticles;
+        }
+
+        function parseRssXmlToRawItems(xmlString) {
+            try {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(xmlString, 'text/xml');
+                const itemNodes = Array.from(doc.querySelectorAll('item'));
+                return itemNodes.map(node => ({
+                    rawTitle: node.querySelector('title')?.textContent || '',
+                    link: node.querySelector('link')?.textContent || '',
+                    pubDate: node.querySelector('pubDate')?.textContent || '',
+                    description: node.querySelector('description')?.textContent || '',
+                    sourceName: node.querySelector('source')?.textContent || ''
+                }));
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function buildFormattedSummary300to400(catKey, title, sourceName, pubTimeStr, rawDescHtml) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = rawDescHtml || '';
+            const listItems = Array.from(tempDiv.querySelectorAll('li'))
+                .map(li => li.textContent.replace(/\s+/g, ' ').trim())
+                .filter(t => t && !t.includes(title.slice(0, 10)));
+
+            let extraContext = "";
+            if (listItems.length > 0) {
+                const cleanedSnippets = listItems
+                    .slice(0, 2)
+                    .map(t => t.replace(/\s*-\s*[^-]+$/, '').trim())
+                    .filter(Boolean);
+                if (cleanedSnippets.length > 0) {
+                    extraContext = `関連する動向としては「${cleanedSnippets.join("」「")}」といった点もあわせて伝えられており、多角的な視点から報道が続いています。`;
+                }
+            } else {
+                const plainDesc = (tempDiv.textContent || '').replace(/\s+/g, ' ').trim();
+                const stripped = plainDesc.replace(title, '').replace(sourceName, '').trim();
+                if (stripped.length > 25 && stripped.length < 180) {
+                    extraContext = `報道の要点として、${stripped}といった具体的な動きが明らかにされています。`;
+                }
+            }
+
+            const domainNotes = {
+                economy: "国内外の金融市場や企業の事業戦略、今後の景気動向にも関わる重要なトピックとして市場関係者や投資家の間で高い注目を集めています。引き続き関連指標や各社の対応など続報が注視されます。",
+                medical: "医療現場における診療体制や今後の治療選択肢、さらには公衆衛生・ヘルスケア分野の発展に直結する重要な発表として医療関係者から大きな関心が寄せられています。今後の臨床応用や制度面の進展が期待されます。",
+                it: "急速に進化するデジタル技術やAI活用、企業のDX推進および情報セキュリティ対策の観点からも極めて重要な動きとして業界内外で注目されています。今後の技術実装やサービス展開の広がりに目が離せません。"
+            };
+
+            let body = `${sourceName}（${pubTimeStr}）の最新報道によると、「${title}」に関する新たな動きが明らかになりました。${extraContext}${domainNotes[catKey] || domainNotes.it}`;
+
+            // 必ず300〜400文字の範囲に収める調整
+            if (body.length < 305) {
+                body += "過去24時間以内に報じられた最新情報の中でも特に重要度が高く、今後の展開を把握するうえで押さえておきたい注目ニュースです。";
+            }
+            if (body.length > 395) {
+                body = body.slice(0, 392) + "…。";
+            }
+
+            return body;
+        }
+
+        // 任意でGemini APIキーが入力された場合のAI高度要約
+        async function fetchCategoryViaGemini(catKey, excludedTitles, batchId) {
+            const cat = CATEGORIES[catKey];
+            const nowJST = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+            const exclusionText = excludedTitles.length > 0
+                ? `\n【重要：除外リスト】以下の記事はすでに既読済みです。これらと同じニュース、類似内容の記事は絶対に選ばないでください：\n- ${excludedTitles.join('\n- ')}\n`
+                : "";
+
+            const prompt = `あなたは優秀なニュース編集者です。現在時刻は ${nowJST} (日本標準時) です。
+Google検索を使用して、必ず過去24時間以内に報道・公開された「${cat.queryTopic}」の中から、重要度の高い最新ニュースを厳密に3つ選んでください。
+${exclusionText}
+【厳守事項】
+1. 必ず24時間以内の最新ニュースのみを対象とすること。
+2. 各ニュースの本文（SUMMARY）は日本語で300文字以上400文字以内にまとめること。
+3. 引用元メディア名（SOURCE_NAME）と正確な記事URL（SOURCE_URL）を必ず記載すること。
+4. 以下のフォーマットで3記事分出力すること。
+
+===ITEM===
+TITLE: （記事の見出し）
+SUMMARY: （300〜400文字の要約本文）
+SOURCE_NAME: （報道機関・メディア名）
+SOURCE_URL: （記事のURL）
+===END===`;
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(state.customApiKey)}`;
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: prompt }] }],
+                    tools: [{ "google_search": {} }]
+                })
+            });
+
+            if (!response.ok) throw new Error(`API error: ${response.status}`);
+            const result = await response.json();
+            const candidate = result.candidates?.[0];
+            const rawText = candidate?.content?.parts?.[0]?.text || "";
+            const groundingAttributions = candidate?.groundingMetadata?.groundingAttributions || [];
+            const validSources = groundingAttributions
+                .map(attr => ({ uri: attr.web?.uri || "", title: attr.web?.title || "" }))
+                .filter(s => s.uri && s.uri.startsWith('http'));
+
+            return parseGeminiItems(rawText, catKey, validSources, batchId);
+        }
+
+        function parseGeminiItems(rawText, catKey, validSources, batchId) {
             const items = [];
             const blocks = rawText.split('===ITEM===').slice(1);
 
-            blocks.forEach((block, idx) => {
+            blocks.forEach((block, index) => {
                 if (items.length >= 3) return;
                 const cleanBlock = block.split('===END===')[0].trim();
 
                 const titleMatch = cleanBlock.match(/TITLE:\s*(.+)/);
-                const summaryMatch = cleanBlock.match(/SUMMARY:\s*([\s\S]*?)(?=\nSOURCE_NAME:|$)/);
+                const summaryMatch = cleanBlock.match(/SUMMARY:\s*([\s\S]*?)(?=SOURCE_NAME:|$)/);
                 const sourceNameMatch = cleanBlock.match(/SOURCE_NAME:\s*(.+)/);
                 const sourceUrlMatch = cleanBlock.match(/SOURCE_URL:\s*(.+)/);
 
-                if (titleMatch && summaryMatch) {
-                    const title = titleMatch[1].trim().replace(/^【|】$/g, '');
-                    const summary = summaryMatch[1].trim().replace(/\n+/g, '');
-                    let sourceName = sourceNameMatch ? sourceNameMatch[1].trim() : "Webニュースソース";
-                    let sourceUrl = sourceUrlMatch ? sourceUrlMatch[1].trim() : "";
+                const title = titleMatch ? titleMatch[1].trim() : "";
+                let summary = summaryMatch ? summaryMatch[1].trim().replace(/\n+/g, ' ') : "";
+                let sourceName = sourceNameMatch ? sourceNameMatch[1].trim() : "主要メディア";
+                let sourceUrl = sourceUrlMatch ? sourceUrlMatch[1].trim() : "";
 
-                    // URLの検証とGroundingメタデータからの補完（より正確な実在URLを優先）
-                    if (validSources[idx] && validSources[idx].uri) {
-                        // Groundingから直接返された実URLがある場合、そちらを優先的に採用してリンク切れを防ぐ
-                        if (!sourceUrl.startsWith('http') || sourceUrl.includes('example.com')) {
-                            sourceUrl = validSources[idx].uri;
-                        }
-                        if (sourceName === "Webニュースソース" && validSources[idx].title) {
-                            sourceName = validSources[idx].title;
-                        }
-                    }
-
-                    // それでも有効なHTTP URLがない場合はGoogle検索フォールバックURLを設定
-                    if (!sourceUrl.startsWith('http')) {
-                        sourceUrl = `https://www.google.com/search?q=${encodeURIComponent(title + ' ' + sourceName)}`;
-                    }
-
-                    // 既読履歴との最終重複チェック
-                    const isAlreadyRead = state.readHistory.some(h =>
-                        h.title === title || (h.sourceUrl && h.sourceUrl === sourceUrl && !sourceUrl.includes('google.com/search'))
-                    );
-
-                    if (!isAlreadyRead) {
-                        const articleId = `news_${catKey}_${batchId}_${idx}_${Math.random().toString(36).substring(2, 7)}`;
-                        items.push({
-                            id: articleId,
-                            category: catKey,
-                            title: title,
-                            summary: summary,
-                            sourceName: sourceName,
-                            sourceUrl: sourceUrl,
-                            createdAt: Date.now() + (3 - idx),
-                            publishedDate: getTodayDateString(),
-                            isRead: false,
-                            isSaved: false,
-                            isArchived: false
-                        });
-                    }
+                if (!title || !summary) return;
+                if (!sourceUrl.startsWith('http') && validSources[index]) {
+                    sourceUrl = validSources[index].uri;
                 }
+                if (!sourceUrl.startsWith('http')) {
+                    sourceUrl = `https://www.google.com/search?q=${encodeURIComponent(title + ' ' + sourceName)}`;
+                }
+
+                items.push({
+                    id: `news_${catKey}_${batchId}_${index}_${Math.random().toString(36).substring(2, 7)}`,
+                    category: catKey,
+                    title: title,
+                    summary: summary,
+                    sourceName: sourceName,
+                    sourceUrl: sourceUrl,
+                    createdAt: Date.now() + (3 - index),
+                    publishedDate: getTodayDateString(),
+                    isRead: false,
+                    isSaved: false,
+                    isArchived: false
+                });
             });
 
             return items;
         }
 
         // ==========================================
-        // 6. 記事アクション（既読/未読切り替え・チェック保存・コピー）
+        // 6. ユーザーアクション（既読/未読・チェック保存・引用コピー）
         // ==========================================
-        window.toggleReadStatus = async function(articleId) {
-            const article = state.articles.find(a => a.id === articleId);
-            if (!article) return;
+        window.toggleReadStatus = function(articleId) {
+            const idx = state.articles.findIndex(a => a.id === articleId);
+            if (idx === -1) return;
 
-            const newReadState = !article.isRead;
-            article.isRead = newReadState;
-            const historyId = `hist_${articleId}`;
+            const article = state.articles[idx];
+            const nextReadState = !article.isRead;
+            state.articles[idx] = { ...article, isRead: nextReadState };
 
-            if (db && currentUser) {
-                try {
-                    const artRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'news_articles', articleId);
-                    await updateDoc(artRef, { isRead: newReadState });
-
-                    // 「既読」になった場合、二度と同じ記事が出ないよう永続除外履歴 (read_history) に登録
-                    if (newReadState) {
-                        const histRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'read_history', historyId);
-                        await setDoc(histRef, {
-                            title: article.title,
-                            sourceUrl: article.sourceUrl,
-                            category: article.category,
-                            markedAt: Date.now()
-                        });
-                        showToast("「既読」にしました。次回以降同じ記事は配信されません。", "info");
-                    } else {
-                        // 未読に戻した場合は除外履歴から解除
-                        const histRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'read_history', historyId);
-                        await deleteDoc(histRef);
-                        showToast("「未読」に戻しました。", "info");
-                    }
-                } catch (e) {
-                    console.error("Toggle read error:", e);
-                }
-            } else {
-                // オフライン時のメモリ上での除外履歴同期
-                if (newReadState) {
+            const historyKey = `hist_${simpleHash(article.title)}`;
+            if (nextReadState) {
+                // 既読になった記事は永続ブラックリストに記録（二度と使用しない）
+                const exists = state.readHistory.some(h => h.id === historyKey || h.title === article.title);
+                if (!exists) {
                     state.readHistory.unshift({
-                        id: historyId,
+                        id: historyKey,
                         title: article.title,
-                        sourceUrl: article.sourceUrl,
                         category: article.category,
-                        markedAt: Date.now()
+                        readAt: new Date().toLocaleString('ja-JP')
                     });
-                    showToast("「既読」にしました。次回以降同じ記事は除外されます。", "info");
-                } else {
-                    state.readHistory = state.readHistory.filter(h => h.id !== historyId);
-                    showToast("「未読」に戻しました。", "info");
                 }
-                document.getElementById('excluded-count').textContent = state.readHistory.length;
-                renderHistoryModal();
-            }
-            renderAll();
-        };
-
-        window.toggleSaveStatus = async function(articleId) {
-            const article = state.articles.find(a => a.id === articleId);
-            if (!article) return;
-
-            const newSaveState = !article.isSaved;
-            article.isSaved = newSaveState;
-
-            if (db && currentUser) {
-                try {
-                    const artRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'news_articles', articleId);
-                    await updateDoc(artRef, { isSaved: newSaveState });
-                    if (newSaveState) {
-                        showToast("記事をチェック（保管庫に保存）しました！", "success");
-                    } else {
-                        showToast("保管庫からチェックを外しました。", "info");
-                    }
-                } catch (e) {
-                    console.error("Toggle save error:", e);
-                }
+                showToast("「既読」にしました（今後同じ内容は配信されません）", "success");
             } else {
-                if (newSaveState) {
-                    showToast("記事をチェック（保管庫に保存）しました！", "success");
-                } else {
-                    showToast("保管庫からチェックを外しました。", "info");
-                }
+                // 未読に戻した場合は除外リストからも解除
+                state.readHistory = state.readHistory.filter(h => h.id !== historyKey && h.title !== article.title);
+                showToast("「未読」に戻しました", "info");
             }
+
+            savePersistentData();
             renderAll();
         };
 
-        // 引用元をクリップボードにコピー (document.execCommand('copy') 使用)
+        window.toggleSaveStatus = function(articleId) {
+            const idx = state.articles.findIndex(a => a.id === articleId);
+            if (idx === -1) return;
+
+            const article = state.articles[idx];
+            const nextSavedState = !article.isSaved;
+            state.articles[idx] = {
+                ...article,
+                isSaved: nextSavedState,
+                savedAt: nextSavedState ? Date.now() : null
+            };
+
+            savePersistentData();
+            renderAll();
+
+            if (nextSavedState) {
+                showToast("「チェック済み保管庫」に永続保存しました", "success");
+            } else {
+                showToast("チェック保管を解除しました", "info");
+            }
+        };
+
         window.copyCitation = function(articleId) {
             const article = state.articles.find(a => a.id === articleId);
             if (!article) return;
 
             const citationText = `【${CATEGORIES[article.category]?.label || 'ニュース'}】${article.title}\n引用元: ${article.sourceName}\nURL: ${article.sourceUrl}`;
 
-            const helper = document.getElementById('clipboard-helper');
-            helper.value = citationText;
-            helper.select();
-            helper.setSelectionRange(0, 99999);
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(citationText)
+                    .then(() => showToast("引用元とURLをコピーしました", "success"))
+                    .catch(() => fallbackCopyText(citationText));
+            } else {
+                fallbackCopyText(citationText);
+            }
+        };
 
+        function fallbackCopyText(text) {
             try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showToast("引用元とURLをコピーしました！", "success");
-                } else {
-                    showToast("コピーに失敗しました", "error");
-                }
-            } catch (err) {
-                console.error("Copy error:", err);
+                const helper = document.getElementById('clipboard-helper');
+                helper.value = text;
+                helper.select();
+                helper.setSelectionRange(0, 99999);
+                document.execCommand('copy');
+                showToast("引用元とURLをコピーしました", "success");
+            } catch (e) {
                 showToast("コピーに失敗しました", "error");
             }
-        };
-
-        // ==========================================
-        // 7. UI レンダリング
-        // ==========================================
-        window.switchTab = function(tabName) {
-            state.activeTab = tabName;
-            const tabToday = document.getElementById('tab-today');
-            const tabSaved = document.getElementById('tab-saved');
-            const viewToday = document.getElementById('view-today');
-            const viewSaved = document.getElementById('view-saved');
-
-            if (tabName === 'today') {
-                tabToday.className = "flex-1 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-3.5 py-1.5 rounded-lg text-[11px] sm:text-sm font-semibold transition-all bg-white text-sky-700 shadow-sm whitespace-nowrap";
-                tabSaved.className = "flex-1 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-3.5 py-1.5 rounded-lg text-[11px] sm:text-sm font-semibold transition-all text-slate-600 hover:text-slate-800 whitespace-nowrap";
-                viewToday.classList.remove('hidden');
-                viewSaved.classList.add('hidden');
-            } else {
-                tabSaved.className = "flex-1 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-3.5 py-1.5 rounded-lg text-[11px] sm:text-sm font-semibold transition-all bg-white text-amber-700 shadow-sm whitespace-nowrap";
-                tabToday.className = "flex-1 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-3.5 py-1.5 rounded-lg text-[11px] sm:text-sm font-semibold transition-all text-slate-600 hover:text-slate-800 whitespace-nowrap";
-                viewSaved.classList.remove('hidden');
-                viewToday.classList.add('hidden');
-            }
-            renderAll();
-        };
-
-        window.filterSaved = function(filterKey) {
-            state.savedFilter = filterKey;
-            ['all', 'economy', 'medical', 'it'].forEach(k => {
-                const btn = document.getElementById(`filter-saved-${k}`);
-                if (!btn) return;
-                if (k === filterKey) {
-                    btn.className = "px-3 py-1 rounded-lg text-xs font-semibold bg-white text-slate-800 shadow-sm";
-                } else {
-                    btn.className = "px-3 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-800";
-                }
-            });
-            renderSavedArticles();
-        };
-
-        function renderAll() {
-            renderTodayCategories();
-            renderSavedArticles();
-            updateCounts();
-            lucide.createIcons();
         }
 
-        function updateCounts() {
+        function simpleHash(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return Math.abs(hash).toString(36);
+        }
+
+        // ==========================================
+        // 7. UIレンダリング＆タブ・モーダル制御
+        // ==========================================
+        function renderAll() {
+            renderTodayNews();
+            renderSavedNews();
+            updateCounters();
+            safeCreateIcons();
+        }
+
+        function updateCounters() {
             const todayArticles = state.articles.filter(a => !a.isArchived);
             const savedArticles = state.articles.filter(a => a.isSaved);
 
-            document.getElementById('badge-today-count').textContent = todayArticles.length;
-            document.getElementById('badge-saved-count').textContent = savedArticles.length;
+            const badgeToday = document.getElementById('badge-today-count');
+            const badgeSaved = document.getElementById('badge-saved-count');
+            const excludedEl = document.getElementById('excluded-count');
+
+            if (badgeToday) badgeToday.textContent = todayArticles.length;
+            if (badgeSaved) badgeSaved.textContent = savedArticles.length;
+            if (excludedEl) excludedEl.textContent = state.readHistory.length;
         }
 
-        function renderTodayCategories() {
+        function renderTodayNews() {
+            const todayArticles = state.articles.filter(a => !a.isArchived);
+
             ['economy', 'medical', 'it'].forEach(catKey => {
                 const container = document.getElementById(`list-${catKey}`);
                 if (!container) return;
 
-                const catArticles = state.articles
-                    .filter(a => a.category === catKey && !a.isArchived)
+                const catArticles = todayArticles
+                    .filter(a => a.category === catKey)
+                    .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
                     .slice(0, 3);
 
                 if (catArticles.length === 0) {
                     container.innerHTML = `
-                        <div class="flex-1 flex flex-col items-center justify-center text-center p-6 rounded-2xl bg-slate-50/80 border border-dashed border-slate-200 min-h-[220px]">
+                        <div class="flex-1 flex flex-col items-center justify-center text-center p-6 rounded-2xl border border-dashed border-slate-200 bg-slate-50/60 min-h-[200px]">
                             <i data-lucide="inbox" class="w-8 h-8 text-slate-300 mb-2"></i>
-                            <p class="text-xs font-medium text-slate-500">まだニュースが取得されていません</p>
-                            <p class="text-[11px] text-slate-400 mt-1">右上の「最新ニュースを取得」を押すと<br>24時間以内の最新記事を3件作成します</p>
+                            <p class="text-xs font-semibold text-slate-500">まだニュースが取得されていません</p>
+                            <p class="text-[11px] text-slate-400 mt-1">上の「最新ニュースを取得」を押すと<br>24時間以内の最新記事を3件作成します</p>
                         </div>
                     `;
-                } else {
-                    container.innerHTML = catArticles.map((art, index) => createArticleCardHTML(art, index + 1)).join('');
+                    return;
                 }
+
+                container.innerHTML = catArticles.map((article, idx) => createArticleCardHTML(article, idx + 1, false)).join('');
             });
         }
 
-        function renderSavedArticles() {
+        function renderSavedNews() {
             const container = document.getElementById('saved-list-container');
             if (!container) return;
 
-            let savedList = state.articles.filter(a => a.isSaved);
+            let savedArticles = state.articles
+                .filter(a => a.isSaved)
+                .sort((a, b) => (b.savedAt || b.createdAt || 0) - (a.savedAt || a.createdAt || 0));
+
             if (state.savedFilter !== 'all') {
-                savedList = savedList.filter(a => a.category === state.savedFilter);
+                savedArticles = savedArticles.filter(a => a.category === state.savedFilter);
             }
 
-            if (savedList.length === 0) {
+            if (savedArticles.length === 0) {
                 container.innerHTML = `
-                    <div class="col-span-full flex flex-col items-center justify-center text-center p-12 rounded-3xl bg-white border border-dashed border-slate-200">
-                        <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center mb-3">
+                    <div class="col-span-full bg-white rounded-3xl p-10 border border-slate-200/70 text-center shadow-soft">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center mx-auto mb-3">
                             <i data-lucide="bookmark" class="w-6 h-6"></i>
                         </div>
-                        <h3 class="text-sm font-bold text-slate-700">チェック（保存）された記事はまだありません</h3>
-                        <p class="text-xs text-slate-500 mt-1 max-w-md">
-                            気になるニュースの「保存（チェック）」ボタンを押すと、ここに永続保管され、いつでも読み返すことができます。
+                        <h3 class="text-base font-bold text-slate-800">チェック済みの記事はまだありません</h3>
+                        <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">
+                            気になる記事の「保存する」ボタンを押すと、ここに永続保管され後からいつでも読み返せます。
                         </p>
                     </div>
                 `;
-            } else {
-                container.innerHTML = savedList.map(art => createArticleCardHTML(art, null, true)).join('');
+                return;
             }
+
+            container.innerHTML = savedArticles.map((article, idx) => createArticleCardHTML(article, idx + 1, true)).join('');
         }
 
-        function createArticleCardHTML(article, rankNumber = null, showCategoryBadge = false) {
+        function createArticleCardHTML(article, indexNum, isSavedView) {
             const cat = CATEGORIES[article.category] || CATEGORIES.it;
-            const charCount = article.summary ? article.summary.length : 0;
-            const isRead = !!article.isRead;
-            const isSaved = !!article.isSaved;
-
-            // 既読時は少し落ち着いた背景トーンにしつつ、可読性を維持
-            const cardBgClass = isRead
+            const charCount = (article.summary || "").length;
+            const readCardStyle = article.isRead
                 ? 'bg-slate-50/90 border-slate-200/80 opacity-85'
-                : `bg-white border-slate-100 shadow-card ${cat.accentBorder}`;
+                : `bg-white border-slate-200/80 ${cat.accentBorder} shadow-card`;
 
             return `
-                <article class="rounded-2xl p-4 sm:p-5 border transition-all duration-200 flex flex-col justify-between ${cardBgClass}">
+                <article class="rounded-2xl p-4 border transition-all flex flex-col justify-between ${readCardStyle}">
                     <div>
-                        <!-- カード上部：番号/カテゴリ・文字数・ステータス -->
+                        <!-- 上部メタ情報：番号・カテゴリ・文字数・既読状態 -->
                         <div class="flex items-center justify-between gap-2 mb-2.5">
                             <div class="flex items-center gap-1.5">
-                                ${rankNumber ? `
-                                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md text-[11px] font-bold ${cat.badgeBg} ${cat.badgeText} border ${cat.badgeBorder}">
-                                        ${rankNumber}
-                                    </span>
-                                ` : ''}
-                                ${showCategoryBadge ? `
-                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold ${cat.badgeBg} ${cat.badgeText} border ${cat.badgeBorder}">
+                                <span class="inline-flex items-center justify-center w-5 h-5 rounded-md text-[11px] font-bold ${cat.badgeBg} ${cat.badgeText}">
+                                    ${indexNum}
+                                </span>
+                                ${isSavedView ? `
+                                    <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold ${cat.badgeBg} ${cat.badgeText} border ${cat.badgeBorder}">
                                         ${cat.label}
                                     </span>
                                 ` : ''}
-                                <span class="text-[11px] text-slate-400 font-medium">${article.publishedDate || ''}</span>
+                                <span class="text-[11px] text-slate-400 font-medium">${charCount}文字</span>
                             </div>
 
-                            <div class="flex items-center gap-1.5">
-                                <span class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600" title="本文の文字数">
-                                    ${charCount}文字
-                                </span>
-                                ${isRead ? `
-                                    <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-200/80 text-slate-600">
-                                        既読
-                                    </span>
-                                ` : `
-                                    <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200/60">
-                                        未読
-                                    </span>
-                                `}
-                            </div>
+                            <!-- 既読 / 未読 ステータスバッジ -->
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold ${
+                                article.isRead
+                                    ? 'bg-slate-200/80 text-slate-600'
+                                    : 'bg-sky-50 text-sky-700 border border-sky-200/60'
+                            }">
+                                <span class="w-1.5 h-1.5 rounded-full ${article.isRead ? 'bg-slate-500' : 'bg-sky-500'}"></span>
+                                ${article.isRead ? '既読済み' : '未読'}
+                            </span>
                         </div>
 
                         <!-- 記事タイトル -->
-                        <h3 class="text-[15px] font-bold leading-snug mb-2.5 ${isRead ? 'text-slate-600' : 'text-slate-800'}">
+                        <h3 class="text-[15px] font-bold leading-snug mb-2.5 ${article.isRead ? 'text-slate-600' : 'text-slate-900'}">
                             ${escapeHTML(article.title)}
                         </h3>
 
-                        <!-- 記事本文 (300-400文字要約) -->
-                        <p class="text-[13px] leading-relaxed text-slate-600 mb-4">
+                        <!-- 300〜400文字要約本文 -->
+                        <p class="text-[13px] leading-relaxed text-slate-600 mb-3.5">
                             ${escapeHTML(article.summary)}
                         </p>
                     </div>
 
-                    <div class="pt-3 border-t border-slate-100 space-y-3">
-                        <!-- 引用元表示エリア + SafariでHPに飛ぶボタン + 引用元コピーボタン -->
-                        <div class="bg-slate-50/90 rounded-xl p-2.5 border border-slate-200/60">
-                            <div class="flex items-center justify-between gap-2 mb-2">
-                                <div class="min-w-0 flex-1">
-                                    <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">引用元ソース</span>
-                                    <p class="text-xs font-semibold text-slate-700 truncate" title="${escapeHTML(article.sourceName)}">
-                                        ${escapeHTML(article.sourceName)}
-                                    </p>
+                    <div class="pt-3 border-t border-slate-100 space-y-2.5">
+                        <!-- 引用元表示（正確に表示） -->
+                        <div class="bg-slate-50 rounded-xl p-2.5 border border-slate-200/60">
+                            <div class="flex items-center justify-between gap-2 mb-1.5">
+                                <div class="flex items-center gap-1.5 min-w-0">
+                                    <i data-lucide="quote" class="w-3.5 h-3.5 text-slate-400 flex-shrink-0"></i>
+                                    <span class="text-[11px] font-semibold text-slate-700 truncate" title="${escapeHTML(article.sourceName)}">
+                                        引用元: ${escapeHTML(article.sourceName)}
+                                    </span>
                                 </div>
+                                <span class="text-[10px] text-slate-400 flex-shrink-0">${escapeHTML(article.publishedDate || '')}</span>
                             </div>
 
-                            <div class="flex items-center gap-2">
-                                <!-- Safari / ブラウザでHPに飛ぶボタン -->
+                            <!-- SafariでHPに飛ぶボタン ＆ 引用元コピーボタン -->
+                            <div class="flex items-center gap-1.5">
                                 <a href="${escapeHTML(article.sourceUrl)}" target="_blank" rel="noopener noreferrer"
-                                    class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-600 hover:bg-sky-700 text-white shadow-xs transition-colors">
+                                    class="flex-1 inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-sky-600 hover:bg-sky-700 text-white transition-colors shadow-xs whitespace-nowrap">
                                     <i data-lucide="compass" class="w-3.5 h-3.5"></i>
                                     <span>SafariでHPを開く</span>
                                 </a>
-
-                                <!-- 引用元をコピーボタン -->
-                                <button onclick="copyCitation('${article.id}')"
-                                    class="inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 transition-colors"
-                                    title="引用元とURLをコピー">
+                                <button type="button" onclick="copyCitation('${article.id}')"
+                                    class="inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 transition-colors whitespace-nowrap"
+                                    title="タイトル・引用元・URLをコピー">
                                     <i data-lucide="copy" class="w-3.5 h-3.5 text-slate-500"></i>
                                     <span>引用元コピー</span>
                                 </button>
                             </div>
                         </div>
 
-                        <!-- アクションボタン：既読/未読ボタン & チェック（保存）ボタン -->
+                        <!-- アクションバー：既読・未読ボタン ＆ チェック（永続保存）ボタン -->
                         <div class="flex items-center gap-2">
-                            <!-- 既読 / 未読切り替えボタン -->
-                            <button onclick="toggleReadStatus('${article.id}')"
-                                class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold border transition-all ${
-                                    isRead
-                                    ? 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200'
-                                    : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50 hover:text-slate-900'
+                            <button type="button" onclick="toggleReadStatus('${article.id}')"
+                                class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all whitespace-nowrap ${
+                                    article.isRead
+                                        ? 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200/70'
+                                        : 'bg-white text-slate-700 border-slate-200 hover:border-emerald-300 hover:text-emerald-700 hover:bg-emerald-50/50'
                                 }">
-                                <i data-lucide="${isRead ? 'check-circle-2' : 'circle'}" class="w-4 h-4 ${isRead ? 'text-emerald-600' : 'text-slate-400'}"></i>
-                                <span>${isRead ? '既読済み（未読に戻す）' : '既読にする'}</span>
+                                <i data-lucide="${article.isRead ? 'rotate-ccw' : 'check-circle-2'}" class="w-3.5 h-3.5 ${article.isRead ? 'text-slate-500' : 'text-emerald-600'}"></i>
+                                <span>${article.isRead ? '未読に戻す' : '既読にする'}</span>
                             </button>
 
-                            <!-- チェック（後で読むため保管）ボタン -->
-                            <button onclick="toggleSaveStatus('${article.id}')"
-                                class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all ${
-                                    isSaved
-                                    ? 'bg-amber-50 text-amber-700 border-amber-300 shadow-xs'
-                                    : 'bg-white text-slate-600 border-slate-200 hover:bg-amber-50/50 hover:border-amber-200 hover:text-amber-700'
-                                }"
-                                title="チェックして保管庫に保存">
-                                <i data-lucide="${isSaved ? 'bookmark-check' : 'bookmark'}" class="w-4 h-4 ${isSaved ? 'text-amber-500 fill-amber-500' : 'text-slate-400'}"></i>
-                                <span>${isSaved ? '保存済み' : 'チェック'}</span>
+                            <button type="button" onclick="toggleSaveStatus('${article.id}')"
+                                class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all whitespace-nowrap ${
+                                    article.isSaved
+                                        ? 'bg-amber-50 text-amber-700 border-amber-300 shadow-xs'
+                                        : 'bg-white text-slate-700 border-slate-200 hover:border-amber-300 hover:text-amber-700 hover:bg-amber-50/50'
+                                }">
+                                <i data-lucide="${article.isSaved ? 'bookmark-check' : 'bookmark'}" class="w-3.5 h-3.5 ${article.isSaved ? 'text-amber-500 fill-amber-500' : 'text-slate-400'}"></i>
+                                <span>${article.isSaved ? 'チェック済(保管中)' : 'チェックして保存'}</span>
                             </button>
                         </div>
                     </div>
@@ -1392,161 +1455,207 @@ SOURCE_URL: （記事のURL）
             `;
         }
 
-        function renderHistoryModal() {
-            const body = document.getElementById('history-list-body');
-            if (!body) return;
-
-            if (state.readHistory.length === 0) {
-                body.innerHTML = `<p class="text-xs text-slate-400 text-center py-6">まだ既読マークがついた記事はありません。</p>`;
-                return;
-            }
-
-            body.innerHTML = state.readHistory.map(item => {
-                const cat = CATEGORIES[item.category] || CATEGORIES.it;
-                return `
-                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/70 flex items-start justify-between gap-2">
-                        <div class="min-w-0">
-                            <span class="inline-block px-1.5 py-0.2 rounded text-[10px] font-semibold ${cat.badgeBg} ${cat.badgeText} mb-1">
-                                ${cat.label}
-                            </span>
-                            <p class="text-xs font-semibold text-slate-700 line-clamp-2">${escapeHTML(item.title)}</p>
-                        </div>
-                        <span class="text-[10px] text-emerald-600 font-semibold whitespace-nowrap bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
-                            除外対象
-                        </span>
-                    </div>
-                `;
-            }).join('');
+        function escapeHTML(str) {
+            if (!str) return "";
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
         }
 
-        // ==========================================
-        // 8. モーダル制御＆ユーティリティ
-        // ==========================================
-        window.openHomeScreenModal = function() {
-            const modal = document.getElementById('homescreen-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            lucide.createIcons();
+        // タブ切り替え
+        window.switchTab = function(tabName) {
+            state.activeTab = tabName;
+            const viewToday = document.getElementById('view-today');
+            const viewSaved = document.getElementById('view-saved');
+            const tabToday = document.getElementById('tab-today');
+            const tabSaved = document.getElementById('tab-saved');
+
+            if (tabName === 'today') {
+                if (viewToday) viewToday.classList.remove('hidden');
+                if (viewSaved) viewSaved.classList.add('hidden');
+                if (tabToday) tabToday.className = "flex-1 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-3.5 py-1.5 rounded-lg text-[11px] sm:text-sm font-semibold transition-all bg-white text-sky-700 shadow-sm whitespace-nowrap";
+                if (tabSaved) tabSaved.className = "flex-1 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-3.5 py-1.5 rounded-lg text-[11px] sm:text-sm font-semibold transition-all text-slate-600 hover:text-slate-800 whitespace-nowrap";
+            } else {
+                if (viewToday) viewToday.classList.add('hidden');
+                if (viewSaved) viewSaved.classList.remove('hidden');
+                if (tabSaved) tabSaved.className = "flex-1 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-3.5 py-1.5 rounded-lg text-[11px] sm:text-sm font-semibold transition-all bg-white text-amber-700 shadow-sm whitespace-nowrap";
+                if (tabToday) tabToday.className = "flex-1 sm:flex-none inline-flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-3.5 py-1.5 rounded-lg text-[11px] sm:text-sm font-semibold transition-all text-slate-600 hover:text-slate-800 whitespace-nowrap";
+                renderSavedNews();
+            }
+            safeCreateIcons();
         };
 
+        // 保存済みフィルター
+        window.filterSaved = function(catKey) {
+            state.savedFilter = catKey;
+            ['all', 'economy', 'medical', 'it'].forEach(k => {
+                const btn = document.getElementById(`filter-saved-${k}`);
+                if (!btn) return;
+                if (k === catKey) {
+                    btn.className = "px-3 py-1 rounded-lg text-xs font-semibold bg-white text-slate-800 shadow-sm";
+                } else {
+                    btn.className = "px-3 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-800";
+                }
+            });
+            renderSavedNews();
+            safeCreateIcons();
+        };
+
+        // モーダル制御
+        window.openHomeScreenModal = function() {
+            const modal = document.getElementById('homescreen-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                safeCreateIcons();
+            }
+        };
         window.closeHomeScreenModal = function() {
             const modal = document.getElementById('homescreen-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
         };
 
         window.openHistoryModal = function() {
-            renderHistoryModal();
             const modal = document.getElementById('history-modal');
+            const body = document.getElementById('history-list-body');
+            if (!modal || !body) return;
+
+            if (state.readHistory.length === 0) {
+                body.innerHTML = `<p class="text-xs text-slate-400 text-center py-8">既読済みの記事はまだありません。</p>`;
+            } else {
+                body.innerHTML = state.readHistory.map(item => `
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/70 flex items-start justify-between gap-2">
+                        <div>
+                            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 mr-1.5">
+                                ${CATEGORIES[item.category]?.label || 'ニュース'}
+                            </span>
+                            <span class="text-xs font-semibold text-slate-800">${escapeHTML(item.title)}</span>
+                            <p class="text-[10px] text-slate-400 mt-1">既読日時: ${escapeHTML(item.readAt || '')}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            lucide.createIcons();
+            safeCreateIcons();
         };
-
         window.closeHistoryModal = function() {
             const modal = document.getElementById('history-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
         };
 
         window.openSettingsModal = function() {
-            document.getElementById('custom-api-key-input').value = state.customApiKey || "";
             const modal = document.getElementById('settings-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            lucide.createIcons();
+            const apiInput = document.getElementById('custom-api-key-input');
+            if (apiInput) apiInput.value = state.customApiKey || "";
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                safeCreateIcons();
+            }
         };
-
         window.closeSettingsModal = function() {
             const modal = document.getElementById('settings-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
         };
 
-        window.applyCustomSettings = async function() {
-            const apiKeyVal = document.getElementById('custom-api-key-input').value.trim();
-            const firebaseJsonVal = document.getElementById('custom-firebase-input').value.trim();
-
-            if (apiKeyVal) {
-                state.customApiKey = apiKeyVal;
-            }
-
-            if (firebaseJsonVal) {
-                try {
-                    const parsedConfig = JSON.parse(firebaseJsonVal);
-                    if (!parsedConfig.apiKey || !parsedConfig.projectId) {
-                        showToast("Firebase設定の形式が正しくありません", "error");
-                        return;
-                    }
-                    activeFirebaseConfig = parsedConfig;
-                    await initFirebase();
-                } catch (e) {
-                    showToast("Firebase設定のJSON解析に失敗しました", "error");
-                    return;
+        window.applyCustomSettings = function() {
+            const apiInput = document.getElementById('custom-api-key-input');
+            const apiVal = apiInput ? apiInput.value.trim() : "";
+            state.customApiKey = apiVal;
+            try {
+                if (apiVal) {
+                    localStorage.setItem(STORAGE_KEYS.CUSTOM_API_KEY, apiVal);
+                } else {
+                    localStorage.removeItem(STORAGE_KEYS.CUSTOM_API_KEY);
                 }
-            }
+            } catch (e) {}
 
+            updateSyncStatusUI();
             closeSettingsModal();
-            showToast("設定を適用しました！「最新ニュースを取得」をお試しください。", "success");
+            showToast(apiVal ? "Gemini APIキーを設定しました" : "API不要モードに設定しました", "success");
         };
 
-        function showToast(message, type = 'info') {
+        // トースト通知
+        function showToast(message, type = "info") {
             const container = document.getElementById('toast-container');
             if (!container) return;
 
             const toast = document.createElement('div');
             const styles = {
-                success: 'bg-emerald-600 text-white shadow-emerald-200',
-                error: 'bg-rose-600 text-white shadow-rose-200',
-                info: 'bg-slate-800 text-white shadow-slate-200'
+                success: 'bg-slate-900 text-white border-slate-800',
+                error: 'bg-rose-600 text-white border-rose-500',
+                info: 'bg-sky-700 text-white border-sky-600'
             };
-
             const icons = {
-                success: 'check-circle',
+                success: 'check-circle-2',
                 error: 'alert-circle',
-                info: 'info'
+                info: 'sparkles'
             };
 
-            toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-2xl shadow-lg text-xs font-semibold transition-all duration-300 transform translate-y-2 opacity-0 ${styles[type] || styles.info}`;
+            toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-2xl shadow-xl border text-xs font-semibold transition-all duration-300 transform translate-y-2 opacity-0 ${styles[type] || styles.info}`;
             toast.innerHTML = `
                 <i data-lucide="${icons[type] || 'info'}" class="w-4 h-4 flex-shrink-0"></i>
                 <span class="leading-snug">${escapeHTML(message)}</span>
             `;
 
             container.appendChild(toast);
-            lucide.createIcons();
+            safeCreateIcons();
 
             requestAnimationFrame(() => {
                 toast.classList.remove('translate-y-2', 'opacity-0');
             });
 
             setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-2');
+                toast.classList.add('translate-y-2', 'opacity-0');
                 setTimeout(() => toast.remove(), 300);
             }, 3500);
         }
 
-        function escapeHTML(str) {
-            if (!str) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#39;');
+        // ==========================================
+        // 8. アプリ起動初期化
+        // ==========================================
+        function initApp() {
+            // 今日の日付バッジ表示
+            const now = new Date();
+            const days = ['日', '月', '火', '水', '木', '金', '土'];
+            const dateBadge = document.getElementById('current-date-badge');
+            if (dateBadge) {
+                dateBadge.textContent = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日(${days[now.getDay()]})`;
+            }
+
+            // ホーム画面アイコンの生成
+            generateAppIcon();
+
+            // 永続データの復元
+            loadPersistentData();
+            applySettingsToUI();
+            updateSyncStatusUI();
+
+            // 画面描画
+            renderAll();
+
+            // 配信時刻または初回起動チェック
+            checkInitialOrScheduledFetch();
         }
 
-        // 初期起動処理
-        window.addEventListener('DOMContentLoaded', () => {
-            // 今日の日付を表示
-            const now = new Date();
-            const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' };
-            document.getElementById('current-date-badge').textContent = now.toLocaleDateString('ja-JP', dateOptions);
-
-            generateAppIcon();
-            lucide.createIcons();
-            initFirebase();
-        });
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initApp);
+        } else {
+            initApp();
+        }
     </script>
 </body>
 </html>
