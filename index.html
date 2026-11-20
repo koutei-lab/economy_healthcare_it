@@ -166,7 +166,7 @@
                 <div class="flex items-center justify-between sm:justify-end gap-3 text-xs text-slate-500">
                     <button type="button" onclick="openSettingsModal()" id="sync-status" class="inline-flex items-center gap-1.5 hover:text-sky-600 transition-colors text-left">
                         <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                        <span>API不要モード（準備完了）</span>
+                        <span>API不要モード（端末永続保存）</span>
                     </button>
                     <span class="text-slate-300">|</span>
                     <button type="button" onclick="openHistoryModal()" class="inline-flex items-center gap-1 text-slate-600 hover:text-sky-600 font-medium transition-colors">
@@ -294,7 +294,7 @@
                     </div>
                     <div>
                         <h2 class="text-base font-bold text-slate-800">チェック済み記事の永続保管庫</h2>
-                        <p class="text-xs text-slate-500">「保存する（チェック）」を押した記事は永続保管され、アプリが更新されてもリセットされません。</p>
+                        <p class="text-xs text-slate-500">「チェックして保存」を押した記事は永続保管され、アプリが更新されてもリセットされません。</p>
                     </div>
                 </div>
                 <!-- カテゴリ絞り込みフィルター -->
@@ -665,11 +665,8 @@
 
         function savePersistentData() {
             try {
-                // チェック保存された記事・現在の最新記事を永続保存
                 localStorage.setItem(STORAGE_KEYS.ARTICLES, JSON.stringify(state.articles));
-                // 既読ブラックリストを永続保存（二度と使わないため）
                 localStorage.setItem(STORAGE_KEYS.READ_HISTORY, JSON.stringify(state.readHistory));
-                // 配信時刻などの設定を永続保存
                 localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(state.settings));
             } catch (e) {
                 console.error('Failed to save persistent data:', e);
@@ -720,12 +717,10 @@
             const scheduledToday = new Date();
             scheduledToday.setHours(targetHour, targetMinute, 0, 0);
 
-            // 本日まだ自動取得しておらず、かつ現在時刻が指定時刻を過ぎている場合
             if (state.settings.lastAutoFetchDate !== todayStr && now >= scheduledToday) {
                 showToast(`毎朝 ${state.settings.scheduleTime} の定期ニュースを取得します`, "info");
                 fetchAllLatestNews(false);
             } else if (state.articles.filter(a => !a.isArchived).length === 0) {
-                // まだ今日の記事が1件もない場合は自動取得を実行
                 fetchAllLatestNews(false);
             }
         }
@@ -780,7 +775,8 @@
             let totalCreated = 0;
 
             try {
-                // 前回の未保存の「今日のニュース」はアーカイブ扱いにして一覧から入れ替え（保存済みはそのまま保持）
+                // 既存の今日の記事を一時退避（取得成功時のみ入れ替え、失敗時は復元できるよう保持）
+                const previousTodayArticles = state.articles.filter(a => !a.isArchived);
                 archivePreviousBatchArticles();
 
                 const results = await Promise.all(
@@ -791,13 +787,23 @@
                     totalCreated += articles.length;
                 }
 
-                // 最終取得日時を保存
+                // もし全カテゴリ0件だった場合、以前の表示記事があれば復元する
+                if (totalCreated === 0 && previousTodayArticles.length > 0) {
+                    previousTodayArticles.forEach(prev => {
+                        if (!state.articles.some(a => a.id === prev.id)) {
+                            state.articles.push({ ...prev, isArchived: false });
+                        }
+                    });
+                }
+
                 const todayStr = getTodayDateString();
                 const formattedNow = new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
                 const fullTimestamp = `${todayStr} ${formattedNow}`;
 
-                state.settings.lastAutoFetchDate = todayStr;
-                state.settings.lastFetchedAt = fullTimestamp;
+                if (totalCreated > 0) {
+                    state.settings.lastAutoFetchDate = todayStr;
+                    state.settings.lastFetchedAt = fullTimestamp;
+                }
                 savePersistentData();
                 applySettingsToUI();
                 renderAll();
@@ -827,7 +833,6 @@
                     }
                     return article;
                 })
-                // 保存済みまたは既読履歴に必要なデータ以外は整理してストレージ容量を最適化
                 .filter(article => !article.isArchived || article.isSaved);
             savePersistentData();
         }
@@ -857,9 +862,9 @@
                 }
             }
 
-            // 2. API不要モード：24時間以内の最新ニュースフィードから直接取得＆300〜400文字要約生成
+            // 2. API不要モード：複数の公式RSSフィードから並列高速取得＆300〜400文字要約生成
             try {
-                const freeItems = await fetchCategoryViaFreeNewsFeed(catKey, excludedTitles, batchId);
+                const freeItems = await fetchCategoryViaOfficialFeeds(catKey, excludedTitles, batchId);
                 if (freeItems && freeItems.length > 0) {
                     state.articles = [...freeItems, ...state.articles];
                 }
@@ -869,7 +874,7 @@
                 }
                 return freeItems;
             } catch (error) {
-                console.error(`Free feed fetch error for ${catKey}:`, error);
+                console.error(`Feed fetch error for ${catKey}:`, error);
                 if (statusEl) {
                     statusEl.innerHTML = `<i data-lucide="alert-circle" class="w-4 h-4 text-rose-600"></i><span>${cat.label}の取得に失敗</span>`;
                     safeCreateIcons();
@@ -878,122 +883,169 @@
             }
         }
 
-        // APIキー完全不要・24時間以内ニュース取得＆300-400文字要約生成
-        async function fetchCategoryViaFreeNewsFeed(catKey, excludedTitles, batchId) {
-            const searchQueries = {
-                economy: '経済 OR 株価 OR 日銀 OR 為替 OR 企業業績 when:1d',
-                medical: '医療 OR 新薬 OR 病院 OR 治療 OR 医学研究 when:1d',
-                it: 'IT OR AI OR 人工知能 OR テクノロジー OR サイバーセキュリティ when:1d'
+        // iOS Safari 完全対応の日時パーサー
+        function parseSafeDateMs(dateStr) {
+            if (!dateStr) return null;
+            const s = String(dateStr).trim();
+
+            // 1. rss2json の "YYYY-MM-DD HH:MM:SS" 形式（UTC）を iOS Safari で確実にパースできるように変換
+            const sqlMatch = s.match(/^(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2}):(\d{2})$/);
+            if (sqlMatch) {
+                const isoUtc = `${sqlMatch[1]}-${sqlMatch[2]}-${sqlMatch[3]}T${sqlMatch[4]}:${sqlMatch[5]}:${sqlMatch[6]}Z`;
+                const ms = Date.parse(isoUtc);
+                if (!isNaN(ms)) return ms;
+            }
+
+            // 2. 標準の Date.parse (RFC-2822 / ISO-8601)
+            const directMs = Date.parse(s);
+            if (!isNaN(directMs)) return directMs;
+
+            return null;
+        }
+
+        // 複数プロキシをレースさせて最速でRSSデータを取得するヘルパー
+        async function fetchSingleRssFeedFast(feedConfig) {
+            const { url, defaultSource } = feedConfig;
+            const timeoutMs = 9000;
+
+            const withTimeout = (promise) => {
+                return new Promise((resolve, reject) => {
+                    const timer = setTimeout(() => reject(new Error('timeout')), timeoutMs);
+                    promise.then(
+                        val => { clearTimeout(timer); resolve(val); },
+                        err => { clearTimeout(timer); reject(err); }
+                    );
+                });
             };
 
-            const query = searchQueries[catKey] || `${CATEGORIES[catKey].label} when:1d`;
-            const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=ja&gl=JP&ceid=JP:ja`;
+            // 経路A: api.rss2json.com
+            const viaRss2Json = async () => {
+                const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`);
+                if (!res.ok) throw new Error('rss2json status ' + res.status);
+                const data = await res.json();
+                if (data.status !== 'ok' || !Array.isArray(data.items) || data.items.length === 0) {
+                    throw new Error('rss2json empty');
+                }
+                return data.items.map(it => ({
+                    rawTitle: it.title || '',
+                    link: it.link || '',
+                    pubDate: it.pubDate || '',
+                    description: it.description || it.content || '',
+                    sourceName: defaultSource || it.author || ''
+                }));
+            };
 
-            let rawItems = [];
+            // 経路B: api.allorigins.win/raw
+            const viaAllOriginsRaw = async () => {
+                const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`);
+                if (!res.ok) throw new Error('allorigins status ' + res.status);
+                const xmlText = await res.text();
+                const items = parseRssXmlToRawItems(xmlText, defaultSource);
+                if (items.length === 0) throw new Error('allorigins empty');
+                return items;
+            };
 
-            // 経路1: rss2json 公開エンドポイント
+            // 経路C: api.codetabs.com
+            const viaCodeTabs = async () => {
+                const res = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`);
+                if (!res.ok) throw new Error('codetabs status ' + res.status);
+                const xmlText = await res.text();
+                const items = parseRssXmlToRawItems(xmlText, defaultSource);
+                if (items.length === 0) throw new Error('codetabs empty');
+                return items;
+            };
+
             try {
-                const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`);
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.status === 'ok' && Array.isArray(data.items) && data.items.length > 0) {
-                        rawItems = data.items.map(it => ({
-                            rawTitle: it.title || '',
-                            link: it.link || '',
-                            pubDate: it.pubDate || '',
-                            description: it.description || it.content || '',
-                            author: it.author || ''
-                        }));
-                    }
-                }
+                // 最速で成功したプロキシの結果を即採用
+                return await Promise.any([
+                    withTimeout(viaRss2Json()),
+                    withTimeout(viaAllOriginsRaw()),
+                    withTimeout(viaCodeTabs())
+                ]);
             } catch (e) {
-                // 次のプロキシへ
+                return [];
             }
+        }
 
-            // 経路2: allorigins 公開プロキシ
-            if (rawItems.length === 0) {
-                try {
-                    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`);
-                    if (res.ok) {
-                        const data = await res.json();
-                        if (data && data.contents) {
-                            rawItems = parseRssXmlToRawItems(data.contents);
-                        }
-                    }
-                } catch (e) {
-                    // 次のプロキシへ
-                }
-            }
+        // 公式ニュースRSSフィード群から24時間以内の未読記事を3件抽出＆300〜400文字作成
+        async function fetchCategoryViaOfficialFeeds(catKey, excludedTitles, batchId) {
+            const categoryFeeds = {
+                economy: [
+                    { url: 'https://www.nhk.or.jp/rss/news/cat5.xml', defaultSource: 'NHKニュース' },
+                    { url: 'https://news.yahoo.co.jp/rss/topics/business.xml', defaultSource: 'Yahoo!ニュース（経済）' },
+                    { url: 'https://toyokeizai.net/list/feed/rss', defaultSource: '東洋経済オンライン' }
+                ],
+                medical: [
+                    { url: 'https://www.nhk.or.jp/rss/news/cat3.xml', defaultSource: 'NHKニュース（科学・医療）' },
+                    { url: 'https://news.yahoo.co.jp/rss/categories/life.xml', defaultSource: 'Yahoo!ニュース（ライフ・医療）' },
+                    { url: 'https://news.yahoo.co.jp/rss/categories/science.xml', defaultSource: 'Yahoo!ニュース（科学・医療）' }
+                ],
+                it: [
+                    { url: 'https://news.yahoo.co.jp/rss/topics/it.xml', defaultSource: 'Yahoo!ニュース（IT）' },
+                    { url: 'https://rss.itmedia.co.jp/rss/2.0/news_bursts.xml', defaultSource: 'ITmedia NEWS' },
+                    { url: 'https://b.hatena.ne.jp/hotentry/it.rss', defaultSource: 'はてなブックマーク（IT）' }
+                ]
+            };
 
-            // 経路3: corsproxy.io
-            if (rawItems.length === 0) {
-                try {
-                    const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(rssUrl)}`);
-                    if (res.ok) {
-                        const xmlText = await res.text();
-                        rawItems = parseRssXmlToRawItems(xmlText);
-                    }
-                } catch (e) {
-                    // 次のプロキシへ
-                }
-            }
+            const feeds = categoryFeeds[catKey] || categoryFeeds.it;
+            const feedResults = await Promise.all(feeds.map(f => fetchSingleRssFeedFast(f)));
+            let allRawItems = feedResults.flat();
 
-            // 経路4: codetabs 公開プロキシ
-            if (rawItems.length === 0) {
-                try {
-                    const res = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(rssUrl)}`);
-                    if (res.ok) {
-                        const xmlText = await res.text();
-                        rawItems = parseRssXmlToRawItems(xmlText);
-                    }
-                } catch (e) {
-                    // 全経路失敗
-                }
+            // 医療カテゴリの場合は医療・健康・創薬・病院関連の記事を優先順位の上位に並べる
+            if (catKey === 'medical') {
+                const medicalRegex = /(医療|病院|治療|新薬|薬|がん|癌|医師|患者|健康|感染|ワクチン|手術|厚生労働|臨床|製薬|介護|認知症|再生医療|診断|医学|疾患|ウイルス|症状|難病|ゲノム|iPS)/;
+                allRawItems.sort((a, b) => {
+                    const scoreA = medicalRegex.test(a.rawTitle + a.description) ? 1 : 0;
+                    const scoreB = medicalRegex.test(b.rawTitle + b.description) ? 1 : 0;
+                    return scoreB - scoreA;
+                });
             }
 
             const nowMs = Date.now();
             const twentyFourHoursMs = 24 * 60 * 60 * 1000;
             const selectedArticles = [];
 
-            // 既読・既存タイトルの正規化セット（既読のついた内容と同じ記事は二度と使わない）
+            // 既読・既存タイトルの正規化セット（既読になった記事と同じ内容は二度と使用しない）
             const normalizeTitle = (t) => t.replace(/[\s　・：:【】「」『』（）()\-−―]+/g, '').toLowerCase();
             const normalizedExcluded = new Set(excludedTitles.map(normalizeTitle));
             state.readHistory.forEach(h => {
                 if (h.title) normalizedExcluded.add(normalizeTitle(h.title));
             });
 
-            for (let i = 0; i < rawItems.length; i++) {
+            for (let i = 0; i < allRawItems.length; i++) {
                 if (selectedArticles.length >= 3) break;
-                const item = rawItems[i];
+                const item = allRawItems[i];
                 if (!item.rawTitle || !item.link) continue;
 
-                // 24時間以内チェック
+                // 24時間以内チェック（iOS Safari対応）
                 let pubTimeStr = "24時間以内";
-                if (item.pubDate) {
-                    const parsedTime = Date.parse(item.pubDate);
-                    if (!isNaN(parsedTime)) {
-                        const diffMs = nowMs - parsedTime;
-                        if (diffMs > twentyFourHoursMs) {
-                            continue;
-                        }
-                        const d = new Date(parsedTime);
-                        pubTimeStr = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}配信`;
+                const parsedMs = parseSafeDateMs(item.pubDate);
+                if (parsedMs !== null) {
+                    const diffMs = nowMs - parsedMs;
+                    if (diffMs > twentyFourHoursMs) {
+                        continue;
                     }
+                    const d = new Date(parsedMs);
+                    pubTimeStr = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}配信`;
                 }
 
-                // タイトルと引用元メディア名の分離
-                let cleanTitle = item.rawTitle.trim();
-                let sourceName = item.sourceName || item.author || "";
-                const lastDashIdx = cleanTitle.lastIndexOf(' - ');
-                if (lastDashIdx > 0) {
-                    if (!sourceName) {
-                        sourceName = cleanTitle.substring(lastDashIdx + 3).trim();
-                    }
-                    cleanTitle = cleanTitle.substring(0, lastDashIdx).trim();
+                // タイトルと引用元メディア名の正確な抽出
+                let cleanTitle = item.rawTitle.replace(/\s+/g, ' ').trim();
+                let sourceName = item.sourceName || "";
+
+                // タイトル末尾のメディア名表記を抽出
+                const parenMatch = cleanTitle.match(/[（(]([^（）()]{2,20})[）)]$/);
+                const dashMatch = cleanTitle.match(/\s+-\s+([^-]{2,25})$/);
+                if (parenMatch && !sourceName.includes('NHK')) {
+                    sourceName = parenMatch[1].trim();
+                    cleanTitle = cleanTitle.replace(/[（(][^（）()]{2,20}[）)]$/, '').trim();
+                } else if (dashMatch) {
+                    sourceName = dashMatch[1].trim();
+                    cleanTitle = cleanTitle.replace(/\s+-\s+[^-]{2,25}$/, '').trim();
                 }
-                if (!sourceName) {
-                    sourceName = "主要ニュースメディア";
-                }
+
+                // URLドメインからより正確な引用元名を補完
+                sourceName = resolveAccurateSourceName(item.link, sourceName);
 
                 // 既読履歴との重複チェック（一度既読にした内容は二度と使用しない）
                 const normTitle = normalizeTitle(cleanTitle);
@@ -1001,7 +1053,7 @@
                     continue;
                 }
                 const isSimilarToRead = Array.from(normalizedExcluded).some(ex =>
-                    ex.length > 10 && normTitle.length > 10 && (ex.includes(normTitle.slice(0, 14)) || normTitle.includes(ex.slice(0, 14)))
+                    ex.length > 9 && normTitle.length > 9 && (ex.includes(normTitle.slice(0, 12)) || normTitle.includes(ex.slice(0, 12)))
                 );
                 if (isSimilarToRead) {
                     continue;
@@ -1029,18 +1081,47 @@
             return selectedArticles;
         }
 
-        function parseRssXmlToRawItems(xmlString) {
+        function resolveAccurateSourceName(url, fallbackName) {
+            try {
+                const host = new URL(url).hostname.toLowerCase();
+                if (host.includes('nhk.or.jp')) return 'NHKニュース';
+                if (host.includes('news.yahoo.co.jp')) return fallbackName || 'Yahoo!ニュース';
+                if (host.includes('itmedia.co.jp')) return 'ITmedia NEWS';
+                if (host.includes('toyokeizai.net')) return '東洋経済オンライン';
+                if (host.includes('nikkei.com')) return '日本経済新聞';
+                if (host.includes('asahi.com')) return '朝日新聞デジタル';
+                if (host.includes('mainichi.jp')) return '毎日新聞';
+                if (host.includes('yomiuri.co.jp')) return '読売新聞オンライン';
+                if (host.includes('gigazine.net')) return 'GIGAZINE';
+                if (host.includes('impress.co.jp')) return 'Impress Watch';
+                if (host.includes('cnet.com')) return 'CNET Japan';
+                if (host.includes('zdnet.com')) return 'ZDNET Japan';
+                if (host.includes('reuters.com')) return 'ロイター';
+                if (host.includes('bloomberg.co.jp')) return 'Bloomberg';
+            } catch (e) {}
+            return fallbackName || '公式ニュースメディア';
+        }
+
+        function parseRssXmlToRawItems(xmlString, defaultSource = "") {
             try {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(xmlString, 'text/xml');
+                // RSS 2.0 (<item>) と RDF/RSS 1.0 (<item>) の両方に対応
                 const itemNodes = Array.from(doc.querySelectorAll('item'));
-                return itemNodes.map(node => ({
-                    rawTitle: node.querySelector('title')?.textContent || '',
-                    link: node.querySelector('link')?.textContent || '',
-                    pubDate: node.querySelector('pubDate')?.textContent || '',
-                    description: node.querySelector('description')?.textContent || '',
-                    sourceName: node.querySelector('source')?.textContent || ''
-                }));
+                const channelTitle = doc.querySelector('channel > title')?.textContent?.trim() || defaultSource;
+
+                return itemNodes.map(node => {
+                    // dc:date (RSS 1.0 / はてなブックマーク等) と pubDate (RSS 2.0) の両方に対応
+                    const pubDateNode = node.querySelector('pubDate') || node.getElementsByTagName('dc:date')[0];
+                    const descNode = node.querySelector('description') || node.getElementsByTagName('content:encoded')[0];
+                    return {
+                        rawTitle: node.querySelector('title')?.textContent || '',
+                        link: node.querySelector('link')?.textContent || '',
+                        pubDate: pubDateNode?.textContent || '',
+                        description: descNode?.textContent || '',
+                        sourceName: defaultSource || channelTitle || ''
+                    };
+                });
             } catch (e) {
                 return [];
             }
@@ -1049,25 +1130,14 @@
         function buildFormattedSummary300to400(catKey, title, sourceName, pubTimeStr, rawDescHtml) {
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = rawDescHtml || '';
-            const listItems = Array.from(tempDiv.querySelectorAll('li'))
-                .map(li => li.textContent.replace(/\s+/g, ' ').trim())
-                .filter(t => t && !t.includes(title.slice(0, 10)));
+            const plainDesc = (tempDiv.textContent || '')
+                .replace(/\s+/g, ' ')
+                .replace(/続きをみる|全文を読む|記事全文を読む|続きを読む/g, '')
+                .trim();
 
-            let extraContext = "";
-            if (listItems.length > 0) {
-                const cleanedSnippets = listItems
-                    .slice(0, 2)
-                    .map(t => t.replace(/\s*-\s*[^-]+$/, '').trim())
-                    .filter(Boolean);
-                if (cleanedSnippets.length > 0) {
-                    extraContext = `関連する動向としては「${cleanedSnippets.join("」「")}」といった点もあわせて伝えられており、多角的な視点から報道が続いています。`;
-                }
-            } else {
-                const plainDesc = (tempDiv.textContent || '').replace(/\s+/g, ' ').trim();
-                const stripped = plainDesc.replace(title, '').replace(sourceName, '').trim();
-                if (stripped.length > 25 && stripped.length < 180) {
-                    extraContext = `報道の要点として、${stripped}といった具体的な動きが明らかにされています。`;
-                }
+            let extractedBody = "";
+            if (plainDesc && plainDesc !== title && plainDesc.length > 20) {
+                extractedBody = plainDesc.endsWith('。') ? plainDesc : plainDesc + '。';
             }
 
             const domainNotes = {
@@ -1076,7 +1146,14 @@
                 it: "急速に進化するデジタル技術やAI活用、企業のDX推進および情報セキュリティ対策の観点からも極めて重要な動きとして業界内外で注目されています。今後の技術実装やサービス展開の広がりに目が離せません。"
             };
 
-            let body = `${sourceName}（${pubTimeStr}）の最新報道によると、「${title}」に関する新たな動きが明らかになりました。${extraContext}${domainNotes[catKey] || domainNotes.it}`;
+            let body = "";
+            if (extractedBody.length >= 160) {
+                body = `${sourceName}（${pubTimeStr}）の最新報道によると、「${title}」について詳しく伝えられています。${extractedBody}${domainNotes[catKey] || domainNotes.it}`;
+            } else if (extractedBody.length > 0) {
+                body = `${sourceName}（${pubTimeStr}）の最新報道によると、「${title}」に関する新たな動きが明らかになりました。${extractedBody}${domainNotes[catKey] || domainNotes.it}`;
+            } else {
+                body = `${sourceName}（${pubTimeStr}）の最新報道によると、「${title}」に関する新たな動きが明らかになりました。${domainNotes[catKey] || domainNotes.it}`;
+            }
 
             // 必ず300〜400文字の範囲に収める調整
             if (body.length < 305) {
@@ -1192,7 +1269,6 @@ SOURCE_URL: （記事のURL）
 
             const historyKey = `hist_${simpleHash(article.title)}`;
             if (nextReadState) {
-                // 既読になった記事は永続ブラックリストに記録（二度と使用しない）
                 const exists = state.readHistory.some(h => h.id === historyKey || h.title === article.title);
                 if (!exists) {
                     state.readHistory.unshift({
@@ -1204,7 +1280,6 @@ SOURCE_URL: （記事のURL）
                 }
                 showToast("「既読」にしました（今後同じ内容は配信されません）", "success");
             } else {
-                // 未読に戻した場合は除外リストからも解除
                 state.readHistory = state.readHistory.filter(h => h.id !== historyKey && h.title !== article.title);
                 showToast("「未読」に戻しました", "info");
             }
@@ -1343,7 +1418,7 @@ SOURCE_URL: （記事のURL）
                         </div>
                         <h3 class="text-base font-bold text-slate-800">チェック済みの記事はまだありません</h3>
                         <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">
-                            気になる記事の「保存する」ボタンを押すと、ここに永続保管され後からいつでも読み返せます。
+                            気になる記事の「チェックして保存」ボタンを押すと、ここに永続保管され後からいつでも読み返せます。
                         </p>
                     </div>
                 `;
@@ -1628,7 +1703,6 @@ SOURCE_URL: （記事のURL）
         // 8. アプリ起動初期化
         // ==========================================
         function initApp() {
-            // 今日の日付バッジ表示
             const now = new Date();
             const days = ['日', '月', '火', '水', '木', '金', '土'];
             const dateBadge = document.getElementById('current-date-badge');
@@ -1636,18 +1710,11 @@ SOURCE_URL: （記事のURL）
                 dateBadge.textContent = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日(${days[now.getDay()]})`;
             }
 
-            // ホーム画面アイコンの生成
             generateAppIcon();
-
-            // 永続データの復元
             loadPersistentData();
             applySettingsToUI();
             updateSyncStatusUI();
-
-            // 画面描画
             renderAll();
-
-            // 配信時刻または初回起動チェック
             checkInitialOrScheduledFetch();
         }
 
